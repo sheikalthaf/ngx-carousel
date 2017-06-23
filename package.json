@@ -1,0 +1,15 @@
+{
+    "scripts": {
+        "transpile": "ngc",
+        "package": "rollup -c",
+        "minify": "uglifyjs dist/bundles/carousel.umd.js --screw-ie8 --compress --mangle --comments --output dist/bundles/carousel.umd.min.js",
+        "build": "npm run transpile && npm run package && npm run minify"
+    },
+    "devDependencies": {
+        "@angular/compiler": "^4.2.4",
+        "@angular/compiler-cli": "^4.2.4",
+        "rollup": "^0.43.0",
+        "typescript": "^2.3.4",
+        "uglify-js": "^3.0.19"
+    }
+}
