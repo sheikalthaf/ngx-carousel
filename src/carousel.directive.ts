@@ -270,7 +270,7 @@ export class CarouselDirective {
                 setTimeout(() => {
                     leapX += addr
                     // console.log(i);
-                    if (Math.round(leapX) + 5 >= stopX) { leapX = stopX; }
+                    if (Math.round(leapX) + 5 >= stopX) { leapX = stopX; console.log(leapX); }
                     this.carouselInner.scrollLeft = Math.round(leapX);
                     if (leapX === stopX) {return}
                   }, i);
@@ -279,7 +279,7 @@ export class CarouselDirective {
               for (let i = 0; i <= speed; i += rol) {
                 setTimeout(() => {
                     leapX -= addr
-                    if (Math.round(leapX) - 5 <= stopX) { leapX = stopX; }
+                    if (Math.round(leapX) - 5 <= stopX) { leapX = stopX; console.log(leapX); }
 
                     this.carouselInner.scrollLeft = Math.round(leapX);
                     if (leapX === stopX) {return}

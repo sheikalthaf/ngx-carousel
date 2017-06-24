@@ -4,6 +4,8 @@ Lightweight and simple carousel for angular.
 
 ## Installation
 
+[![npm install ngx-carousel](https://nodei.co/npm/ngx-carousel.png)](http://npmjs.org/package/ngx-carousel)
+
 `npm install ngx-carousel --save`
 
 ## Sample
@@ -153,7 +155,7 @@ type: string
 default: no default
 ```
 
-eg. [custom]="'lazy'"
+eg. [custom]="'banner'"
 
 `custom` is you to define the purpose of the carousel. currently it only supports `'banner','tile'`. more coming soon and also with custom css animation option
 
