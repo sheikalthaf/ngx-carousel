@@ -6,18 +6,27 @@ import { Directive, ElementRef, Renderer, Input, Output, OnInit, HostListener, E
 })
 export class CarouselDirective {
 
+    @Input() custom: any;
     @Input() items: any;
     @Input() slide: number;
     @Input() interval: number;
     @Input() speed: number;
     @Input() load: number;
-    @Input() animator: any;
+    @Input() animation: any;
     @Output() carouselLoad: EventEmitter<any> = new EventEmitter();
 
     private carousel: any;
     private carouselInner: any;
     private carouselItems: any;
-
+    private styleManager: any = {
+      'style': ' .ngxcarousel {width: 100%;position: relative;} .ngxcarousel-inner {overflow-x: hidden;white-space: nowrap;font-size: 0;vertical-align: top;} .ngxcarousel-inner .item {display: inline-block;font-size: 14px;white-space: initial;}.leftRs {position: absolute;margin: auto;top: 0;bottom: 0;z-index: 100;left: 0;width: 50px;height: 50px;box-shadow: 1px 2px 10px -1px rgba(0, 0, 0, .3);border-radius: 999px;}.rightRs {position: absolute; margin: auto; top: 0; right: 0; bottom: 0;z-index: 100; width: 50px;height: 50px; box-shadow: 1px 2px 10px -1px rgba(0, 0, 0, .3);border-radius: 999px;}',
+      'point': '.ngxcarouselPoint ul {list-style-type: none;text-align: center;padding: 12px;margin: 0;white-space: nowrap;overflow: auto;} .ngxcarouselPoint li {display: inline-block;border-radius: 50%;background: rgba(0, 0, 0, 0.55);padding: 4px;margin: 0 4px;transition-timing-function: cubic-bezier(.17, .67, .83, .67);transition: .4s;} .ngxcarouselPoint li.active {background: #6b6b6b;transform: scale(1.8);}',
+      'animation': {'lazy': '.ngxcarouselLazy .item {transition: .6s ease all;}'},
+      'customCss': {'tile':'.ngxcarousel-inner .item .tile {background: white;box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);margin: 5px;}',
+                    'banner': {'point': '.banner .ngxcarouselPoint li {background: rgba(255, 255, 255, 0.55);}.banner .ngxcarouselPoint li.active {  background: white;}.banner .ngxcarouselPoint {    position: absolute;    width: 100%;    bottom: 20px; }'
+                  }
+      }
+    };
     private itemWidth: number;
     private currentSlide: number;
     private ResResize: any;
@@ -37,7 +46,7 @@ export class CarouselDirective {
     // tslint:disable-next-line:use-life-cycle-interface
     ngOnInit() {
       this.carousel = this.el.nativeElement;
-      this.carouselInner = this.carousel.getElementsByClassName('carousel-inner')[0];
+      this.carouselInner = this.carousel.getElementsByClassName('ngxcarousel-inner')[0];
       this.carouselItems = this.carouselInner.getElementsByClassName('item');
       this.carouselSize();
       this.carousel.querySelector('.rightRs').addEventListener('click', () => { this.carouselScroll(1); });
@@ -47,9 +56,6 @@ export class CarouselDirective {
       }
     }
 
-    // @HostListener('click', ['$event.target'])
-    //     handleClick(event: Event) {
-    //     }
     @HostListener('mouseenter') onmouseenter() {
       this.renderer.setElementClass(this.carousel, 'ngxcarouselHovered', true);
     }
@@ -127,26 +133,32 @@ export class CarouselDirective {
           'md': itemsSplit[2],
           'lg': itemsSplit[3]
         }
-        const index = + Math.round( Math.random() * (1000 - 10) + 10);
+        // const index = + Math.round( Math.random() * (1000 - 10) + 10);
+        const id = 'ResSlid' + this.makeid();
 
-        const styleCollector0: string = '.ResSlid' + index + ' .item {width: ' + 100 / itemsSplit[0] + '%}';
-        const styleCollector1: string = '.ResSlid' + index + ' .item {width: ' + 100 / itemsSplit[1] + '%}';
-        const styleCollector2: string = '.ResSlid' + index + ' .item {width: ' + 100 / itemsSplit[2] + '%}';
-        const styleCollector3: string = '.ResSlid' + index + ' .item {width: ' + 100 / itemsSplit[3] + '%}';
+        const styleCollector0: string = '.' + id + ' .item {width: ' + 100 / itemsSplit[0] + '%}';
+        const styleCollector1: string = '.' + id + ' .item {width: ' + 100 / itemsSplit[1] + '%}';
+        const styleCollector2: string = '.' + id + ' .item {width: ' + 100 / itemsSplit[2] + '%}';
+        const styleCollector3: string = '.' + id + ' .item {width: ' + 100 / itemsSplit[3] + '%}';
 
         // tslint:disable-next-line:max-line-length
-        const styleCollector = '<div><style>.ngxcarousel { width: 100%; position: relative; }.ngxcarousel-inner { overflow-x: hidden; white-space: nowrap; font-size: 0; vertical-align: top;}' +
-        '.ngxcarousel-inner .item { display: inline-block; font-size: 14px; white-space: initial;}' +
+        console.log((this.custom === 'banner' && ('.' + id + ' ' + this.styleManager.customCss.banner.point)));
+        const styleCollector = '<div><style>' +
+        this.styleManager.style +
+        this.styleManager.point +
+        // tslint:disable-next-line:max-line-length
+        (typeof this.custom !== 'undefined' && (this.custom === 'banner' && (this.styleManager.customCss.banner.point)) || (this.custom === 'tile' && this.styleManager.customCss.tile)) +
+        (this.animation === 'lazy' && this.styleManager.animation.lazy) +
                                             '@media (max-width:767px){.ngxcarousel-inner {overflow-x: auto; }' + styleCollector0 + '}' +
                                             '@media (min-width:768px){' + styleCollector1 + '}' +
                                             '@media (min-width:992px){' + styleCollector2 + '}' +
                                             '@media (min-width:1200px){' + styleCollector3 + '}</style></div>';
 
         // console.log(styleCollector)
-        this.renderer.setElementClass(this.carousel, 'ResSlid' + index, true);
+        this.renderer.setElementClass(this.carousel, id, true);
         this.carousel.insertAdjacentHTML('beforeend', styleCollector);
         // tslint:disable-next-line:no-unused-expression
-        this.animator === 'lazy' && this.renderer.setElementClass(this.carousel, 'ngxcarouselLazy', true);
+        this.animation === 'lazy' && this.renderer.setElementClass(this.carousel, 'ngxcarouselLazy', true);
         // tslint:disable-next-line:no-unused-expression
         typeof this.interval === 'number' && this.carouselSlide();
         this.storeResData();
@@ -154,10 +166,20 @@ export class CarouselDirective {
         // this.carousel('Btn');
     }
 
+    private makeid() {
+        let text = '';
+        const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+        for (let i = 0; i < 5; i++ ) {
+            text += possible.charAt(Math.floor(Math.random() * possible.length));
+        }
+        return text;
+    }
+
     private carouselSlide() {
         setInterval(() => {
            // tslint:disable-next-line:no-unused-expression
-    		    !(this.carousel.classList.contains('ngxcarouselHovered')) && this.carouselScroll(1);
+    		 !(this.carousel.classList.contains('ngxcarouselHovered')) && this.carouselScroll(1);
         }, this.interval);
     }
 
@@ -210,7 +232,7 @@ export class CarouselDirective {
 
         // tslint:disable-next-line:max-line-length
         // tslint:disable-next-line:no-unused-expression
-        this.animator === 'lazy' && this.carouselAnimator( Btn, currentSlide + 1, currentSlide + this.visibleItems, itemSpeed, Math.abs(divValue - currentSlide));
+        this.animation === 'lazy' && this.carouselAnimator( Btn, currentSlide + 1, currentSlide + this.visibleItems, itemSpeed, Math.abs(divValue - currentSlide));
         this.currentSlide = currentSlide;
         // tslint:disable-next-line:no-unused-expression
         this.load && this.carouselLoad1();
@@ -231,7 +253,6 @@ export class CarouselDirective {
     }
 
     private smoothScoll(obj: number, speed: number) {
-      // console.log(obj + ',' + params + ',' + speed)
         const startX = this.carouselInner.scrollLeft;
         const stopX = obj;
         const distance = stopX > startX ? stopX - startX : startX - stopX;
@@ -248,7 +269,7 @@ export class CarouselDirective {
               for (let i = 0; i <= speed; i += rol) {
                 setTimeout(() => {
                     leapX += addr
-                    //console.log(i);
+                    // console.log(i);
                     if (Math.round(leapX) + 5 >= stopX) { leapX = stopX; }
                     this.carouselInner.scrollLeft = Math.round(leapX);
                     if (leapX === stopX) {return}
@@ -258,8 +279,8 @@ export class CarouselDirective {
               for (let i = 0; i <= speed; i += rol) {
                 setTimeout(() => {
                     leapX -= addr
-                    //console.log(i);
-                    if (Math.round(leapX) - 5 >= stopX) { leapX = stopX; }
+                    if (Math.round(leapX) - 5 <= stopX) { leapX = stopX; }
+
                     this.carouselInner.scrollLeft = Math.round(leapX);
                     if (leapX === stopX) {return}
                   }, i);
@@ -288,5 +309,4 @@ export class CarouselDirective {
           }
         }, speed - 70);
     }
-
 }
