@@ -4,7 +4,7 @@ export default {
     sourceMap: false,
     format: 'umd',
     moduleName: 'ng.carousel',
-    external: ['@angular/core'],
+    external: ['@angular/core', '@angular/common'],
     globals: {
         '@angular/core': 'ng.core',
         'rxjs/Observable': 'Rx',

@@ -1,0 +1,36 @@
+{
+    "name": "ngx-carousel",
+    "version": "0.2.0",
+    "description": "An amazing responsive and customizable carousel for Angular.",
+    "main": "bundles/carousel.umd.js",
+    "module": "index.js",
+    "typings": "index.d.ts",
+    "keywords": [
+        "angular",
+        "angular2",
+        "angular 2",
+        "angular 4",
+        "rescarousel",
+        "ng-rescarousel",
+        "ng-resCarousel",
+        "responsive carousel",
+        "carousel",
+        "angular carousel",
+        "slider"
+    ],
+    "author": "Sheik Althaf",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/sheikalthaf/ngx-carousel"
+    },
+    "bugs": {
+        "url": "https://github.com/sheikalthaf/ngx-carousel/issues"
+    },
+    "peerDependencies": {
+        "@angular/core": "^2.4.0 || ^4.0.0",
+        "@angular/common": "^2.4.0 || ^4.0.0",
+        "hammerjs": "^2.0.0",
+        "rxjs": "^5.0.1"
+    }
+}
