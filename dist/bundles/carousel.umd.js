@@ -8,7 +8,6 @@ var CarouselComponent = (function () {
     function CarouselComponent(el, renderer) {
         this.el = el;
         this.renderer = renderer;
-        this.hammerInitialized = true;
         this.carouselLoad = new _angular_core.EventEmitter();
         this.Arr = Array;
         this.currentSlide = 0;
@@ -28,7 +27,7 @@ var CarouselComponent = (function () {
             loop: false,
             dexVal: 0,
             touchTransform: 0,
-            touch: { swipe: '', velocity: 0 },
+            touch: { active: false, swipe: '', velocity: 0 },
             isEnd: false
         };
         // renderer.setStyle(el.nativeElement, 'background', 'grey');
@@ -63,7 +62,8 @@ var CarouselComponent = (function () {
     };
     CarouselComponent.prototype.ngAfterViewInit = function () {
         var styleItem = document.createElement('style');
-        this.renderer.appendChild(this.carouselInner, styleItem);
+        this.carouselInner.appendChild(styleItem);
+        // this.renderer.appendChild(this.carouselInner, styleItem);
         this.carouselPoint();
         this.touch();
         this.storeResData();
@@ -77,33 +77,36 @@ var CarouselComponent = (function () {
         }, 500);
     };
     CarouselComponent.prototype.ontouching = function (event) {
-        var btn = event.srcElement.classList;
+        var element = event.target || event.srcElement;
+        var btn = element.classList;
         // tslint:disable-next-line:no-unused-expression
         btn.contains('rightRs') ? this.carouselScroll(1) : btn.contains('leftRs') && this.carouselScroll(0);
     };
     CarouselComponent.prototype.touch = function () {
         var _this = this;
-        var hammertime = new Hammer(this.carouselInner);
-        hammertime.get('swipe').set({ direction: Hammer.DIRECTION_HORIZONTAL });
-        hammertime.on('panstart', function (ev) {
-            _this.data.carouselWidth = _this.carouselInner.offsetWidth;
-            // tslint:disable-next-line:max-line-length
-            _this.data.touchTransform = _this.data.deviceType === 'xs' ? _this.data.transform.xs : _this.data.deviceType === 'sm' ? _this.data.transform.sm : _this.data.deviceType === 'md' ? _this.data.transform.md : _this.data.deviceType === 'lg' ? _this.data.transform.lg : _this.data.transform.all;
-            _this.data.dexVal = 0;
-            _this.renderer.setStyle(_this.carouselInner, 'transition', '');
-        });
-        hammertime.on('panleft', function (ev) {
-            _this.touchGues('panleft', ev.deltaX);
-        });
-        hammertime.on('panright', function (ev) {
-            _this.touchGues('panright', ev.deltaX);
-        });
-        hammertime.on('panend', function (ev) {
-            console.log(ev.velocity);
-            _this.renderer.setStyle(_this.carouselInner, 'transform', '');
-            _this.data.touch.velocity = ev.velocity;
-            _this.data.touch.swipe === 'panright' ? _this.carouselScroll(0) : _this.carouselScroll(1);
-        });
+        if (this.inputs.touch) {
+            var hammertime = new Hammer(this.carouselInner);
+            hammertime.get('swipe').set({ direction: Hammer.DIRECTION_HORIZONTAL });
+            hammertime.on('panstart', function (ev) {
+                _this.data.carouselWidth = _this.carouselInner.offsetWidth;
+                // tslint:disable-next-line:max-line-length
+                _this.data.touchTransform = _this.data.deviceType === 'xs' ? _this.data.transform.xs : _this.data.deviceType === 'sm' ? _this.data.transform.sm : _this.data.deviceType === 'md' ? _this.data.transform.md : _this.data.deviceType === 'lg' ? _this.data.transform.lg : _this.data.transform.all;
+                _this.data.dexVal = 0;
+                _this.renderer.setElementStyle(_this.carouselInner, 'transition', '');
+            });
+            hammertime.on('panleft', function (ev) {
+                _this.touchGues('panleft', ev.deltaX);
+            });
+            hammertime.on('panright', function (ev) {
+                _this.touchGues('panright', ev.deltaX);
+            });
+            hammertime.on('panend', function (ev) {
+                // console.log(ev.velocity);
+                _this.renderer.setElementStyle(_this.carouselInner, 'transform', '');
+                _this.data.touch.velocity = ev.velocity;
+                _this.data.touch.swipe === 'panright' ? _this.carouselScroll(0) : _this.carouselScroll(1);
+            });
+        }
     };
     CarouselComponent.prototype.touchGues = function (e, ev) {
         var valt = Math.abs(ev) - this.data.dexVal;
@@ -113,7 +116,7 @@ var CarouselComponent = (function () {
         this.data.touchTransform = e === 'panleft' ? valt + this.data.touchTransform : this.data.touchTransform - valt;
         if (this.data.touchTransform > 0) {
             // tslint:disable-next-line:max-line-length
-            this.renderer.setStyle(this.carouselInner, 'transform', this.data.type === 'responsive' ? "translate3d(-" + this.data.touchTransform + "%, 0px, 0px)" : "translate3d(-" + this.data.touchTransform + "px, 0px, 0px)");
+            this.renderer.setElementStyle(this.carouselInner, 'transform', this.data.type === 'responsive' ? "translate3d(-" + this.data.touchTransform + "%, 0px, 0px)" : "translate3d(-" + this.data.touchTransform + "px, 0px, 0px)");
         }
         else {
             this.data.touchTransform = 0;
@@ -129,10 +132,12 @@ var CarouselComponent = (function () {
         // console.log(top + carouselHeight / 2 >= scrollY);
         if ((top <= scrollY + heightt - carouselHeight / 4) && (top + carouselHeight / 2 >= scrollY)) {
             // console.log('true');
-            this.renderer.removeClass(this.el.nativeElement, 'ngxcarouselScrolled');
+            this.renderer.setElementClass(this.el.nativeElement, 'ngxcarouselScrolled', false);
+            // this.renderer.removeClass(this.el.nativeElement, 'ngxcarouselScrolled');
         }
         else {
-            this.renderer.addClass(this.el.nativeElement, 'ngxcarouselScrolled');
+            this.renderer.setElementClass(this.el.nativeElement, 'ngxcarouselScrolled', true);
+            // this.renderer.addClass(this.el.nativeElement, 'ngxcarouselScrolled');
         }
     };
     CarouselComponent.prototype.scrollStart = function () {
@@ -168,12 +173,14 @@ var CarouselComponent = (function () {
         this.inputs.speed = +(this.inputs.speed ? this.inputs.speed : 400);
         if (this.inputs.type === 'mobile') {
             if (this.data.deviceWidth <= 767) {
-                this.renderer.addClass(this.carousel, 'ngxcarouselMobiled');
-                this.renderer.setStyle(this.carouselInner, 'transform', 'translate3d(0px, 0px, 0px)');
+                // this.renderer.addClass(this.carousel, 'ngxcarouselMobiled');
+                this.renderer.setElementClass(this.carousel, 'ngxcarouselMobiled', true);
+                this.renderer.setElementStyle(this.carouselInner, 'transform', 'translate3d(0px, 0px, 0px)');
                 this.carouselInner.scrollLeft = +this.currentSlide * this.data.width;
             }
             else {
-                this.renderer.removeClass(this.carousel, 'ngxcarouselMobiled');
+                this.renderer.setElementClass(this.carousel, 'ngxcarouselMobiled', false);
+                // this.renderer.removeClass(this.carousel, 'ngxcarouselMobiled');
             }
         }
     };
@@ -195,10 +202,15 @@ var CarouselComponent = (function () {
         var parent = this.carousel.querySelectorAll('.ngxcarouselPoint li');
         if (parent.length !== 0) {
             var i = Math.ceil(this.currentSlide / this.data.slideItems);
+            // console.log(parent);
+            // parent.forEach((element: any) => {
             for (var j = 0; j < parent.length; j++) {
-                this.renderer.removeClass(parent[j], 'active');
+                this.renderer.setElementClass(parent[j], 'active', false);
             }
-            this.renderer.addClass(parent[i], 'active');
+            // this.renderer.removeClass(element, 'active');
+            // });
+            this.renderer.setElementClass(parent[i], 'active', true);
+            // this.renderer.addClass(parent[i], 'active');
         }
     };
     CarouselComponent.prototype.carouselSize = function () {
@@ -210,7 +222,8 @@ var CarouselComponent = (function () {
         // tslint:disable-next-line:max-line-length
         dism += styleid + " .ngxcarousel-items .item {display: inline-block;white-space: initial;vertical-align: top;} .leftRs {position: absolute;margin: auto;top: 0;bottom: 0;left: 0;width: 50px;height: 50px;box-shadow: 1px 2px 10px -1px rgba(0, 0, 0, .3);border-radius: 999px;}.rightRs {position: absolute; margin: auto; top: 0; right: 0; bottom: 0; width: 50px;height: 50px; box-shadow: 1px 2px 10px -1px rgba(0, 0, 0, .3);border-radius: 999px;}";
         if (this.inputs.custom === 'banner') {
-            this.renderer.addClass(this.carousel, 'banner');
+            this.renderer.setElementClass(this.carousel, 'banner', true);
+            // this.renderer.addClass(this.carousel, 'banner');
         }
         if (this.inputs.custom === 'tile') {
             dism += "." + this.data.classText + " .tile {box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);margin: 5px;}";
@@ -228,15 +241,18 @@ var CarouselComponent = (function () {
             var styleCollector1 = styleid + ' .item {width: ' + 100 / this.inputs.grid.sm + '%}';
             var styleCollector2 = styleid + ' .item {width: ' + 100 / this.inputs.grid.md + '%}';
             var styleCollector3 = styleid + ' .item {width: ' + 100 / this.inputs.grid.lg + '%}';
-            itemwid = "@media (max-width:767px){" + mobileScroll + styleCollector0 + " " + styleid + " .leftRs, " + styleid + " .rightRs { display: none }}\n                    @media (min-width:768px){" + styleCollector1 + "}\n                    @media (min-width:992px){" + styleCollector2 + "}\n                    @media (min-width:1200px){" + styleCollector3 + "}";
+            // itemwid = `@media (max-width:767px){${mobileScroll}${styleCollector0} ${styleid} .leftRs, ${styleid} .rightRs { display: none }}
+            itemwid = "@media (max-width:767px){" + mobileScroll + styleCollector0 + "}\n                    @media (min-width:768px){" + styleCollector1 + "}\n                    @media (min-width:992px){" + styleCollector2 + "}\n                    @media (min-width:1200px){" + styleCollector3 + "}";
         }
         else {
-            itemwid = styleid + " .item {width: " + this.inputs.grid.all + "px}\n                  @media (max-width:767px){" + mobileScroll + " " + styleid + " .leftRs, " + styleid + " .rightRs { display: none }}";
+            itemwid = styleid + " .item {width: " + this.inputs.grid.all + "px}\n                  @media (max-width:767px){" + mobileScroll + "}";
         }
-        this.renderer.addClass(this.carousel, this.data.classText);
+        this.renderer.setElementClass(this.carousel, this.data.classText, true);
+        // this.renderer.addClass(this.carousel, this.data.classText);
         var styleItem = document.createElement('style');
         styleItem.innerHTML = dism + " " + itemwid;
-        this.renderer.appendChild(this.carousel, styleItem);
+        this.carousel.appendChild(styleItem);
+        // this.renderer.appendChild(this.carousel, styleItem);
         // const t1 = performance.now();
         // console.log('Took', (t1 - t0).toFixed(4), 'milliseconds to generate');
     };
@@ -246,7 +262,7 @@ var CarouselComponent = (function () {
         var translateXval, currentSlide = 0;
         var itemLenght = this.inputs.dynamicLength === true ? this.inputsLength : this.carouselItems.length;
         var touchMove = Math.ceil(this.data.dexVal / this.data.width);
-        this.renderer.setStyle(this.carouselInner, 'transform', '');
+        this.renderer.setElementStyle(this.carouselInner, 'transform', '');
         if (Btn === 0) {
             var currentSlideD = this.currentSlide - this.data.slideItems;
             var MoveSlide = currentSlideD + this.data.slideItems;
@@ -306,12 +322,13 @@ var CarouselComponent = (function () {
             var first = .5;
             var second = .50;
             // this.carouselInner.style.transition = `transform ${itemSpeed}ms ease-in-out`;
-            this.renderer.setStyle(this.carouselInner, 'transition', "transform " + itemSpeed + "ms cubic-bezier(" + first + ", " + second + ", 0.54, 1.13)");
+            // tslint:disable-next-line:max-line-length
+            this.renderer.setElementStyle(this.carouselInner, 'transition', "transform " + itemSpeed + "ms cubic-bezier(" + first + ", " + second + ", 0.54, 1.13)");
         }
         else {
             var val = Math.abs(this.data.touch.velocity);
             var first = .7 / val < .5 ? .7 / val : .5;
-            var second = 2.9 * val / 10 < 1.3 ? 2.9 * val / 10 : 1.3;
+            var second = (2.9 * val / 10 < 1.3) ? (2.9 * val) / 10 : 1.3;
             var somt = Math.floor((this.data.dexVal / val) / this.data.dexVal * (this.data.deviceWidth - this.data.dexVal));
             somt = somt > itemSpeed ? itemSpeed : somt;
             itemSpeed = somt < 200 ? 200 : somt;
@@ -319,7 +336,8 @@ var CarouselComponent = (function () {
             // console.log(Math.floor(somt * (this.data.deviceWidth - this.data.dexVal)));
             // console.log(itemSpeed / val / 10);
             // console.log(`transform ${itemSpeed}ms cubic-bezier(${first}, ${second}, 0.54, 1.13)`);
-            this.renderer.setStyle(this.carouselInner, 'transition', "transform " + itemSpeed + "ms cubic-bezier(" + first + ", " + second + ", 0.54, 1.13)");
+            // tslint:disable-next-line:max-line-length
+            this.renderer.setElementStyle(this.carouselInner, 'transition', "transform " + itemSpeed + "ms cubic-bezier(" + first + ", " + second + ", 0.54, 1.13)");
             // this.carouselInner.style.transition = `transform ${itemSpeed}ms cubic-bezier(0.15, 1.04, 0.54, 1.13)`;
             this.data.dexVal = 0;
         }
@@ -347,7 +365,7 @@ var CarouselComponent = (function () {
         this.carouselInner.querySelectorAll('style')[0].innerHTML = ret;
     };
     CarouselComponent.prototype.carouselLoad1 = function () {
-        if (this.inputs.load !== '') {
+        if (typeof this.inputs.load === 'number') {
             // tslint:disable-next-line:no-unused-expression
             (this.carouselItems.length - this.data.load) <= (this.currentSlide + this.data.items) &&
                 this.carouselLoad.emit(this.currentSlide);
@@ -367,22 +385,26 @@ var CarouselComponent = (function () {
         // if (typeof this.inputs.interval === 'number' && typeof this.carouselInt !== 'object' && typeof this.carouselInt === 'undefined') {
         if (typeof this.inputs.interval === 'number') {
             this.renderer.listen(this.carouselMain, 'touchstart', function () {
-                _this.renderer.addClass(_this.carousel, 'ngxcarouselTouched');
+                _this.renderer.setElementClass(_this.carousel, 'ngxcarouselTouched', true);
+                // this.renderer.addClass(this.carousel, 'ngxcarouselTouched');
                 _this.pauseinterval();
             });
             this.renderer.listen(this.carouselMain, 'touchend', function () {
-                _this.renderer.removeClass(_this.carousel, 'ngxcarouselTouched');
+                _this.renderer.setElementClass(_this.carousel, 'ngxcarouselTouched', false);
+                // this.renderer.removeClass(this.carousel, 'ngxcarouselTouched');
                 _this.pauseinterval();
             });
             this.renderer.listen(this.carouselMain, 'mouseenter', function () {
-                _this.renderer.addClass(_this.carousel, 'ngxcarouselHovered');
+                _this.renderer.setElementClass(_this.carousel, 'ngxcarouselHovered', true);
+                // this.renderer.addClass(this.carousel, 'ngxcarouselHovered');
                 _this.pauseinterval();
             });
             this.renderer.listen(this.carouselMain, 'mouseleave', function () {
-                _this.renderer.removeClass(_this.carousel, 'ngxcarouselHovered');
+                _this.renderer.setElementClass(_this.carousel, 'ngxcarouselHovered', false);
+                // this.renderer.removeClass(this.carousel, 'ngxcarouselHovered');
                 _this.pauseinterval();
             });
-            this.renderer.listen('window', 'scroll', function () {
+            this.renderer.listenGlobal('window', 'scroll', function () {
                 clearTimeout(_this.onScrolling);
                 _this.onScrolling = setTimeout(function () {
                     _this.onWindowScrolling();
@@ -401,10 +423,12 @@ var CarouselComponent = (function () {
     };
     CarouselComponent.prototype.pauseinterval = function () {
         var _this = this;
-        this.renderer.addClass(this.carousel, 'pauseInterval');
+        // this.renderer.addClass(this.carousel, 'pauseInterval');
+        this.renderer.setElementClass(this.carousel, 'pauseInterval', true);
         clearTimeout(this.pauseInterval);
         this.pauseInterval = setTimeout(function () {
-            _this.renderer.removeClass(_this.carousel, 'pauseInterval');
+            _this.renderer.setElementClass(_this.carousel, 'pauseInterval', false);
+            // this.renderer.removeClass(this.carousel, 'pauseInterval');
         }, 4000);
     };
     CarouselComponent.prototype.carouselAnimator = function (direction, start, end, speed, length) {
@@ -414,18 +438,18 @@ var CarouselComponent = (function () {
         if (direction === 1) {
             for (var i = start - 1; i < end; i++) {
                 val = val * 2;
-                this.renderer.setStyle(this.carouselItems[i], 'transform', 'translateX(' + val + 'px)');
+                this.renderer.setElementStyle(this.carouselItems[i], 'transform', 'translateX(' + val + 'px)');
             }
         }
         else {
             for (var i = end - 1; i >= start - 1; i--) {
                 val = val * 2;
-                this.renderer.setStyle(this.carouselItems[i], 'transform', 'translateX(-' + val + 'px)');
+                this.renderer.setElementStyle(this.carouselItems[i], 'transform', 'translateX(-' + val + 'px)');
             }
         }
         setTimeout(function () {
             for (var i = start - 1; i < end; i++) {
-                _this.renderer.setStyle(_this.carouselItems[i], 'transform', 'translateX(0px)');
+                _this.renderer.setElementStyle(_this.carouselItems[i], 'transform', 'translateX(0px)');
             }
         }, speed * .7);
     };
@@ -442,7 +466,7 @@ CarouselComponent.decorators = [
 /** @nocollapse */
 CarouselComponent.ctorParameters = function () { return [
     { type: _angular_core.ElementRef, },
-    { type: _angular_core.Renderer2, },
+    { type: _angular_core.Renderer, },
 ]; };
 CarouselComponent.propDecorators = {
     'inputs': [{ type: _angular_core.Input },],
@@ -453,8 +477,6 @@ CarouselComponent.propDecorators = {
     'ontouching': [{ type: _angular_core.HostListener, args: ['click', ['$event'],] },],
 };
 
-// import { CarouselDirective } from './carousel.directive';
-// export { Carousel } from './carousel-interface';
 var CarouselModule = (function () {
     function CarouselModule() {
     }
@@ -470,14 +492,14 @@ CarouselModule.decorators = [
 /** @nocollapse */
 CarouselModule.ctorParameters = function () { return []; };
 
-var Carousel$1 = (function () {
+var Carousel = (function () {
     function Carousel() {
     }
     return Carousel;
 }());
 
 exports.CarouselModule = CarouselModule;
-exports.Carousel = Carousel$1;
+exports.Carousel = Carousel;
 
 Object.defineProperty(exports, '__esModule', { value: true });
 

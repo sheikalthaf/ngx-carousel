@@ -11,7 +11,6 @@ for ChangeLog go to [CHANGELOG.md](https://github.com/sheikalthaf/ngx-carousel/b
 
 ## Installation
 
-[![npm install ngx-carousel](https://nodei.co/npm/ngx-carousel.png)](http://npmjs.org/package/ngx-carousel)
 
 `npm install ngx-carousel --save`
 
@@ -74,6 +73,7 @@ export class SampleComponent implements OnInit {
       interval: 4000,
       point: true,
       load: 2,
+      touch: true,
       custom: 'banner',
       dynamicLength: true
     }
@@ -87,6 +87,40 @@ export class SampleComponent implements OnInit {
   
   
 }
+```
+
+## Input Interface
+
+```javascript
+
+
+export class Carousel {
+  grid: Grid;
+  slide?: number;
+  speed?: number;
+  interval?: number;
+  animation?: Animate;
+  point?: boolean;
+  type?: string;
+  load?: number;
+  custom?: Custom;
+  loop?: boolean;
+  touch?: boolean;
+  dynamicLength: boolean;
+}
+
+export class Grid {
+  xs: number;
+  sm: number;
+  md: number;
+  lg: number;
+  all: number;
+}
+
+export type Custom = 'banner' | 'tile';
+export type Animate = 'lazy';
+
+
 ```
 
 ## grid
@@ -172,6 +206,22 @@ eg. point : true
 `point` is used to indicate no. of slides and also shows the current active slide.
 
 
+
+## touch
+
+```
+type: boolean
+
+default: false
+```
+
+eg. touch : true
+
+`touch` is used to active touch support to the carousel.
+
+
+
+
 ## animation
 
 ```
@@ -221,6 +271,17 @@ import { Carousel } from 'ngx-carousel';
         <button class='rightRs'>></button>
     </ngx-carousel>
   `,
+  styles: [`
+    .bannerStyle {
+      min-height: 300px;
+      background-color: #ccc;
+    }
+
+    .bannerStyle h1 {
+      text-align: center;
+      line-height: 300px;
+    }
+  `]
 })
 export class Sample implements OnInit {
 
@@ -238,6 +299,7 @@ export class Sample implements OnInit {
       point: true,
       load: 2,
       custom: 'banner',
+      touch: true,
       dynamicLength: true
     }
   }
@@ -260,19 +322,6 @@ export class Sample implements OnInit {
 
 ```
 
-css required to style the items. just apply some css to Items inner div
-
-```css
-.bannerStyle {
-  min-height: 300px;
-  background-color: #ccc;
-}
-
-.bannerStyle h1 {
-  text-align: center;
-  line-height: 300px;
-}
-```
 
 
 ## Tile
@@ -300,6 +349,17 @@ import { Carousel } from 'ngx-carousel';
         <button class='rightRs'>></button>
     </ngx-carousel>
   `,
+  styles: [`
+    .tile {
+      min-height: 200px;
+      background-color: #ccc;
+    }
+
+    .tile h1{
+      text-align: center;
+      line-height: 200px;
+    }
+  `]
 })
 export class Sample implements OnInit {
   
@@ -317,6 +377,7 @@ export class Sample implements OnInit {
       animation: 'lazy',
       point: true,
       load: 2,
+      touch: true,
       custom: 'tile',
       dynamicLength: true
     }
@@ -341,19 +402,6 @@ export class Sample implements OnInit {
 ```
 
 
-css required to style the items. just apply some css to Items inner div
-
-```css
-.tile {
-  min-height: 200px;
-  background-color: #ccc;
-}
-
-.tile h1{
-  text-align: center;
-  line-height: 200px;
-}
-```
 
 ## License
 [MIT](LICENSE) license.

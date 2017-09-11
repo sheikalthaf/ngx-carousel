@@ -1,7 +1,7 @@
 {
     "name": "ngx-carousel",
-    "version": "0.2.0",
-    "description": "An amazing responsive and customizable carousel for Angular.",
+    "version": "1.0.0",
+    "description": "Angular Carousel with customizable option with touch support and even more. Try it then say about it",
     "main": "bundles/carousel.umd.js",
     "module": "index.js",
     "typings": "index.d.ts",
@@ -19,7 +19,6 @@
         "slider"
     ],
     "author": "Sheik Althaf",
-    "license": "MIT",
     "repository": {
         "type": "git",
         "url": "https://github.com/sheikalthaf/ngx-carousel"
@@ -27,6 +26,11 @@
     "bugs": {
         "url": "https://github.com/sheikalthaf/ngx-carousel/issues"
     },
+    "readme": "https://github.com/sheikalthaf/ngx-carousel/blob/master/README.md",
+    "licenses": [{
+        "type": "MIT",
+        "url": "https://github.com/sheikalthaf/ngx-carousel/blob/master/LICENSE"
+    }],
     "peerDependencies": {
         "@angular/core": "^2.4.0 || ^4.0.0",
         "@angular/common": "^2.4.0 || ^4.0.0",
