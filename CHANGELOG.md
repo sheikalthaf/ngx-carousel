@@ -2,7 +2,7 @@
 ## changelog [![NPM version](https://badge.fury.io/js/ngx-carousel.png)](http://badge.fury.io/js/ngx-carousel) 
 
 
-# 0.9.2
+# 1.0.0
 
 ### Before Upgrading once read the [Readme.md](https://github.com/sheikalthaf/ngx-carousel/blob/master/README.md) file
 
