@@ -1,21 +1,19 @@
-
-## changelog [![NPM version](https://badge.fury.io/js/ngx-carousel.png)](http://badge.fury.io/js/ngx-carousel) 
-
-
-# 1.0.0
+# changelog [![NPM version](https://badge.fury.io/js/ngx-carousel.png)](http://badge.fury.io/js/ngx-carousel) 
 
 ### Before Upgrading once read the [Readme.md](https://github.com/sheikalthaf/ngx-carousel/blob/master/README.md) file
 
-### Issues fixed
-
-* Buttton error fixed based on the issue[#2](https://github.com/sheikalthaf/ngx-carousel/issues/2)
-
+## 1.1.0
 
 ### Features Added
 
-* This release now `all` feature is enabled. It will appear in `grid`. if you need to make your carousel items to be `fixed in width` use this option and makke other option to be `0`. eg `grid: {xs: 0, sm: 0, md: 0, lg: 0, all: 250}`
+* `loop: boolean` is added. By default it is false. It is used to control the looping of an item. If you need `interval: boolean` then make sure to to add `loop: true`. [#5](https://github.com/sheikalthaf/ngx-carousel/issues/5)
 
-* touch control option included in this version, By default touch is false.
+* `ngx-item` component is added for the replacement of the `.item` class. check readme.
+
+* `ngx-tile` component is added for the replacement of the `.item` and `.tile` class. check readme.
+
+* `easing: string` is added for custom easing style.
+
 * Performance Improvements.
 
 ### RoadMap
@@ -24,8 +22,20 @@
 * Custom Animation support
 * Unsubcribe to carouselLoad Eventemitter
 
+## 1.0.0
 
-# 0.2.2
+### Issues fixed
+
+* Buttton error fixed based on the issue[#2](https://github.com/sheikalthaf/ngx-carousel/issues/2)
+
+### Features Added
+
+* This release now `all` feature is enabled. It will appear in `grid`. if you need to make your carousel items to be `fixed in width` use this option and makke other option to be `0`. eg `grid: {xs: 0, sm: 0, md: 0, lg: 0, all: 250}`
+
+* touch control option included in this version, By default touch is false.
+* Performance Improvements.
+
+## 0.2.2
 
 ### This is a Major release with breaking Changes. Please read the [Readme.md](https://github.com/sheikalthaf/ngx-carousel/blob/master/README.md) before upgrading
 
@@ -37,7 +47,7 @@
 
 
 
-# 0.2.0
+## 0.2.0
 
 ### This is a Major release with breaking Changes. Please read the [Readme.md](https://github.com/sheikalthaf/ngx-carousel/blob/master/README.md) before upgrading
 

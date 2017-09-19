@@ -1,12 +1,14 @@
 export default {
     entry: 'dist/index.js',
-    dest: 'dist/bundles/carousel.umd.js',
+    dest: 'dist/bundles/ngxcarousel.umd.js',
     sourceMap: false,
     format: 'umd',
-    moduleName: 'ng.carousel',
-    external: ['@angular/core', '@angular/common'],
+    moduleName: 'ng.ngxcarousel',
+    external: ['@angular/core', '@angular/common', '@angular/platform-browser'],
     globals: {
         '@angular/core': 'ng.core',
+        '@angular/common': 'ng.common',
+        '@angular/platform-browser': 'ng.platform-browser',
         'rxjs/Observable': 'Rx',
         'rxjs/ReplaySubject': 'Rx',
         'rxjs/add/operator/map': 'Rx.Observable.prototype',

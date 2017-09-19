@@ -1,0 +1,18 @@
+<div class="som">
+    <div class="ngxcarousel">
+        <div class="ngxcarousel-inner">
+            <div class="ngxcarousel-items">
+                <ng-content #itemss select="ngx-item"></ng-content>
+                <ng-content select="ngx-tile"></ng-content>
+            </div>
+            <div style="clear: both"></div>
+        </div>
+        <ng-content #left select=".leftRs" class="leftRs"></ng-content>
+        <ng-content #right select=".rightRs" class="rightRs"></ng-content>
+    </div>
+    <div class="ngxcarouselPoint" *ngIf="userData.point">
+        <ul>
+            <li *ngFor="let i of Arr(data.pointNumbers).fill(1)"></li>
+        </ul>
+    </div>
+</div>

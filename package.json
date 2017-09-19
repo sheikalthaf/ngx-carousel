@@ -1,11 +1,11 @@
 {
     "name": "ngx-carousel",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "description": "Angular Carousel with customizable option with touch support and even more. Try it then say about it",
     "scripts": {
         "transpile": "ngc",
         "package": "rollup -c",
-        "minify": "uglifyjs dist/bundles/carousel.umd.js --screw-ie8 --compress --mangle --comments --output dist/bundles/carousel.umd.min.js",
+        "minify": "uglifyjs dist/bundles/ngxcarousel.umd.js --screw-ie8 --compress --mangle --comments --output dist/bundles/ngxcarousel.umd.min.js",
         "build": "npm run transpile && npm run package && npm run minify"
     },
     "devDependencies": {
@@ -16,6 +16,7 @@
         "uglify-js": "^3.0.19"
     },
     "dependencies": {
+        "@angular/platform-browser": "^4.4.2",
         "@types/hammerjs": "^2.0.34",
         "hammerjs": "^2.0.8"
     }

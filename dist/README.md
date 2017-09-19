@@ -8,7 +8,7 @@ Lightweight and simple carousel for angular.
 
 for ChangeLog go to [CHANGELOG.md](https://github.com/sheikalthaf/ngx-carousel/blob/master/CHANGELOG.md)
 
-
+ 
 ## Installation
 
 
@@ -47,15 +47,15 @@ import { Carousel } from 'ngx-carousel';
         [inputs]="carouselOne"
         [inputsLength]="carouselTwoItems.length"
         (carouselLoad)="myfunc($event)">
-          <div class="item">
+          <ngx-item>
             ....
-          </div>
-          <div class="item">
+          </ngx-item>
+          <ngx-item>
             ....
-          </div>
-          <div class="item">
+          </ngx-item>
+          <ngx-item>
             ....
-          </div>
+          </ngx-item>
       <button class='leftRs'><</button>
       <button class='rightRs'>></button>
     </ngx-carousel>
@@ -74,6 +74,7 @@ export class SampleComponent implements OnInit {
       point: true,
       load: 2,
       touch: true,
+      loop: true,
       custom: 'banner',
       dynamicLength: true
     }
@@ -84,8 +85,8 @@ export class SampleComponent implements OnInit {
      // it is helps to load the data by parts to increase the performance of the app
      // must use feature to all carousel
   }
-  
-  
+
+
 }
 ```
 
@@ -117,134 +118,29 @@ export class Grid {
   all: number;
 }
 
-export type Custom = 'banner' | 'tile';
+export type Custom = 'banner';
 export type Animate = 'lazy';
 
 
 ```
 
-## grid
-
-```
-type: object
-```
-
-eg. grid: {xs: 1, sm: 1, md: 1, lg: 1, all: 0}
-
-xs - mobile,
-sm - tablet,
-md - desktop,
-lg - large desktops,
-all - fixed width (Experimental don't use now, make it 0 always)
-
-`grid` value must be mentioned
-
-
-## slide
-
-```
-type: number
-
-default: 'grid' screen value
-```
-
-eg. slide : 2
-
-`slide` value is used to slide the number items on click
-
-## speed
-
-```
-type: milli seconds
-
-default: 400
-```
-
-eg. speed : 600
-
-`speed` value is used for time taken to slide the number items
-
-## interval
-
-```
-type: milli seconds
-
-default: no default
-```
-
-eg. interval : 6000
-
-`interval` value is used to make carousel auto slide with given value. interval defines the interval between slides
-
-## load
-
-```
-type: number
-
-default: no default
-```
-
-eg. load : 5
-
-`load` is used to load the items similar to pagination. the carousel will tigger the carouslLoad function to load another set of items. it will help you to improve the performance of the app.
-
-```javascript
-(carouselLoad)="myfunc($event)"
-
-```
-
-## point
-
-```
-type: boolean
-
-default: false
-```
-
-eg. point : true
-
-`point` is used to indicate no. of slides and also shows the current active slide.
+| Command | Type | Required | Description |
+| --- | --- | --- | --- |
+| `grid` | Object | Yes | **xs** - mobile, **sm** - tablet, **md** - desktop, **lg** - large desktops, **all** - fixed width (When you use **all** make others 0 and vise versa) |
+| `slide` | number | optional | It is used to slide the number items on click |
+| `speed` | milli seconds | optional | It is used for time taken to slide the number items |
+| `interval` | milli seconds | optional | It is used to make carousel auto slide with given value. interval defines the interval between slides |
+| `load` | number | optional | is used to load the items similar to pagination. the carousel will tigger the carouslLoad function to load another set of items. it will help you to improve the performance of the app.**`(carouselLoad)="myfunc($event)"`** |
+| `point` | boolean | optional | It is used to indicate no. of slides and also shows the current active slide. |
+| `touch` | boolean | optional | It is used to active touch support to the carousel. |
+| `easing` | string | optional | It is used to define the easing style of the carousel. Only define the ease name without any timing like `ease`,`ease-in` |
+| `loop` | boolean | optional | It is used to loop the `ngx-item | ngx-tile`. It must be true for `interval` |
+| `animation` | string | optional | It is used to animate the sliding items. currently it only supports `lazy`. more coming soon and also with custom css animation option |
+| `custom` | string | optional | It is you to define the purpose of the carousel. currently it only supports `banner`. more coming soon and also with custom css animation option |
+| `dynamicLenght` | boolean | Yes | It is used to know that whether your are binding data dynamic or static |
 
 
 
-## touch
-
-```
-type: boolean
-
-default: false
-```
-
-eg. touch : true
-
-`touch` is used to active touch support to the carousel.
-
-
-
-
-## animation
-
-```
-type: string
-
-default: no default
-```
-
-eg. animation : "lazy"
-
-`animation` is used to animate the sliding items. currently it only supports `lazy`. more coming soon and also with custom css animation option
-
-## custom
-
-```
-type: string
-
-default: no default
-```
-
-eg. custom : "banner"
-
-`custom` is you to define the purpose of the carousel. currently it only supports `banner, tile`. more coming soon and also with custom css animation option
 
 # Getstarted guide
 
@@ -262,24 +158,20 @@ import { Carousel } from 'ngx-carousel';
       [inputs]="carouselBanner" 
       [inputsLength]="carouselBannerItems.length"
       (carouselLoad)="carouselBannerLoad($event)">
-
-            <div class="item bannerStyle" *ngFor="let Banner of carouselBannerItems">
-                <h1>{{Banner + 1}}</h1>
-            </div>
+          <ngx-item class="bannerStyle" *ngFor="let Banner of carouselBannerItems">
+              <h1>{{Banner + 1}}</h1>
+          <ngx-item>
 
         <button class='leftRs'><</button>
         <button class='rightRs'>></button>
     </ngx-carousel>
   `,
   styles: [`
-    .bannerStyle {
-      min-height: 300px;
-      background-color: #ccc;
-    }
-
     .bannerStyle h1 {
-      text-align: center;
-      line-height: 300px;
+        background-color: #ccc;
+        min-height: 300px;
+        text-align: center;
+        line-height: 300px;
     }
   `]
 })
@@ -287,10 +179,10 @@ export class Sample implements OnInit {
 
   public carouselBannerItems: Array<any>;
   public carouselBanner: Carousel;
-  
+
   ngOnInit(){
     this.carouselBannerItems = [0, 1, 2, 3, 4];
-    
+
     this.carouselBanner = {
       grid: {xs: 1, sm: 1, md: 1, lg: 1, all: 0},
       slide: 1,
@@ -298,14 +190,15 @@ export class Sample implements OnInit {
       interval: 4000,
       point: true,
       load: 2,
+      loop: true,
       custom: 'banner',
       touch: true,
       dynamicLength: true
     }
   }
-  
+
   public carouselBannerLoad(evt: any) {
-    
+
     const len = this.carouselBannerItems.length
     if (len <= 10) {
       for (let i = len; i < len + 10; i++) {
@@ -314,11 +207,11 @@ export class Sample implements OnInit {
     }
 
   }
-  
+
      // carouselLoad will trigger this funnction when your load value reaches
      // it is helps to load the data by parts to increase the performance of the app
      // must use feature to all carousel
-}  
+}
 
 ```
 
@@ -339,41 +232,36 @@ import { Carousel } from 'ngx-carousel';
       [inputsLength]="carouselTileItems.length"
       (carouselLoad)="carouselTileLoad($event)">
 
-            <div class="item" *ngFor="let Tile of carouselTileItems">
-                <div class="tile">
-                    <h1>{{Tile + 1}}</h1>
-                </div>
-            </div>
+            <ngx-tile *ngFor="let Tile of carouselTileItems">
+                <h1>{{Tile + 1}}</h1>
+            </ngx-tile>
 
         <button class='leftRs'><</button>
         <button class='rightRs'>></button>
     </ngx-carousel>
   `,
   styles: [`
-    .tile {
+
+    h1{
       min-height: 200px;
       background-color: #ccc;
-    }
-
-    .tile h1{
       text-align: center;
       line-height: 200px;
     }
   `]
 })
 export class Sample implements OnInit {
-  
+
   public carouselTileItems: Array<any>;
   public carouselTile: Carousel;
-  
+
   ngOnInit(){
     this.carouselTileItems = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
-    
+
     this.carouselTile = {
       grid: {xs: 2, sm: 3, md: 3, lg: 3, all: 0},
       slide: 2,
       speed: 400,
-      interval: 3000,
       animation: 'lazy',
       point: true,
       load: 2,
@@ -382,9 +270,9 @@ export class Sample implements OnInit {
       dynamicLength: true
     }
   }
-  
+
   public carouselTileLoad(evt: any) {
-    
+
     const len = this.carouselTileItems.length
     if (len <= 30) {
       for (let i = len; i < len + 10; i++) {
@@ -393,15 +281,16 @@ export class Sample implements OnInit {
     }
 
   }
-  
+
      // carouselLoad will trigger this funnction when your load value reaches
      // it is helps to load the data by parts to increase the performance of the app
      // must use feature to all carousel
-  
+
 }
 ```
 
 
 
 ## License
+
 [MIT](LICENSE) license.

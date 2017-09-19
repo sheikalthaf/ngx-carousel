@@ -1,0 +1,615 @@
+import {
+  Component,
+  ElementRef,
+  Renderer,
+  Input,
+  Output,
+  OnInit,
+  AfterViewInit,
+  OnChanges,
+  HostListener,
+  EventEmitter
+} from '@angular/core';
+
+import { Carousel, CarouselStore } from './ngx-carousel.interface';
+
+@Component({
+  // tslint:disable-next-line:component-selector
+  selector: 'ngx-carousel',
+  template: `<div class="som"><div class="ngxcarousel"><div class="ngxcarousel-inner"><div class="ngxcarousel-items"><ng-content #itemss select="ngx-item"></ng-content><ng-content select="ngx-tile"></ng-content></div><div style="clear: both"></div></div><ng-content #left select=".leftRs" class="leftRs"></ng-content><ng-content #right select=".rightRs" class="rightRs"></ng-content></div><div class="ngxcarouselPoint" *ngIf="userData.point"><ul><li *ngFor="let i of Arr(data.pointNumbers).fill(1)"></li></ul></div></div>`,
+  styles: [`
+    .som {
+      width: 100%;
+      position: relative;
+    }
+    .som .ngxcarousel {
+      width: 100%;
+      position: relative;
+    }
+    .som .ngxcarousel .ngxcarousel-inner {
+      position: relative;
+      overflow: hidden;
+    }
+    .som .ngxcarousel .ngxcarousel-inner .ngxcarousel-items {
+      white-space: nowrap;
+      position: relative;
+    }
+    .som .ngxcarousel .ngxcarousel-inner .ngxcarousel-items .item {
+      display: inline-block;
+      white-space: initial;
+    }
+    .som .ngxcarousel .ngxcarousel-inner .ngxcarousel-items .item .tile {
+      box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+      margin: 5px;
+    }
+    .som .ngxcarousel .leftRs {
+      position: absolute;
+      margin: auto;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      width: 50px;
+      height: 50px;
+      box-shadow: 1px 2px 10px -1px rgba(0, 0, 0, 0.3);
+      border-radius: 999px;
+    }
+    .som .ngxcarousel .rightRs {
+      position: absolute;
+      margin: auto;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: 50px;
+      height: 50px;
+      box-shadow: 1px 2px 10px -1px rgba(0, 0, 0, 0.3);
+      border-radius: 999px;
+    }
+
+    .banner .ngxcarouselPoint {
+      position: absolute;
+      width: 100%;
+      bottom: 20px;
+    }
+    .banner .ngxcarouselPoint li {
+      background: rgba(255, 255, 255, 0.55);
+    }
+    .banner .ngxcarouselPoint li.active {
+      background: white;
+    }
+
+    .ngxcarouselPoint ul {
+      list-style-type: none;
+      text-align: center;
+      padding: 12px;
+      margin: 0;
+      white-space: nowrap;
+      overflow: auto;
+    }
+    .ngxcarouselPoint ul li {
+      display: inline-block;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.55);
+      padding: 4px;
+      margin: 0 4px;
+      transition-timing-function: cubic-bezier(0.17, 0.67, 0.83, 0.67);
+      transition: .4s;
+    }
+    .ngxcarouselPoint ul li.active {
+      background: #6b6b6b;
+      transform: scale(1.8);
+    }
+
+  `]
+})
+export class NgxCarouselComponent implements OnInit, AfterViewInit, OnChanges {
+  leftBtn: any;
+  rightBtn: any;
+
+
+  // tslint:disable-next-line:no-input-rename
+  @Input('inputs') userData: any;
+  @Input('inputsLength') inputsLength: number;
+  // @Output() carouselInp: any;
+  @Output('carouselLoad') carouselLoad: EventEmitter<any> = new EventEmitter();
+
+  private evtValue: number;
+  private pauseCarousel = false;
+  private pauseInterval: any;
+
+  private carousel: any;
+  private carouselMain: any;
+  private carouselInner: any;
+  private carouselItems: any;
+
+  private onResize: any;
+  private onScrolling: any;
+  private currentSlide = 0;
+  private carouselInt: any;
+
+  public Arr = Array;
+  public data: CarouselStore = {
+    type: 'fixed',
+    classText: '',
+    items: 0,
+    load: 0,
+    deviceWidth: 0,
+    carouselWidth: 0,
+    width: 0,
+    pointNumbers: 0,
+    visibleItems: 0,
+    slideItems: 0,
+    itemWidthPer: 0,
+    transform: { xs: 0, sm: 0, md: 0, lg: 0, all: 0 },
+    loop: false,
+    dexVal: 0,
+    touchTransform: 0,
+    touch: { active: false, swipe: '', velocity: 0 },
+    isEnd: false,
+    isFirst: true,
+    isLast: false
+  };
+
+
+  constructor(
+    private el: ElementRef,
+    private renderer: Renderer,
+  ) { }
+
+  ngOnInit() {
+
+    this.carousel = this.el.nativeElement.getElementsByClassName('som')[0];
+    this.carouselMain = this.carousel.getElementsByClassName('ngxcarousel')[0];
+    this.carouselInner = this.carousel.getElementsByClassName('ngxcarousel-items')[0];
+    this.carouselItems = this.carouselInner.getElementsByClassName('item');
+
+    this.leftBtn = this.carousel.getElementsByClassName('leftRs')[0];
+    this.rightBtn = this.carousel.getElementsByClassName('rightRs')[0];
+
+    this.data.type = this.userData.grid.all !== 0 ? 'fixed' : 'responsive';
+    this.data.loop = this.userData.loop || false;
+    this.userData.easing = this.userData.easing || 'cubic-bezier(0, 0, 0.2, 1)';
+
+    this.carouselSize();
+
+  }
+
+  ngOnChanges(changes: any) {
+    if (changes.inputsLength) {
+      // this.data.isEnd = false;
+      this.data.isLast = false;
+      this.carouselPoint();
+    }
+  }
+
+  ngAfterViewInit() {
+    const styleItem = document.createElement('style');
+    this.carouselInner.appendChild(styleItem);
+
+    this.storeCarouselData();
+    this.carouselInterval();
+    this.onWindowScrolling();
+    this.carouselPoint();
+    this.buttonControl();
+    this.touch();
+
+  }
+
+  @HostListener('window:resize', ['$event']) onResizing(event: any) {
+    clearTimeout(this.onResize);
+    this.onResize = setTimeout(() => {
+      // tslint:disable-next-line:no-unused-expression
+      this.data.deviceWidth !== event.target.outerWidth && this.storeCarouselData();
+    }, 500);
+  }
+
+  @HostListener('click', ['$event']) ontouching(event: any) {
+    const element = event.target || event.srcElement;
+    const btn = element.classList;
+    // tslint:disable-next-line:no-unused-expression
+    btn.contains('rightRs') ? this.carouselScrollOne(1) : btn.contains('leftRs') && this.carouselScrollOne(0);
+  }
+
+  /* Get Touch input */
+  private touch() {
+    if (this.userData.touch) {
+      const hammertime = new Hammer(this.carouselInner);
+      hammertime.get('swipe').set({ direction: Hammer.DIRECTION_HORIZONTAL });
+
+      hammertime.on('panstart', (ev: any) => {
+        this.data.carouselWidth = this.carouselInner.offsetWidth;
+
+        this.data.touchTransform =
+          this.data.deviceType === 'xs' ? this.data.transform.xs :
+            this.data.deviceType === 'sm' ? this.data.transform.sm :
+              this.data.deviceType === 'md' ? this.data.transform.md :
+                this.data.deviceType === 'lg' ? this.data.transform.lg :
+                  this.data.transform.all;
+
+        this.data.dexVal = 0;
+        this.renderer.setElementStyle(this.carouselInner, 'transition', '');
+
+      });
+      hammertime.on('panleft', (ev: any) => {
+        this.touchHandling('panleft', ev.deltaX);
+      });
+      hammertime.on('panright', (ev: any) => {
+        this.touchHandling('panright', ev.deltaX);
+      });
+      hammertime.on('panend', (ev: any) => {
+        this.renderer.setElementStyle(this.carouselInner, 'transform', '');
+        this.data.touch.velocity = ev.velocity;
+        this.data.touch.swipe === 'panright' ? this.carouselScrollOne(0) : this.carouselScrollOne(1);
+      });
+    }
+
+  }
+
+  /* handle touch input */
+  private touchHandling(e: string, ev: number) {
+    ev = Math.abs(ev);
+    let valt = ev - this.data.dexVal;
+    valt = this.data.type === 'responsive' ? Math.abs(ev - this.data.dexVal) / this.data.carouselWidth * 100 : valt;
+    this.data.dexVal = ev;
+    this.data.touch.swipe = e;
+    this.data.touchTransform = e === 'panleft' ? valt + this.data.touchTransform : this.data.touchTransform - valt;
+
+    if (this.data.touchTransform > 0) {
+
+      this.renderer.setElementStyle(this.carouselInner, 'transform',
+        this.data.type === 'responsive' ?
+          `translate3d(-${this.data.touchTransform}%, 0px, 0px)` :
+          `translate3d(-${this.data.touchTransform}px, 0px, 0px)`);
+
+    } else {
+      this.data.touchTransform = 0;
+    }
+  }
+
+  /* this used to disable the scroll when it is not on the display */
+  private onWindowScrolling() {
+    const top = this.carousel.offsetTop;
+    const scrollY = window.scrollY;
+    const heightt = window.innerHeight;
+    const carouselHeight = this.carousel.offsetHeight;
+
+    if ((top <= scrollY + heightt - carouselHeight / 4) && (top + carouselHeight / 2 >= scrollY)) {
+      this.renderer.setElementClass(this.el.nativeElement, 'ngxcarouselScrolled', false);
+    } else {
+      this.renderer.setElementClass(this.el.nativeElement, 'ngxcarouselScrolled', true);
+    }
+
+  }
+
+  /* store data based on width of the screen for the carousel */
+  private storeCarouselData() {
+
+    this.data.deviceWidth = window.innerWidth;
+    this.data.carouselWidth = this.carouselMain.offsetWidth;
+
+    if (this.data.type === 'responsive') {
+
+      this.data.deviceType =
+        this.data.deviceWidth >= 1200 ? 'lg' :
+          this.data.deviceWidth >= 992 ? 'md' :
+            this.data.deviceWidth >= 768 ? 'sm' :
+              'xs';
+
+      this.data.items = +(
+        this.data.deviceWidth >= 1200 ? this.userData.grid.lg :
+          this.data.deviceWidth >= 992 ? this.userData.grid.md :
+            this.data.deviceWidth >= 768 ? this.userData.grid.sm :
+              this.userData.grid.xs);
+
+      this.data.width = this.data.carouselWidth / this.data.items;
+    } else {
+      this.data.items = Math.floor(this.data.deviceWidth / this.userData.grid.all);
+      this.data.width = this.userData.grid.all;
+    }
+
+    this.data.slideItems = +(this.userData.slide < this.data.items ? this.userData.slide : this.data.items);
+    this.data.load = this.userData.load >= this.data.slideItems ? this.userData.load : this.data.slideItems;
+    this.userData.speed = +(this.userData.speed ? this.userData.speed : 400);
+
+  }
+
+  /* Init carousel point */
+  private carouselPoint() {
+    if (this.data.slideItems === 0) {
+      setTimeout(() => {
+        this.carouselPoint();
+      }, 10);
+    } else if (this.userData.point === true) {
+      const Nos =
+        this.userData.dynamicLength === true ? this.inputsLength :
+          this.carouselItems.length - (this.data.items - this.data.slideItems);
+
+      this.data.pointNumbers = Math.ceil(Nos / this.data.slideItems);
+      this.carouselPointActiver();
+    }
+  }
+
+  /* change the active point in carousel */
+  private carouselPointActiver() {
+    const parent = this.carousel.querySelectorAll('.ngxcarouselPoint li');
+    if (parent.length !== 0) {
+      const i = Math.ceil(this.currentSlide / this.data.slideItems);
+      for (let j = 0; j < parent.length; j++) {
+        this.renderer.setElementClass(parent[j], 'active', false);
+      }
+      this.renderer.setElementClass(parent[i], 'active', true);
+    }
+  }
+
+  /* set the style of the carousel based the inputs data */
+  private carouselSize() {
+
+    this.data.classText = this.generateID();
+    let dism = '';
+    const styleid = '.' + this.data.classText;
+
+    const btnCss = `position: absolute;margin: auto;top: 0;bottom: 0;width: 50px;height: 50px;
+                    box-shadow: 1px 2px 10px -1px rgba(0, 0, 0, .3);border-radius: 999px;`;
+
+    dism += `${styleid} .leftRs {${btnCss}left: 0;} ${styleid} .rightRs {${btnCss}right: 0;}`;
+
+    if (this.userData.custom === 'banner') {
+      this.renderer.setElementClass(this.carousel, 'banner', true);
+    }
+
+    if (this.userData.animation === 'lazy') {
+      dism += `${styleid} .item {transition: transform .6s ease;}`;
+    }
+
+    let itemStyle = '';
+    if (this.data.type === 'responsive') {
+
+      const itemWidth_xs = this.userData.type === 'mobile' ?
+        `${styleid} .item {width: ${95 / this.userData.grid.xs}%}` :
+        `${styleid} .item {width: ${100 / this.userData.grid.xs}%}`;
+
+      const itemWidth_sm = styleid + ' .item {width: ' + 100 / this.userData.grid.sm + '%}';
+      const itemWidth_md = styleid + ' .item {width: ' + 100 / this.userData.grid.md + '%}';
+      const itemWidth_lg = styleid + ' .item {width: ' + 100 / this.userData.grid.lg + '%}';
+
+      itemStyle = `@media (max-width:767px){${itemWidth_xs}}
+                    @media (min-width:768px){${itemWidth_sm}}
+                    @media (min-width:992px){${itemWidth_md}}
+                    @media (min-width:1200px){${itemWidth_lg}}`;
+    } else {
+      itemStyle = `${styleid} .item {width: ${this.userData.grid.all}px}`;
+    }
+
+    this.renderer.setElementClass(this.carousel, this.data.classText, true);
+    const styleItem = document.createElement('style');
+    styleItem.innerHTML = `${dism} ${itemStyle}`;
+    this.carousel.appendChild(styleItem);
+  }
+
+  /* logic to scroll the carousel step 1 */
+  private carouselScrollOne(Btn: number) {
+    // console.log(this.data.loop, this.data.isFirst, this.data.isLast);
+
+    let itemSpeed = this.userData.speed;
+    let translateXval, currentSlide = 0;
+    const itemLenght = this.userData.dynamicLength === true ? this.inputsLength : this.carouselItems.length;
+    const touchMove = Math.ceil(this.data.dexVal / this.data.width);
+    this.renderer.setElementStyle(this.carouselInner, 'transform', '');
+
+    if (Btn === 0) {
+      if ((!this.data.loop && !this.data.isFirst) || this.data.loop) {
+
+        const currentSlideD = this.currentSlide - this.data.slideItems;
+        const MoveSlide = currentSlideD + this.data.slideItems;
+        this.data.isFirst = false;
+        if (this.currentSlide === 0) {
+          currentSlide = itemLenght - this.data.items;
+          itemSpeed = 400;
+          this.data.isFirst = false;
+          this.data.isLast = true;
+        } else if (this.data.slideItems >= MoveSlide) {
+          currentSlide = translateXval = 0;
+          this.data.isFirst = true;
+        } else {
+          this.data.isLast = false;
+          if (touchMove > this.data.slideItems) {
+            currentSlide = this.currentSlide - touchMove;
+            itemSpeed = 200;
+          } else {
+            currentSlide = this.currentSlide - this.data.slideItems;
+          }
+        }
+        this.carouselScrollTwo(Btn, currentSlide, itemSpeed);
+      }
+    } else {
+      if ((!this.data.loop && !this.data.isLast) || this.data.loop) {
+
+        if ((itemLenght <= (this.currentSlide + this.data.items + this.data.slideItems)) && !this.data.isLast) {
+          currentSlide = itemLenght - this.data.items;
+          this.data.isLast = true;
+        } else if (this.data.isLast) {
+          currentSlide = translateXval = 0;
+          itemSpeed = 400;
+          this.data.isLast = false;
+          this.data.isFirst = true;
+        } else {
+          this.data.isLast = false;
+          this.data.isFirst = false;
+          if (touchMove > this.data.slideItems) {
+            currentSlide = this.currentSlide + this.data.slideItems + (touchMove - this.data.slideItems);
+            itemSpeed = 200;
+          } else {
+            currentSlide = this.currentSlide + this.data.slideItems;
+          }
+        }
+        this.carouselScrollTwo(Btn, currentSlide, itemSpeed);
+      }
+    }
+    this.buttonControl();
+
+
+    // cubic-bezier(0.15, 1.04, 0.54, 1.13)
+
+  }
+
+  /* logic to scroll the carousel step 2 */
+  private carouselScrollTwo(Btn: number, currentSlide: number, itemSpeed: number) {
+    // tslint:disable-next-line:no-unused-expression
+    this.userData.animation === 'lazy' &&
+      this.carouselAnimator(Btn, currentSlide + 1, currentSlide + this.data.items, itemSpeed, Math.abs(this.currentSlide - currentSlide));
+    if (this.data.dexVal === 0) {
+      const first = .5;
+      const second = .50;
+      // tslint:disable-next-line:max-line-length
+      this.renderer.setElementStyle(this.carouselInner, 'transition', `transform ${itemSpeed}ms ${this.userData.easing}`);
+    } else {
+      const val = Math.abs(this.data.touch.velocity);
+      const first = .7 / val < .5 ? .7 / val : .5;
+      const second = (2.9 * val / 10 < 1.3) ? (2.9 * val) / 10 : 1.3;
+      let somt = Math.floor((this.data.dexVal / val) / this.data.dexVal * (this.data.deviceWidth - this.data.dexVal));
+      somt = somt > itemSpeed ? itemSpeed : somt;
+      itemSpeed = somt < 200 ? 200 : somt;
+      // tslint:disable-next-line:max-line-length
+      this.renderer.setElementStyle(this.carouselInner, 'transition', `transform ${itemSpeed}ms ${this.userData.easing}`);
+      // this.carouselInner.style.transition = `transform ${itemSpeed}ms cubic-bezier(0.15, 1.04, 0.54, 1.13) `;
+      this.data.dexVal = 0;
+    }
+    this.transformStyle(currentSlide);
+    this.currentSlide = currentSlide;
+    this.carouselPointActiver();
+    this.carouselLoadTrigger();
+  }
+
+  /* set the transform style to scroll the carousel  */
+  private transformStyle(slide: number) {
+    let slideCss = '';
+    if (this.data.type === 'responsive') {
+      this.data.transform.xs = 100 / this.userData.grid.xs * slide;
+      this.data.transform.sm = 100 / this.userData.grid.sm * slide;
+      this.data.transform.md = 100 / this.userData.grid.md * slide;
+      this.data.transform.lg = 100 / this.userData.grid.lg * slide;
+      slideCss = `@media (max-width: 767px) {
+              .${this.data.classText} .ngxcarousel-items { transform: translate3d(-${this.data.transform.xs}%, 0, 0); } }
+            @media (min-width: 768px) {
+              .${this.data.classText} .ngxcarousel-items { transform: translate3d(-${this.data.transform.sm}%, 0, 0); } }
+            @media (min-width: 992px) {
+              .${this.data.classText} .ngxcarousel-items { transform: translate3d(-${this.data.transform.md}%, 0, 0); } }
+            @media (min-width: 1200px) {
+              .${this.data.classText} .ngxcarousel-items { transform: translate3d(-${this.data.transform.lg}%, 0, 0); } }`;
+
+    } else {
+      this.data.transform.all = this.userData.grid.all * slide;
+      slideCss = `.${this.data.classText} .ngxcarousel-items { transform: translate3d(-${this.data.transform.all}px, 0, 0);`;
+    }
+    this.carouselInner.querySelectorAll('style')[0].innerHTML = slideCss;
+  }
+
+  /* this will trigger the carousel to load the items */
+  private carouselLoadTrigger() {
+    if (typeof this.userData.load === 'number') {
+      // tslint:disable-next-line:no-unused-expression
+      (this.carouselItems.length - this.data.load) <= (this.currentSlide + this.data.items) &&
+        this.carouselLoad.emit(this.currentSlide);
+    }
+  }
+
+  /* generate Class for each carousel to set specific style */
+  private generateID() {
+    let text = '';
+    const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+    for (let i = 0; i < 6; i++) {
+      text += possible.charAt(Math.floor(Math.random() * possible.length));
+    }
+    return `ngxcarousel${text}`;
+  }
+
+  /* handle the auto slide */
+  private carouselInterval() {
+    if (typeof this.userData.interval === 'number' && this.data.loop) {
+
+      this.renderer.listen(this.carouselMain, 'touchstart', () => {
+        this.carouselIntervalEvent(1);
+      });
+
+      this.renderer.listen(this.carouselMain, 'touchend', () => {
+        this.carouselIntervalEvent(0);
+      });
+
+      this.renderer.listen(this.carouselMain, 'mouseenter', () => {
+        this.carouselIntervalEvent(1);
+      });
+
+      this.renderer.listen(this.carouselMain, 'mouseleave', () => {
+        this.carouselIntervalEvent(0);
+      });
+
+      this.renderer.listenGlobal('window', 'scroll', () => {
+        clearTimeout(this.onScrolling);
+        this.onScrolling = setTimeout(() => {
+          this.onWindowScrolling();
+        }, 600);
+      });
+
+      this.carouselInt = setInterval(() => {
+        // tslint:disable-next-line:no-unused-expression
+        !this.pauseCarousel && this.carouselScrollOne(1);
+      }, this.userData.interval);
+    }
+  }
+
+  /* pause interval for specific time */
+  private carouselIntervalEvent(ev: number) {
+    this.evtValue = ev;
+    if (this.evtValue === 0) {
+      clearTimeout(this.pauseInterval);
+      this.pauseInterval = setTimeout(() => {
+        // tslint:disable-next-line:no-unused-expression
+        this.evtValue === 0 && (this.pauseCarousel = false);
+      }, this.userData.interval);
+    } else {
+      this.pauseCarousel = true;
+    }
+  }
+
+  /* animate the carousel items */
+  private carouselAnimator(direction: number, start: number, end: number, speed: number, length: number) {
+    let val = length < 5 ? length : 5;
+    val = val === 1 ? 3 : val;
+
+    if (direction === 1) {
+      for (let i = start - 1; i < end; i++) {
+        val = val * 2;
+        this.renderer.setElementStyle(this.carouselItems[i], 'transform', 'translateX(' + val + 'px)');
+      }
+    } else {
+      for (let i = end - 1; i >= start - 1; i--) {
+        val = val * 2;
+        this.renderer.setElementStyle(this.carouselItems[i], 'transform', 'translateX(-' + val + 'px)');
+      }
+    }
+    setTimeout(() => {
+      for (let i = start - 1; i < end; i++) {
+        this.renderer.setElementStyle(this.carouselItems[i], 'transform', 'translateX(0px)');
+      }
+    }, speed * .7);
+  }
+
+  /* control button for loop */
+  private buttonControl() {
+    if (!this.data.loop) {
+      if (this.data.isFirst) {
+        this.renderer.setElementStyle(this.leftBtn, 'display', 'none');
+        this.renderer.setElementStyle(this.rightBtn, 'display', 'block');
+      }
+      if (this.data.isLast) {
+        this.renderer.setElementStyle(this.leftBtn, 'display', 'block');
+        this.renderer.setElementStyle(this.rightBtn, 'display', 'none');
+      }
+      if (!this.data.isFirst && !this.data.isLast) {
+        this.renderer.setElementStyle(this.leftBtn, 'display', 'block');
+        this.renderer.setElementStyle(this.rightBtn, 'display', 'block');
+      }
+    }
+  }
+
+}
