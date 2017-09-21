@@ -32,7 +32,7 @@ export declare class Transfrom {
     lg: number;
     all: number;
 }
-export declare class Carousel {
+export declare class NgxCarousel {
     grid: Transfrom;
     slide?: number;
     speed?: number;

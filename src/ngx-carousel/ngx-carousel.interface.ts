@@ -37,7 +37,7 @@ export class Transfrom {
   all: number;
 }
 
-export class Carousel {
+export class NgxCarousel {
   grid: Transfrom;
   slide?: number;
   speed?: number;

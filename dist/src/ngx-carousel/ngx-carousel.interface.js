@@ -16,10 +16,10 @@ var Transfrom = (function () {
     return Transfrom;
 }());
 export { Transfrom };
-var Carousel = (function () {
-    function Carousel() {
+var NgxCarousel = (function () {
+    function NgxCarousel() {
     }
-    return Carousel;
+    return NgxCarousel;
 }());
-export { Carousel };
+export { NgxCarousel };
 //# sourceMappingURL=ngx-carousel.interface.js.map

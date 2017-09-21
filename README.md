@@ -9,6 +9,11 @@ Lightweight and simple carousel for angular.
 for ChangeLog go to [CHANGELOG.md](https://github.com/sheikalthaf/ngx-carousel/blob/master/CHANGELOG.md)
 
  
+## Demo
+
+Demo available [Here](https://sheikalthaf.github.io/ngx-carousel)
+
+
 ## Installation
 
 
@@ -23,12 +28,12 @@ Now ngx-carousel supports touch with the help of hammerjs
 Include CarouselModule in your app module:
 
 ```javascript
-import { CarouselModule } from 'ngx-carousel';
+import { NgxCarouselModule } from 'ngx-carousel';
 import 'hammerjs';
 
 @NgModule({
   imports: [
-    CarouselModule
+    NgxCarouselModule
   ],
 })
 export class AppModule { }
@@ -38,7 +43,7 @@ Then use in your component:
 
 ```javascript
 import { Component } from '@angular/core';
-import { Carousel } from 'ngx-carousel';
+import { NgxCarousel } from 'ngx-carousel';
 
 @Component({
   selector: 'sample',
@@ -106,6 +111,7 @@ export class Carousel {
   load?: number;
   custom?: Custom;
   loop?: boolean;
+  easing: string;
   touch?: boolean;
   dynamicLength: boolean;
 }
@@ -149,7 +155,7 @@ export type Animate = 'lazy';
 
 ```javascript
 import { Component } from '@angular/core';
-import { Carousel } from 'ngx-carousel';
+import { NgxCarousel } from 'ngx-carousel';
 
 @Component({
   selector: 'sample',
@@ -222,7 +228,7 @@ export class Sample implements OnInit {
 
 ```javascript
 import { Component } from '@angular/core';
-import { Carousel } from 'ngx-carousel';
+import { NgxCarousel } from 'ngx-carousel';
 
 @Component({
   selector: 'sample',

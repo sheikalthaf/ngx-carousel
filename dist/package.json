@@ -1,6 +1,6 @@
 {
     "name": "ngx-carousel",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "description": "Angular Carousel with customizable option with touch support and even more. Try it then say about it",
     "main": "bundles/ngxcarousel.umd.js",
     "module": "index.js",

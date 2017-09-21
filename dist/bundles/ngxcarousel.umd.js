@@ -525,14 +525,14 @@ NgxCarouselModule.decorators = [
 /** @nocollapse */
 NgxCarouselModule.ctorParameters = function () { return []; };
 
-var Carousel = (function () {
-    function Carousel() {
+var NgxCarousel = (function () {
+    function NgxCarousel() {
     }
-    return Carousel;
+    return NgxCarousel;
 }());
 
 exports.NgxCarouselModule = NgxCarouselModule;
-exports.Carousel = Carousel;
+exports.NgxCarousel = NgxCarousel;
 
 Object.defineProperty(exports, '__esModule', { value: true });
 

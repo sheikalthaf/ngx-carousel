@@ -11,7 +11,7 @@ import {
   EventEmitter
 } from '@angular/core';
 
-import { Carousel, CarouselStore } from './ngx-carousel.interface';
+import { NgxCarousel, CarouselStore } from './ngx-carousel.interface';
 
 @Component({
   // tslint:disable-next-line:component-selector

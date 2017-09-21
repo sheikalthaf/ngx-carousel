@@ -2,6 +2,13 @@
 
 ### Before Upgrading once read the [Readme.md](https://github.com/sheikalthaf/ngx-carousel/blob/master/README.md) file
 
+## 1.1.1
+
+### Changes
+
+* `CarouselModule` is renamed to `NgxCarouselModule` to match the name of the caroussel. Please change the name.
+* `Carousel` interface is renamed to `NgxCarousel` to match the name of the caroussel. Please change the name.
+
 ## 1.1.0
 
 ### Features Added
