@@ -8,6 +8,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+import { NgxCarouselItemDirective, NgxCarouselNextDirective, NgxCarouselPrevDirective } from './ngx-carousel/ngx-carousel.directive';
 import { HammerGestureConfig, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -36,8 +37,22 @@ export { NgxCarouselModule };
 NgxCarouselModule.decorators = [
     { type: NgModule, args: [{
                 imports: [CommonModule],
-                exports: [NgxCarouselComponent, NgxItemComponent, NgxTileComponent],
-                declarations: [NgxCarouselComponent, NgxItemComponent, NgxTileComponent],
+                exports: [
+                    NgxCarouselComponent,
+                    NgxItemComponent,
+                    NgxTileComponent,
+                    NgxCarouselItemDirective,
+                    NgxCarouselNextDirective,
+                    NgxCarouselPrevDirective
+                ],
+                declarations: [
+                    NgxCarouselComponent,
+                    NgxItemComponent,
+                    NgxTileComponent,
+                    NgxCarouselItemDirective,
+                    NgxCarouselNextDirective,
+                    NgxCarouselPrevDirective
+                ],
                 providers: [
                     { provide: HAMMER_GESTURE_CONFIG, useClass: MyHammerConfig }
                 ],

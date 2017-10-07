@@ -1,3 +1,4 @@
+import { NgxCarouselItemDirective, NgxCarouselNextDirective, NgxCarouselPrevDirective } from './ngx-carousel/ngx-carousel.directive';
 import { HammerGestureConfig, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -15,8 +16,22 @@ export class MyHammerConfig extends HammerGestureConfig {
 
 @NgModule({
   imports: [CommonModule],
-  exports: [NgxCarouselComponent, NgxItemComponent, NgxTileComponent],
-  declarations: [NgxCarouselComponent, NgxItemComponent, NgxTileComponent],
+  exports: [
+    NgxCarouselComponent,
+    NgxItemComponent,
+    NgxTileComponent,
+    NgxCarouselItemDirective,
+    NgxCarouselNextDirective,
+    NgxCarouselPrevDirective
+  ],
+  declarations: [
+    NgxCarouselComponent,
+    NgxItemComponent,
+    NgxTileComponent,
+    NgxCarouselItemDirective,
+    NgxCarouselNextDirective,
+    NgxCarouselPrevDirective
+  ],
   providers: [
     { provide: HAMMER_GESTURE_CONFIG, useClass: MyHammerConfig }
   ],

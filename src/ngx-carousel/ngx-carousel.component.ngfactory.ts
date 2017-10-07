@@ -26,51 +26,49 @@ function View_NgxCarouselComponent_1(_l:any):i0.ɵViewDefinition {
       i0.ɵdid(802816,(null as any),0,i1.NgForOf,[i0.ViewContainerRef,i0.TemplateRef,
           i0.IterableDiffers],{ngForOf:[0,'ngForOf']},(null as any))],(_ck,_v) => {
     var _co:any = _v.component;
-    const currVal_0:any = _co.Arr(_co.data.pointNumbers).fill(1);
+    const currVal_0:any = _co.pointNumbers;
     _ck(_v,3,0,currVal_0);
   },(null as any));
 }
 export function View_NgxCarouselComponent_0(_l:any):i0.ɵViewDefinition {
-  return i0.ɵvid(0,[(_l()(),i0.ɵeld(0,(null as any),(null as any),10,'div',[['class',
-      'som']],(null as any),(null as any),(null as any),(null as any),(null as any))),
-      (_l()(),i0.ɵeld(0,(null as any),(null as any),7,'div',[['class','ngxcarousel']],
-          (null as any),(null as any),(null as any),(null as any),(null as any))),
-      (_l()(),i0.ɵeld(0,(null as any),(null as any),4,'div',[['class','ngxcarousel-inner']],
-          (null as any),(null as any),(null as any),(null as any),(null as any))),
-      (_l()(),i0.ɵeld(0,(null as any),(null as any),2,'div',[['class','ngxcarousel-items']],
-          (null as any),(null as any),(null as any),(null as any),(null as any))),
-      i0.ɵncd((null as any),0),i0.ɵncd((null as any),1),(_l()(),i0.ɵeld(0,(null as any),
-          (null as any),0,'div',[['style','clear: both']],(null as any),(null as any),
-          (null as any),(null as any),(null as any))),i0.ɵncd((null as any),2),i0.ɵncd((null as any),
-          3),(_l()(),i0.ɵand(16777216,(null as any),(null as any),1,(null as any),
-          View_NgxCarouselComponent_1)),i0.ɵdid(16384,(null as any),0,i1.NgIf,[i0.ViewContainerRef,
-          i0.TemplateRef],{ngIf:[0,'ngIf']},(null as any))],(_ck,_v) => {
-    var _co:i2.NgxCarouselComponent = _v.component;
-    const currVal_0:any = _co.userData.point;
-    _ck(_v,10,0,currVal_0);
-  },(null as any));
+  return i0.ɵvid(0,[i0.ɵqud(402653184,1,{carouselMain1:0}),i0.ɵqud(402653184,2,{carouselInner1:0}),
+      i0.ɵqud(402653184,3,{carousel1:0}),(_l()(),i0.ɵeld(0,[[3,0],['main',1]],(null as any),
+          9,'div',[['class','som']],(null as any),(null as any),(null as any),(null as any),
+          (null as any))),(_l()(),i0.ɵeld(0,[[1,0],['ngxcarousel',1]],(null as any),
+          6,'div',[['class','ngxcarousel']],(null as any),(null as any),(null as any),
+          (null as any),(null as any))),(_l()(),i0.ɵeld(0,(null as any),(null as any),
+          3,'div',[['class','ngxcarousel-inner']],(null as any),(null as any),(null as any),
+          (null as any),(null as any))),(_l()(),i0.ɵeld(0,[[2,0],['ngxitems',1]],(null as any),
+          1,'div',[['class','ngxcarousel-items']],(null as any),(null as any),(null as any),
+          (null as any),(null as any))),i0.ɵncd((null as any),0),(_l()(),i0.ɵeld(0,
+          (null as any),(null as any),0,'div',[['style','clear: both']],(null as any),
+          (null as any),(null as any),(null as any),(null as any))),i0.ɵncd((null as any),
+          1),i0.ɵncd((null as any),2),(_l()(),i0.ɵand(16777216,(null as any),(null as any),
+          1,(null as any),View_NgxCarouselComponent_1)),i0.ɵdid(16384,(null as any),
+          0,i1.NgIf,[i0.ViewContainerRef,i0.TemplateRef],{ngIf:[0,'ngIf']},(null as any))],
+      (_ck,_v) => {
+        var _co:i2.NgxCarouselComponent = _v.component;
+        const currVal_0:any = _co.userData.point;
+        _ck(_v,12,0,currVal_0);
+      },(null as any));
 }
 export function View_NgxCarouselComponent_Host_0(_l:any):i0.ɵViewDefinition {
-  return i0.ɵvid(0,[(_l()(),i0.ɵeld(0,(null as any),(null as any),1,'ngx-carousel',
-      ([] as any[]),(null as any),[['window','resize'],[(null as any),'click']],(_v,
-          en,$event) => {
+  return i0.ɵvid(0,[(_l()(),i0.ɵeld(0,(null as any),(null as any),4,'ngx-carousel',
+      ([] as any[]),(null as any),[['window','resize']],(_v,en,$event) => {
         var ad:boolean = true;
         if (('window:resize' === en)) {
           const pd_0:any = ((<any>i0.ɵnov(_v,1).onResizing($event)) !== false);
           ad = (pd_0 && ad);
         }
-        if (('click' === en)) {
-          const pd_1:any = ((<any>i0.ɵnov(_v,1).ontouching($event)) !== false);
-          ad = (pd_1 && ad);
-        }
         return ad;
-      },View_NgxCarouselComponent_0,RenderType_NgxCarouselComponent)),i0.ɵdid(4833280,
-      (null as any),0,i2.NgxCarouselComponent,[i0.ElementRef,i0.Renderer],(null as any),
-      (null as any))],(_ck,_v) => {
+      },View_NgxCarouselComponent_0,RenderType_NgxCarouselComponent)),i0.ɵdid(1294336,
+      (null as any),3,i2.NgxCarouselComponent,[i0.ElementRef,i0.Renderer],(null as any),
+      (null as any)),i0.ɵqud(603979776,1,{items:1}),i0.ɵqud(335544320,2,{next:0}),
+      i0.ɵqud(335544320,3,{prev:0})],(_ck,_v) => {
     _ck(_v,1,0);
   },(null as any));
 }
 export const NgxCarouselComponentNgFactory:i0.ComponentFactory<i2.NgxCarouselComponent> = i0.ɵccf('ngx-carousel',
-    i2.NgxCarouselComponent,View_NgxCarouselComponent_Host_0,{userData:'inputs',inputsLength:'inputsLength'},
-    {carouselLoad:'carouselLoad'},['ngx-item','ngx-tile','.leftRs','.rightRs']);
-//# sourceMappingURL=data:application/json;base64,eyJmaWxlIjoiQzovVXNlcnMvU2hlaWsgQWx0aGFmL0Rlc2t0b3AvUHJvamVjdHMvbmd4LWNhcm91c2VsL3NyYy9uZ3gtY2Fyb3VzZWwvbmd4LWNhcm91c2VsLmNvbXBvbmVudC5uZ2ZhY3RvcnkudHMiLCJ2ZXJzaW9uIjozLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyJuZzovLy9DOi9Vc2Vycy9TaGVpayBBbHRoYWYvRGVza3RvcC9Qcm9qZWN0cy9uZ3gtY2Fyb3VzZWwvc3JjL25neC1jYXJvdXNlbC9uZ3gtY2Fyb3VzZWwuY29tcG9uZW50LnRzIiwibmc6Ly8vQzovVXNlcnMvU2hlaWsgQWx0aGFmL0Rlc2t0b3AvUHJvamVjdHMvbmd4LWNhcm91c2VsL3NyYy9uZ3gtY2Fyb3VzZWwvbmd4LWNhcm91c2VsLmNvbXBvbmVudC50cy5OZ3hDYXJvdXNlbENvbXBvbmVudC5odG1sIiwibmc6Ly8vQzovVXNlcnMvU2hlaWsgQWx0aGFmL0Rlc2t0b3AvUHJvamVjdHMvbmd4LWNhcm91c2VsL3NyYy9uZ3gtY2Fyb3VzZWwvbmd4LWNhcm91c2VsLmNvbXBvbmVudC50cy5OZ3hDYXJvdXNlbENvbXBvbmVudF9Ib3N0Lmh0bWwiXSwic291cmNlc0NvbnRlbnQiOlsiICIsIjxkaXYgY2xhc3M9XCJzb21cIj48ZGl2IGNsYXNzPVwibmd4Y2Fyb3VzZWxcIj48ZGl2IGNsYXNzPVwibmd4Y2Fyb3VzZWwtaW5uZXJcIj48ZGl2IGNsYXNzPVwibmd4Y2Fyb3VzZWwtaXRlbXNcIj48bmctY29udGVudCAjaXRlbXNzIHNlbGVjdD1cIm5neC1pdGVtXCI+PC9uZy1jb250ZW50PjxuZy1jb250ZW50IHNlbGVjdD1cIm5neC10aWxlXCI+PC9uZy1jb250ZW50PjwvZGl2PjxkaXYgc3R5bGU9XCJjbGVhcjogYm90aFwiPjwvZGl2PjwvZGl2PjxuZy1jb250ZW50ICNsZWZ0IHNlbGVjdD1cIi5sZWZ0UnNcIiBjbGFzcz1cImxlZnRSc1wiPjwvbmctY29udGVudD48bmctY29udGVudCAjcmlnaHQgc2VsZWN0PVwiLnJpZ2h0UnNcIiBjbGFzcz1cInJpZ2h0UnNcIj48L25nLWNvbnRlbnQ+PC9kaXY+PGRpdiBjbGFzcz1cIm5neGNhcm91c2VsUG9pbnRcIiAqbmdJZj1cInVzZXJEYXRhLnBvaW50XCI+PHVsPjxsaSAqbmdGb3I9XCJsZXQgaSBvZiBBcnIoZGF0YS5wb2ludE51bWJlcnMpLmZpbGwoMSlcIj48L2xpPjwvdWw+PC9kaXY+PC9kaXY+IiwiPG5neC1jYXJvdXNlbD48L25neC1jYXJvdXNlbD4iXSwibWFwcGluZ3MiOiJBQUFBOzs7Ozs7Ozs7Ozs7Ozs7b0JDQWliO01BQUE7Ozs7b0JBQXpEO01BQUE7TUFBQSxnQkFBcUQ7TUFBQSx3RUFBSTthQUFBO2FBQUE7NEJBQUE7O0lBQUk7SUFBSixXQUFJLFNBQUo7Ozs7b0JBQWpiO01BQUE7TUFBaUI7VUFBQTtNQUF5QjtVQUFBO01BQStCO1VBQUE7YUFBK0IseUJBQW1ELGtCQUFpRDtVQUFBO1VBQUEsbURBQXFDLHlCQUErRDtVQUFBLEdBQXdFO1VBQUEscUNBQUE7d0JBQUE7O0lBQThCO0lBQTlCLFlBQThCLFNBQTlCOzs7O29CQ0F4WDtNQUFBO21CQUFBO1FBQUE7UUFBQTtVQUFBO1VBQUE7UUFBQTtRQUFBO1VBQUE7VUFBQTtRQUFBO1FBQUE7TUFBQSx1RUFBQTtNQUFBO01BQUE7SUFBQTs7Ozs7In0=
+    i2.NgxCarouselComponent,View_NgxCarouselComponent_Host_0,{userData:'inputs'},{carouselLoad:'carouselLoad'},
+    ['[NgxCarouselItem]','[NgxCarouselPrev]','[NgxCarouselNext]']);
+//# sourceMappingURL=data:application/json;base64,eyJmaWxlIjoiQzovVXNlcnMvU2hlaWsgQWx0aGFmL0Rlc2t0b3AvUHJvamVjdHMvbmd4LWNhcm91c2VsL3NyYy9uZ3gtY2Fyb3VzZWwvbmd4LWNhcm91c2VsLmNvbXBvbmVudC5uZ2ZhY3RvcnkudHMiLCJ2ZXJzaW9uIjozLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyJuZzovLy9DOi9Vc2Vycy9TaGVpayBBbHRoYWYvRGVza3RvcC9Qcm9qZWN0cy9uZ3gtY2Fyb3VzZWwvc3JjL25neC1jYXJvdXNlbC9uZ3gtY2Fyb3VzZWwuY29tcG9uZW50LnRzIiwibmc6Ly8vQzovVXNlcnMvU2hlaWsgQWx0aGFmL0Rlc2t0b3AvUHJvamVjdHMvbmd4LWNhcm91c2VsL3NyYy9uZ3gtY2Fyb3VzZWwvbmd4LWNhcm91c2VsLmNvbXBvbmVudC50cy5OZ3hDYXJvdXNlbENvbXBvbmVudC5odG1sIiwibmc6Ly8vQzovVXNlcnMvU2hlaWsgQWx0aGFmL0Rlc2t0b3AvUHJvamVjdHMvbmd4LWNhcm91c2VsL3NyYy9uZ3gtY2Fyb3VzZWwvbmd4LWNhcm91c2VsLmNvbXBvbmVudC50cy5OZ3hDYXJvdXNlbENvbXBvbmVudF9Ib3N0Lmh0bWwiXSwic291cmNlc0NvbnRlbnQiOlsiICIsIjxkaXYgI21haW4gY2xhc3M9XCJzb21cIj48ZGl2ICNuZ3hjYXJvdXNlbCBjbGFzcz1cIm5neGNhcm91c2VsXCI+PGRpdiBjbGFzcz1cIm5neGNhcm91c2VsLWlubmVyXCI+PGRpdiAjbmd4aXRlbXMgY2xhc3M9XCJuZ3hjYXJvdXNlbC1pdGVtc1wiPjxuZy1jb250ZW50IHNlbGVjdD1cIltOZ3hDYXJvdXNlbEl0ZW1dXCI+PC9uZy1jb250ZW50PjwvZGl2PjxkaXYgc3R5bGU9XCJjbGVhcjogYm90aFwiPjwvZGl2PjwvZGl2PjxuZy1jb250ZW50IHNlbGVjdD1cIltOZ3hDYXJvdXNlbFByZXZdXCI+PC9uZy1jb250ZW50PjxuZy1jb250ZW50IHNlbGVjdD1cIltOZ3hDYXJvdXNlbE5leHRdXCI+PC9uZy1jb250ZW50PjwvZGl2PjxkaXYgY2xhc3M9XCJuZ3hjYXJvdXNlbFBvaW50XCIgKm5nSWY9XCJ1c2VyRGF0YS5wb2ludFwiPjx1bD48bGkgKm5nRm9yPVwibGV0IGkgb2YgcG9pbnROdW1iZXJzXCI+PC9saT48L3VsPjwvZGl2PjwvZGl2PiIsIjxuZ3gtY2Fyb3VzZWw+PC9uZ3gtY2Fyb3VzZWw+Il0sIm1hcHBpbmdzIjoiQUFBQTs7Ozs7Ozs7Ozs7Ozs7O29CQ0EyWTtNQUFBOzs7O29CQUF6RDtNQUFBO01BQUEsZ0JBQXFEO01BQUEsd0VBQUk7YUFBQTthQUFBOzRCQUFBOztJQUFJO0lBQUosV0FBSSxTQUFKOzs7Ozt5Q0FBM1k7VUFBQTtVQUFBLGdCQUF1QjtVQUFBO1VBQUEsOEJBQXNDO1VBQUE7VUFBQSw4QkFBK0I7VUFBQTtVQUFBLHFDQUF5QyxrQkFBMEQ7VUFBQTtVQUFBLGlFQUFxQztVQUFBLFVBQW9ELGtCQUEwRDtVQUFBLHFEQUFBO1VBQUE7OztRQUE4QjtRQUE5QixZQUE4QixTQUE5Qjs7OztvQkNBbFY7TUFBQTtRQUFBO1FBQUE7VUFBQTtVQUFBO1FBQUE7UUFBQTtNQUFBLHVFQUFBO01BQUE7TUFBQTthQUFBO0lBQUE7Ozs7OyJ9

@@ -1,4 +1,4 @@
-export declare class CarouselStore {
+export declare class NgxCarouselStore {
     type: string;
     deviceType?: string;
     classText: string;
@@ -7,7 +7,6 @@ export declare class CarouselStore {
     deviceWidth: number;
     carouselWidth: number;
     width: number;
-    pointNumbers: number;
     visibleItems: number;
     slideItems: number;
     itemWidthPer: number;
@@ -45,7 +44,6 @@ export declare class NgxCarousel {
     loop?: boolean;
     touch?: boolean;
     easing?: string;
-    dynamicLength: boolean;
 }
-export declare type Custom = 'banner' | 'tile';
+export declare type Custom = 'banner';
 export declare type Animate = 'lazy';

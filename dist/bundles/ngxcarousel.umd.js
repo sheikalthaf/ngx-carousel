@@ -1,18 +1,58 @@
 (function (global, factory) {
-	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/platform-browser'), require('@angular/core'), require('@angular/common')) :
-	typeof define === 'function' && define.amd ? define(['exports', '@angular/platform-browser', '@angular/core', '@angular/common'], factory) :
-	(factory((global.ng = global.ng || {}, global.ng.ngxcarousel = global.ng.ngxcarousel || {}),global.ng['platform-browser'],global.ng.core,global.ng.common));
-}(this, (function (exports,_angular_platformBrowser,_angular_core,_angular_common) { 'use strict';
+	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('@angular/platform-browser'), require('@angular/common')) :
+	typeof define === 'function' && define.amd ? define(['exports', '@angular/core', '@angular/platform-browser', '@angular/common'], factory) :
+	(factory((global.ng = global.ng || {}, global.ng.ngxcarousel = global.ng.ngxcarousel || {}),global.ng.core,global.ng['platform-browser'],global.ng.common));
+}(this, (function (exports,_angular_core,_angular_platformBrowser,_angular_common) { 'use strict';
+
+var NgxCarouselItemDirective = (function () {
+    function NgxCarouselItemDirective() {
+    }
+    return NgxCarouselItemDirective;
+}());
+NgxCarouselItemDirective.decorators = [
+    { type: _angular_core.Directive, args: [{
+                // tslint:disable-next-line:directive-selector
+                selector: '[NgxCarouselItem]'
+            },] },
+];
+/** @nocollapse */
+NgxCarouselItemDirective.ctorParameters = function () { return []; };
+var NgxCarouselNextDirective = (function () {
+    function NgxCarouselNextDirective() {
+    }
+    return NgxCarouselNextDirective;
+}());
+NgxCarouselNextDirective.decorators = [
+    { type: _angular_core.Directive, args: [{
+                // tslint:disable-next-line:directive-selector
+                selector: '[NgxCarouselNext]'
+            },] },
+];
+/** @nocollapse */
+NgxCarouselNextDirective.ctorParameters = function () { return []; };
+var NgxCarouselPrevDirective = (function () {
+    function NgxCarouselPrevDirective() {
+    }
+    return NgxCarouselPrevDirective;
+}());
+NgxCarouselPrevDirective.decorators = [
+    { type: _angular_core.Directive, args: [{
+                // tslint:disable-next-line:directive-selector
+                selector: '[NgxCarouselPrev]'
+            },] },
+];
+/** @nocollapse */
+NgxCarouselPrevDirective.ctorParameters = function () { return []; };
 
 var NgxCarouselComponent = (function () {
     function NgxCarouselComponent(el, renderer) {
         this.el = el;
         this.renderer = renderer;
-        // @Output() carouselInp: any;
         this.carouselLoad = new _angular_core.EventEmitter();
         this.pauseCarousel = false;
         this.currentSlide = 0;
-        this.Arr = Array;
+        this.Arr1 = Array;
+        this.pointNumbers = [];
         this.data = {
             type: 'fixed',
             classText: '',
@@ -21,7 +61,6 @@ var NgxCarouselComponent = (function () {
             deviceWidth: 0,
             carouselWidth: 0,
             width: 0,
-            pointNumbers: 0,
             visibleItems: 0,
             slideItems: 0,
             itemWidthPer: 0,
@@ -36,33 +75,39 @@ var NgxCarouselComponent = (function () {
         };
     }
     NgxCarouselComponent.prototype.ngOnInit = function () {
-        this.carousel = this.el.nativeElement.getElementsByClassName('som')[0];
-        this.carouselMain = this.carousel.getElementsByClassName('ngxcarousel')[0];
-        this.carouselInner = this.carousel.getElementsByClassName('ngxcarousel-items')[0];
+        this.carousel = this.carousel1.nativeElement;
+        this.carouselMain = this.carouselMain1.nativeElement;
+        this.carouselInner = this.carouselInner1.nativeElement;
         this.carouselItems = this.carouselInner.getElementsByClassName('item');
-        this.leftBtn = this.carousel.getElementsByClassName('leftRs')[0];
-        this.rightBtn = this.carousel.getElementsByClassName('rightRs')[0];
+        this.rightBtn = this.next.nativeElement;
+        this.leftBtn = this.prev.nativeElement;
         this.data.type = this.userData.grid.all !== 0 ? 'fixed' : 'responsive';
         this.data.loop = this.userData.loop || false;
         this.userData.easing = this.userData.easing || 'cubic-bezier(0, 0, 0.2, 1)';
         this.carouselSize();
+        // const datas = this.itemsElements.first.nativeElement.getBoundingClientRect().width;
     };
-    NgxCarouselComponent.prototype.ngOnChanges = function (changes) {
-        if (changes.inputsLength) {
-            // this.data.isEnd = false;
-            this.data.isLast = false;
-            this.carouselPoint();
-        }
-    };
-    NgxCarouselComponent.prototype.ngAfterViewInit = function () {
+    NgxCarouselComponent.prototype.ngAfterContentInit = function () {
+        var _this = this;
+        this.renderer.listen(this.leftBtn, 'click', function () { return _this.carouselScrollOne(0); });
+        this.renderer.listen(this.rightBtn, 'click', function () { return _this.carouselScrollOne(1); });
         var styleItem = document.createElement('style');
-        this.carouselInner.appendChild(styleItem);
+        if (!this.carouselInner.querySelectorAll('style').length) {
+            this.carouselInner.appendChild(styleItem);
+        }
         this.storeCarouselData();
         this.carouselInterval();
         this.onWindowScrolling();
-        this.carouselPoint();
         this.buttonControl();
         this.touch();
+        this.carouselPoint();
+        this.items.changes.subscribe(function (val) {
+            _this.data.isLast = false;
+            _this.carouselPoint();
+        });
+    };
+    NgxCarouselComponent.prototype.ngOnDestroy = function () {
+        clearInterval(this.carouselInt);
     };
     NgxCarouselComponent.prototype.onResizing = function (event) {
         var _this = this;
@@ -71,12 +116,6 @@ var NgxCarouselComponent = (function () {
             // tslint:disable-next-line:no-unused-expression
             _this.data.deviceWidth !== event.target.outerWidth && _this.storeCarouselData();
         }, 500);
-    };
-    NgxCarouselComponent.prototype.ontouching = function (event) {
-        var element = event.target || event.srcElement;
-        var btn = element.classList;
-        // tslint:disable-next-line:no-unused-expression
-        btn.contains('rightRs') ? this.carouselScrollOne(1) : btn.contains('leftRs') && this.carouselScrollOne(0);
     };
     /* Get Touch input */
     NgxCarouselComponent.prototype.touch = function () {
@@ -93,7 +132,7 @@ var NgxCarouselComponent = (function () {
                                 _this.data.deviceType === 'lg' ? _this.data.transform.lg :
                                     _this.data.transform.all;
                 _this.data.dexVal = 0;
-                _this.renderer.setElementStyle(_this.carouselInner, 'transition', '');
+                _this.setStyle(_this.carouselInner, 'transition', '');
             });
             hammertime.on('panleft', function (ev) {
                 _this.touchHandling('panleft', ev.deltaX);
@@ -102,7 +141,7 @@ var NgxCarouselComponent = (function () {
                 _this.touchHandling('panright', ev.deltaX);
             });
             hammertime.on('panend', function (ev) {
-                _this.renderer.setElementStyle(_this.carouselInner, 'transform', '');
+                _this.setStyle(_this.carouselInner, 'transform', '');
                 _this.data.touch.velocity = ev.velocity;
                 _this.data.touch.swipe === 'panright' ? _this.carouselScrollOne(0) : _this.carouselScrollOne(1);
             });
@@ -117,7 +156,7 @@ var NgxCarouselComponent = (function () {
         this.data.touch.swipe = e;
         this.data.touchTransform = e === 'panleft' ? valt + this.data.touchTransform : this.data.touchTransform - valt;
         if (this.data.touchTransform > 0) {
-            this.renderer.setElementStyle(this.carouselInner, 'transform', this.data.type === 'responsive' ?
+            this.setStyle(this.carouselInner, 'transform', this.data.type === 'responsive' ?
                 "translate3d(-" + this.data.touchTransform + "%, 0px, 0px)" :
                 "translate3d(-" + this.data.touchTransform + "px, 0px, 0px)");
         }
@@ -132,22 +171,22 @@ var NgxCarouselComponent = (function () {
         var heightt = window.innerHeight;
         var carouselHeight = this.carousel.offsetHeight;
         if ((top <= scrollY + heightt - carouselHeight / 4) && (top + carouselHeight / 2 >= scrollY)) {
-            this.renderer.setElementClass(this.el.nativeElement, 'ngxcarouselScrolled', false);
+            this.carouselIntervalEvent(0);
         }
         else {
-            this.renderer.setElementClass(this.el.nativeElement, 'ngxcarouselScrolled', true);
+            this.carouselIntervalEvent(1);
         }
     };
     /* store data based on width of the screen for the carousel */
     NgxCarouselComponent.prototype.storeCarouselData = function () {
+        // console.log(this.carouselMain1);
         this.data.deviceWidth = window.innerWidth;
         this.data.carouselWidth = this.carouselMain.offsetWidth;
         if (this.data.type === 'responsive') {
             this.data.deviceType =
                 this.data.deviceWidth >= 1200 ? 'lg' :
                     this.data.deviceWidth >= 992 ? 'md' :
-                        this.data.deviceWidth >= 768 ? 'sm' :
-                            'xs';
+                        this.data.deviceWidth >= 768 ? 'sm' : 'xs';
             this.data.items = +(this.data.deviceWidth >= 1200 ? this.userData.grid.lg :
                 this.data.deviceWidth >= 992 ? this.userData.grid.md :
                     this.data.deviceWidth >= 768 ? this.userData.grid.sm :
@@ -171,10 +210,17 @@ var NgxCarouselComponent = (function () {
             }, 10);
         }
         else if (this.userData.point === true) {
-            var Nos = this.userData.dynamicLength === true ? this.inputsLength :
-                this.carouselItems.length - (this.data.items - this.data.slideItems);
-            this.data.pointNumbers = Math.ceil(Nos / this.data.slideItems);
-            this.carouselPointActiver();
+            var Nos = this.items.length - (this.data.items - this.data.slideItems);
+            var points = Math.ceil(Nos / this.data.slideItems);
+            var pointers = [];
+            for (var i = 0; i < points; i++) {
+                pointers.push(i);
+            }
+            // let sdf = this.Arr1(points).fill(1);
+            this.pointNumbers = pointers;
+            setTimeout(function () {
+                _this.carouselPointActiver();
+            });
         }
     };
     /* change the active point in carousel */
@@ -193,8 +239,9 @@ var NgxCarouselComponent = (function () {
         this.data.classText = this.generateID();
         var dism = '';
         var styleid = '.' + this.data.classText;
-        var btnCss = "position: absolute;margin: auto;top: 0;bottom: 0;width: 50px;height: 50px;\n                    box-shadow: 1px 2px 10px -1px rgba(0, 0, 0, .3);border-radius: 999px;";
-        dism += styleid + " .leftRs {" + btnCss + "left: 0;} " + styleid + " .rightRs {" + btnCss + "right: 0;}";
+        // const btnCss = `position: absolute;margin: auto;top: 0;bottom: 0;width: 50px;height: 50px;
+        //                 box-shadow: 1px 2px 10px -1px rgba(0, 0, 0, .3);border-radius: 999px;`;
+        // dism += `${styleid} .leftRs {${btnCss}left: 0;} ${styleid} .rightRs {${btnCss}right: 0;}`;
         if (this.userData.custom === 'banner') {
             this.renderer.setElementClass(this.carousel, 'banner', true);
         }
@@ -224,23 +271,27 @@ var NgxCarouselComponent = (function () {
         // console.log(this.data.loop, this.data.isFirst, this.data.isLast);
         var itemSpeed = this.userData.speed;
         var translateXval, currentSlide = 0;
-        var itemLenght = this.userData.dynamicLength === true ? this.inputsLength : this.carouselItems.length;
         var touchMove = Math.ceil(this.data.dexVal / this.data.width);
-        this.renderer.setElementStyle(this.carouselInner, 'transform', '');
+        this.setStyle(this.carouselInner, 'transform', '');
         if (Btn === 0) {
+            // if ((this.data.loop && !this.data.isFirst) || !this.data.loop) {
             if ((!this.data.loop && !this.data.isFirst) || this.data.loop) {
                 var currentSlideD = this.currentSlide - this.data.slideItems;
                 var MoveSlide = currentSlideD + this.data.slideItems;
+                // this.data.isEnd = false;
                 this.data.isFirst = false;
                 if (this.currentSlide === 0) {
-                    currentSlide = itemLenght - this.data.items;
+                    // if (this.data.loop) { return false; }
+                    currentSlide = this.items.length - this.data.items;
                     itemSpeed = 400;
+                    // this.data.isEnd = true;
                     this.data.isFirst = false;
                     this.data.isLast = true;
                 }
                 else if (this.data.slideItems >= MoveSlide) {
                     currentSlide = translateXval = 0;
                     this.data.isFirst = true;
+                    // this.data.isLast = false;
                 }
                 else {
                     this.data.isLast = false;
@@ -257,17 +308,21 @@ var NgxCarouselComponent = (function () {
         }
         else {
             if ((!this.data.loop && !this.data.isLast) || this.data.loop) {
-                if ((itemLenght <= (this.currentSlide + this.data.items + this.data.slideItems)) && !this.data.isLast) {
-                    currentSlide = itemLenght - this.data.items;
+                if ((this.items.length <= (this.currentSlide + this.data.items + this.data.slideItems)) && !this.data.isLast) {
+                    currentSlide = this.items.length - this.data.items;
+                    // this.data.isEnd = true;
                     this.data.isLast = true;
                 }
                 else if (this.data.isLast) {
+                    // if (this.data.loop) { return false; }
                     currentSlide = translateXval = 0;
                     itemSpeed = 400;
+                    // this.data.isEnd = false;
                     this.data.isLast = false;
                     this.data.isFirst = true;
                 }
                 else {
+                    // this.data.isEnd = false;
                     this.data.isLast = false;
                     this.data.isFirst = false;
                     if (touchMove > this.data.slideItems) {
@@ -282,6 +337,8 @@ var NgxCarouselComponent = (function () {
             }
         }
         this.buttonControl();
+        // console.log(this.data.isFirst, this.data.isLast);
+        // console.log(this.data.loop, this.data.isFirst, this.data.isLast);
         // cubic-bezier(0.15, 1.04, 0.54, 1.13)
     };
     /* logic to scroll the carousel step 2 */
@@ -293,7 +350,7 @@ var NgxCarouselComponent = (function () {
             var first = .5;
             var second = .50;
             // tslint:disable-next-line:max-line-length
-            this.renderer.setElementStyle(this.carouselInner, 'transition', "transform " + itemSpeed + "ms " + this.userData.easing);
+            this.setStyle(this.carouselInner, 'transition', "transform " + itemSpeed + "ms " + this.userData.easing);
         }
         else {
             var val = Math.abs(this.data.touch.velocity);
@@ -303,7 +360,7 @@ var NgxCarouselComponent = (function () {
             somt = somt > itemSpeed ? itemSpeed : somt;
             itemSpeed = somt < 200 ? 200 : somt;
             // tslint:disable-next-line:max-line-length
-            this.renderer.setElementStyle(this.carouselInner, 'transition', "transform " + itemSpeed + "ms " + this.userData.easing);
+            this.setStyle(this.carouselInner, 'transition', "transform " + itemSpeed + "ms " + this.userData.easing);
             // this.carouselInner.style.transition = `transform ${itemSpeed}ms cubic-bezier(0.15, 1.04, 0.54, 1.13) `;
             this.data.dexVal = 0;
         }
@@ -332,7 +389,7 @@ var NgxCarouselComponent = (function () {
     NgxCarouselComponent.prototype.carouselLoadTrigger = function () {
         if (typeof this.userData.load === 'number') {
             // tslint:disable-next-line:no-unused-expression
-            (this.carouselItems.length - this.data.load) <= (this.currentSlide + this.data.items) &&
+            (this.items.length - this.data.load) <= (this.currentSlide + this.data.items) &&
                 this.carouselLoad.emit(this.currentSlide);
         }
     };
@@ -396,18 +453,18 @@ var NgxCarouselComponent = (function () {
         if (direction === 1) {
             for (var i = start - 1; i < end; i++) {
                 val = val * 2;
-                this.renderer.setElementStyle(this.carouselItems[i], 'transform', 'translateX(' + val + 'px)');
+                this.setStyle(this.carouselItems[i], 'transform', "translate3d(" + val + "px, 0, 0)");
             }
         }
         else {
             for (var i = end - 1; i >= start - 1; i--) {
                 val = val * 2;
-                this.renderer.setElementStyle(this.carouselItems[i], 'transform', 'translateX(-' + val + 'px)');
+                this.setStyle(this.carouselItems[i], 'transform', "translate3d(-" + val + "px, 0, 0)");
             }
         }
         setTimeout(function () {
             for (var i = start - 1; i < end; i++) {
-                _this.renderer.setElementStyle(_this.carouselItems[i], 'transform', 'translateX(0px)');
+                _this.setStyle(_this.carouselItems[i], 'transform', 'translate3d(0, 0, 0)');
             }
         }, speed * .7);
     };
@@ -415,18 +472,21 @@ var NgxCarouselComponent = (function () {
     NgxCarouselComponent.prototype.buttonControl = function () {
         if (!this.data.loop) {
             if (this.data.isFirst) {
-                this.renderer.setElementStyle(this.leftBtn, 'display', 'none');
-                this.renderer.setElementStyle(this.rightBtn, 'display', 'block');
+                this.setStyle(this.leftBtn, 'display', 'none');
+                this.setStyle(this.rightBtn, 'display', 'block');
             }
             if (this.data.isLast) {
-                this.renderer.setElementStyle(this.leftBtn, 'display', 'block');
-                this.renderer.setElementStyle(this.rightBtn, 'display', 'none');
+                this.setStyle(this.leftBtn, 'display', 'block');
+                this.setStyle(this.rightBtn, 'display', 'none');
             }
             if (!this.data.isFirst && !this.data.isLast) {
-                this.renderer.setElementStyle(this.leftBtn, 'display', 'block');
-                this.renderer.setElementStyle(this.rightBtn, 'display', 'block');
+                this.setStyle(this.leftBtn, 'display', 'block');
+                this.setStyle(this.rightBtn, 'display', 'block');
             }
         }
+    };
+    NgxCarouselComponent.prototype.setStyle = function (el, prop, val) {
+        this.renderer.setElementStyle(el, prop, val);
     };
     return NgxCarouselComponent;
 }());
@@ -434,7 +494,7 @@ NgxCarouselComponent.decorators = [
     { type: _angular_core.Component, args: [{
                 // tslint:disable-next-line:component-selector
                 selector: 'ngx-carousel',
-                template: "<div class=\"som\"><div class=\"ngxcarousel\"><div class=\"ngxcarousel-inner\"><div class=\"ngxcarousel-items\"><ng-content #itemss select=\"ngx-item\"></ng-content><ng-content select=\"ngx-tile\"></ng-content></div><div style=\"clear: both\"></div></div><ng-content #left select=\".leftRs\" class=\"leftRs\"></ng-content><ng-content #right select=\".rightRs\" class=\"rightRs\"></ng-content></div><div class=\"ngxcarouselPoint\" *ngIf=\"userData.point\"><ul><li *ngFor=\"let i of Arr(data.pointNumbers).fill(1)\"></li></ul></div></div>",
+                template: "<div #main class=\"som\"><div #ngxcarousel class=\"ngxcarousel\"><div class=\"ngxcarousel-inner\"><div #ngxitems class=\"ngxcarousel-items\"><ng-content select=\"[NgxCarouselItem]\"></ng-content></div><div style=\"clear: both\"></div></div><ng-content select=\"[NgxCarouselPrev]\"></ng-content><ng-content select=\"[NgxCarouselNext]\"></ng-content></div><div class=\"ngxcarouselPoint\" *ngIf=\"userData.point\"><ul><li *ngFor=\"let i of pointNumbers\"></li></ul></div></div>",
                 styles: ["\n    .som {\n      width: 100%;\n      position: relative;\n    }\n    .som .ngxcarousel {\n      width: 100%;\n      position: relative;\n    }\n    .som .ngxcarousel .ngxcarousel-inner {\n      position: relative;\n      overflow: hidden;\n    }\n    .som .ngxcarousel .ngxcarousel-inner .ngxcarousel-items {\n      white-space: nowrap;\n      position: relative;\n    }\n    .som .ngxcarousel .ngxcarousel-inner .ngxcarousel-items .item {\n      display: inline-block;\n      white-space: initial;\n    }\n    .som .ngxcarousel .ngxcarousel-inner .ngxcarousel-items .item .tile {\n      box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);\n      margin: 5px;\n    }\n    .som .ngxcarousel .leftRs {\n      position: absolute;\n      margin: auto;\n      top: 0;\n      bottom: 0;\n      left: 0;\n      width: 50px;\n      height: 50px;\n      box-shadow: 1px 2px 10px -1px rgba(0, 0, 0, 0.3);\n      border-radius: 999px;\n    }\n    .som .ngxcarousel .rightRs {\n      position: absolute;\n      margin: auto;\n      top: 0;\n      right: 0;\n      bottom: 0;\n      width: 50px;\n      height: 50px;\n      box-shadow: 1px 2px 10px -1px rgba(0, 0, 0, 0.3);\n      border-radius: 999px;\n    }\n\n    .banner .ngxcarouselPoint {\n      position: absolute;\n      width: 100%;\n      bottom: 20px;\n    }\n    .banner .ngxcarouselPoint li {\n      background: rgba(255, 255, 255, 0.55);\n    }\n    .banner .ngxcarouselPoint li.active {\n      background: white;\n    }\n\n    .ngxcarouselPoint ul {\n      list-style-type: none;\n      text-align: center;\n      padding: 12px;\n      margin: 0;\n      white-space: nowrap;\n      overflow: auto;\n    }\n    .ngxcarouselPoint ul li {\n      display: inline-block;\n      border-radius: 50%;\n      background: rgba(0, 0, 0, 0.55);\n      padding: 4px;\n      margin: 0 4px;\n      transition-timing-function: cubic-bezier(0.17, 0.67, 0.83, 0.67);\n      transition: .4s;\n    }\n    .ngxcarouselPoint ul li.active {\n      background: #6b6b6b;\n      transform: scale(1.8);\n    }\n\n  "]
             },] },
 ];
@@ -445,10 +505,14 @@ NgxCarouselComponent.ctorParameters = function () { return [
 ]; };
 NgxCarouselComponent.propDecorators = {
     'userData': [{ type: _angular_core.Input, args: ['inputs',] },],
-    'inputsLength': [{ type: _angular_core.Input, args: ['inputsLength',] },],
     'carouselLoad': [{ type: _angular_core.Output, args: ['carouselLoad',] },],
+    'items': [{ type: _angular_core.ContentChildren, args: [NgxCarouselItemDirective,] },],
+    'next': [{ type: _angular_core.ContentChild, args: [NgxCarouselNextDirective, { read: _angular_core.ElementRef },] },],
+    'prev': [{ type: _angular_core.ContentChild, args: [NgxCarouselPrevDirective, { read: _angular_core.ElementRef },] },],
+    'carouselMain1': [{ type: _angular_core.ViewChild, args: ['ngxcarousel', { read: _angular_core.ElementRef },] },],
+    'carouselInner1': [{ type: _angular_core.ViewChild, args: ['ngxitems', { read: _angular_core.ElementRef },] },],
+    'carousel1': [{ type: _angular_core.ViewChild, args: ['main', { read: _angular_core.ElementRef },] },],
     'onResizing': [{ type: _angular_core.HostListener, args: ['window:resize', ['$event'],] },],
-    'ontouching': [{ type: _angular_core.HostListener, args: ['click', ['$event'],] },],
 };
 
 var NgxItemComponent = (function () {
@@ -515,8 +579,22 @@ var NgxCarouselModule = (function () {
 NgxCarouselModule.decorators = [
     { type: _angular_core.NgModule, args: [{
                 imports: [_angular_common.CommonModule],
-                exports: [NgxCarouselComponent, NgxItemComponent, NgxTileComponent],
-                declarations: [NgxCarouselComponent, NgxItemComponent, NgxTileComponent],
+                exports: [
+                    NgxCarouselComponent,
+                    NgxItemComponent,
+                    NgxTileComponent,
+                    NgxCarouselItemDirective,
+                    NgxCarouselNextDirective,
+                    NgxCarouselPrevDirective
+                ],
+                declarations: [
+                    NgxCarouselComponent,
+                    NgxItemComponent,
+                    NgxTileComponent,
+                    NgxCarouselItemDirective,
+                    NgxCarouselNextDirective,
+                    NgxCarouselPrevDirective
+                ],
                 providers: [
                     { provide: _angular_platformBrowser.HAMMER_GESTURE_CONFIG, useClass: MyHammerConfig }
                 ],

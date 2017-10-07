@@ -1,7 +1,7 @@
 {
     "name": "ngx-carousel",
-    "version": "1.1.1",
-    "description": "Angular Carousel with customizable option with touch support and even more. Try it then say about it",
+    "version": "1.2.0",
+    "description": "An amazing responsive carousel for angular 2+. It have multiple options to control the carousel and also it is very simple to getstarted. Go and try this angular 2+ carousel. Getstarted available in readme file.",
     "main": "bundles/ngxcarousel.umd.js",
     "module": "index.js",
     "typings": "index.d.ts",

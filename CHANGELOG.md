@@ -2,6 +2,30 @@
 
 ### Before Upgrading once read the [Readme.md](https://github.com/sheikalthaf/ngx-carousel/blob/master/README.md) file
 
+## 1.2.0
+
+### Changes
+
+* From this build `inputsLength` Input and `dynamicLength` is removed.
+
+* Added a new directive for the items `NgxCarouselItem` and it is mandatory. Check getstarted in readme.
+
+* Added a new directive for buttons `NgxCarouselNext` and `NgxCarouselPrev`. it is mandatory. Check getstarted in readme.
+
+* Removed buttons css for user customization. From this build `NgxCarouselNext` act as a rightRs and `NgxCarouselPrev` act as a leftRs. go and apply your own button with these directives. Check getstarted in readme.
+
+### Issues fixed 
+
+* Example is Updated in readme[#13](https://github.com/sheikalthaf/ngx-carousel/issues/13)
+
+* buttons issue is fixed.[#12](https://github.com/sheikalthaf/ngx-carousel/issues/12)
+
+* `ExpressionChangedAfterItHasBeenCheckedError` issue is fixed.[#11](https://github.com/sheikalthaf/ngx-carousel/issues/11)
+
+* classList of undefined is fixed[#10](https://github.com/sheikalthaf/ngx-carousel/issues/10)
+
+* touch slideing issue is fixed[#4](https://github.com/sheikalthaf/ngx-carousel/issues/4)
+
 ## 1.1.1
 
 ### Changes

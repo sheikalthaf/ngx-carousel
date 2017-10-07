@@ -1,9 +1,9 @@
-var CarouselStore = (function () {
-    function CarouselStore() {
+var NgxCarouselStore = (function () {
+    function NgxCarouselStore() {
     }
-    return CarouselStore;
+    return NgxCarouselStore;
 }());
-export { CarouselStore };
+export { NgxCarouselStore };
 var Touch = (function () {
     function Touch() {
     }
