@@ -18,6 +18,7 @@ import {
   QueryList,
   ViewChild,
   AfterContentInit,
+  ViewChildren,
   ContentChild
 } from '@angular/core';
 
@@ -26,7 +27,7 @@ import { NgxCarousel, NgxCarouselStore } from './ngx-carousel.interface';
 @Component({
   // tslint:disable-next-line:component-selector
   selector: 'ngx-carousel',
-  template: `<div #main class="som"><div #ngxcarousel class="ngxcarousel"><div class="ngxcarousel-inner"><div #ngxitems class="ngxcarousel-items"><ng-content select="[NgxCarouselItem]"></ng-content></div><div style="clear: both"></div></div><ng-content select="[NgxCarouselPrev]"></ng-content><ng-content select="[NgxCarouselNext]"></ng-content></div><div class="ngxcarouselPoint" *ngIf="userData.point"><ul><li *ngFor="let i of pointNumbers"></li></ul></div></div>`,
+  template: `<div #main class="som"><div #ngxcarousel class="ngxcarousel"><div class="ngxcarousel-inner"><div #ngxitems class="ngxcarousel-items"><ng-content select="[NgxCarouselItem]"></ng-content></div><div style="clear: both"></div></div><ng-content select="[NgxCarouselPrev]"></ng-content><ng-content select="[NgxCarouselNext]"></ng-content></div><div #points *ngIf="userData.point.visible"><ul class="ngxcarouselPoint"><li #pointInner *ngFor="let i of pointNumbers; let i=index" [class.active]="i==pointers" (click)="moveTo(i)"></li></ul></div></div>`,
   styles: [`
     .som {
       width: 100%;
@@ -44,58 +45,30 @@ import { NgxCarousel, NgxCarouselStore } from './ngx-carousel.interface';
       white-space: nowrap;
       position: relative;
     }
-    .som .ngxcarousel .ngxcarousel-inner .ngxcarousel-items .item {
-      display: inline-block;
-      white-space: initial;
-    }
-    .som .ngxcarousel .ngxcarousel-inner .ngxcarousel-items .item .tile {
-      box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
-      margin: 5px;
-    }
-    .som .ngxcarousel .leftRs {
-      position: absolute;
-      margin: auto;
-      top: 0;
-      bottom: 0;
-      left: 0;
-      width: 50px;
-      height: 50px;
-      box-shadow: 1px 2px 10px -1px rgba(0, 0, 0, 0.3);
-      border-radius: 999px;
-    }
-    .som .ngxcarousel .rightRs {
-      position: absolute;
-      margin: auto;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      width: 50px;
-      height: 50px;
-      box-shadow: 1px 2px 10px -1px rgba(0, 0, 0, 0.3);
-      border-radius: 999px;
-    }
-
-    .banner .ngxcarouselPoint {
+    .banner .ngxcarouselPointDefault .ngxcarouselPoint {
       position: absolute;
       width: 100%;
       bottom: 20px;
     }
-    .banner .ngxcarouselPoint li {
+    .banner .ngxcarouselPointDefault .ngxcarouselPoint li {
       background: rgba(255, 255, 255, 0.55);
     }
-    .banner .ngxcarouselPoint li.active {
+    .banner .ngxcarouselPointDefault .ngxcarouselPoint li.active {
       background: white;
     }
-
-    .ngxcarouselPoint ul {
+    .banner .ngxcarouselPointDefault .ngxcarouselPoint li:hover {
+      cursor: pointer;
+    }
+    .ngxcarouselPointDefault .ngxcarouselPoint {
       list-style-type: none;
       text-align: center;
       padding: 12px;
       margin: 0;
       white-space: nowrap;
       overflow: auto;
+      box-sizing: border-box;
     }
-    .ngxcarouselPoint ul li {
+    .ngxcarouselPointDefault .ngxcarouselPoint li {
       display: inline-block;
       border-radius: 50%;
       background: rgba(0, 0, 0, 0.55);
@@ -104,17 +77,18 @@ import { NgxCarousel, NgxCarouselStore } from './ngx-carousel.interface';
       transition-timing-function: cubic-bezier(0.17, 0.67, 0.83, 0.67);
       transition: .4s;
     }
-    .ngxcarouselPoint ul li.active {
+    .ngxcarouselPointDefault .ngxcarouselPoint li.active {
       background: #6b6b6b;
       transform: scale(1.8);
     }
-
+    .ngxcarouselPointDefault .ngxcarouselPoint li:hover {
+      cursor: pointer;
+    }
   `]
 })
-export class NgxCarouselComponent implements OnInit, AfterContentInit, OnDestroy {
-  leftBtn: any;
-  rightBtn: any;
-
+export class NgxCarouselComponent implements OnInit, AfterContentInit, AfterViewInit, OnDestroy {
+  pointIndex: number;
+  pointers: number;
 
   // tslint:disable-next-line:no-input-rename
   @Input('inputs') userData: any;
@@ -122,6 +96,7 @@ export class NgxCarouselComponent implements OnInit, AfterContentInit, OnDestroy
   @Output('carouselLoad') carouselLoad: EventEmitter<any> = new EventEmitter();
 
   @ContentChildren(NgxCarouselItemDirective) private items: QueryList<NgxCarouselItemDirective>;
+  @ViewChildren('pointInner', { read: ElementRef }) private points: QueryList<ElementRef>;
 
   @ContentChild(NgxCarouselNextDirective, { read: ElementRef }) private next: ElementRef;
   @ContentChild(NgxCarouselPrevDirective, { read: ElementRef }) private prev: ElementRef;
@@ -129,7 +104,10 @@ export class NgxCarouselComponent implements OnInit, AfterContentInit, OnDestroy
   @ViewChild('ngxcarousel', { read: ElementRef }) private carouselMain1: ElementRef;
   @ViewChild('ngxitems', { read: ElementRef }) private carouselInner1: ElementRef;
   @ViewChild('main', { read: ElementRef }) private carousel1: ElementRef;
+  @ViewChild('points', { read: ElementRef }) private pointMain: ElementRef;
 
+  private leftBtn: any;
+  private rightBtn: any;
   private evtValue: number;
   private pauseCarousel = false;
   private pauseInterval: any;
@@ -195,6 +173,9 @@ export class NgxCarouselComponent implements OnInit, AfterContentInit, OnDestroy
   ngAfterContentInit() {
     this.renderer.listen(this.leftBtn, 'click', () => this.carouselScrollOne(0));
     this.renderer.listen(this.rightBtn, 'click', () => this.carouselScrollOne(1));
+    // this.userData.point.
+    // this.pointMain
+
 
     const styleItem = document.createElement('style');
     if (!this.carouselInner.querySelectorAll('style').length) {
@@ -211,7 +192,21 @@ export class NgxCarouselComponent implements OnInit, AfterContentInit, OnDestroy
     this.items.changes.subscribe(val => {
       this.data.isLast = false;
       this.carouselPoint();
+      this.buttonControl();
     });
+  }
+
+  ngAfterViewInit() {
+    if (this.userData.point.pointStyles) {
+      const datas = this.userData.point.pointStyles.replace(/.ngxcarouselPoint/g, `.${this.data.classText} .ngxcarouselPoint`);
+      // console.log(datas);
+      const styleItem = document.createElement('style');
+      styleItem.innerHTML = datas;
+      this.carousel.appendChild(styleItem);
+    } else {
+      this.renderer.setElementClass(this.pointMain.nativeElement, 'ngxcarouselPointDefault', true);
+    }
+
   }
 
   ngOnDestroy() {
@@ -320,7 +315,7 @@ export class NgxCarouselComponent implements OnInit, AfterContentInit, OnDestroy
 
       this.data.width = this.data.carouselWidth / this.data.items;
     } else {
-      this.data.items = Math.floor(this.data.deviceWidth / this.userData.grid.all);
+      this.data.items = Math.trunc(this.data.carouselWidth / this.userData.grid.all);
       this.data.width = this.userData.grid.all;
     }
 
@@ -336,11 +331,13 @@ export class NgxCarouselComponent implements OnInit, AfterContentInit, OnDestroy
       setTimeout(() => {
         this.carouselPoint();
       }, 10);
-    } else if (this.userData.point === true) {
+    } else if (this.userData.point.visible === true) {
       const Nos = this.items.length - (this.data.items - this.data.slideItems);
-      const points = Math.ceil(Nos / this.data.slideItems);
+      // console.log(this.items.length, this.data.items , this.data.slideItems);
+      this.pointIndex = Math.ceil(Nos / this.data.slideItems);
+      // console.log(Nos, this.data.slideItems);
       const pointers = [];
-      for (let i = 0; i < points; i++) {
+      for (let i = 0; i < this.pointIndex; i++) {
         pointers.push(i);
       }
       // let sdf = this.Arr1(points).fill(1);
@@ -353,13 +350,42 @@ export class NgxCarouselComponent implements OnInit, AfterContentInit, OnDestroy
 
   /* change the active point in carousel */
   private carouselPointActiver(): void {
-    const parent = this.carousel.querySelectorAll('.ngxcarouselPoint li');
-    if (parent.length !== 0) {
+    // const parent = this.carousel.querySelectorAll('.ngxcarouselPointInner div');
+    // const parent = this.points;
+    // console.log(this.points);
+    if (this.points.length !== 0) {
       const i = Math.ceil(this.currentSlide / this.data.slideItems);
-      for (let j = 0; j < parent.length; j++) {
-        this.renderer.setElementClass(parent[j], 'active', false);
+      // for (let j = 0; j < parent.length; j++) {
+      //   this.renderer.setElementClass(parent[j], 'active', false);
+      // }
+      // this.points.forEach(div => {
+      //   this.renderer.setElementClass(div.nativeElement, 'active', false);
+      // });
+      this.pointers = i;
+      // this.renderer.setElementClass(this.points._results[i].nativeElement, 'active', true);
+    }
+  }
+
+  /* this function is used to scoll the carousel when point is clicked */
+  public moveTo(index: number) {
+    if (this.currentSlide !== index) {
+      let slideremains = 0;
+      const btns = this.currentSlide < index ? 1 : 0;
+
+      if (index === 0) {
+        this.data.isFirst = true;
+        this.data.isLast = false;
+        slideremains = index * this.data.slideItems;
+      } else if (index === this.pointIndex - 1) {
+        this.data.isFirst = false;
+        this.data.isLast = true;
+        slideremains = this.items.length - this.data.items;
+      } else {
+        this.data.isFirst = false;
+        this.data.isLast = false;
+        slideremains = index * this.data.slideItems;
       }
-      this.renderer.setElementClass(parent[i], 'active', true);
+      this.carouselScrollTwo(btns, slideremains, this.userData.speed);
     }
   }
 
@@ -374,6 +400,8 @@ export class NgxCarouselComponent implements OnInit, AfterContentInit, OnDestroy
     //                 box-shadow: 1px 2px 10px -1px rgba(0, 0, 0, .3);border-radius: 999px;`;
 
     // dism += `${styleid} .leftRs {${btnCss}left: 0;} ${styleid} .rightRs {${btnCss}right: 0;}`;
+
+
 
     if (this.userData.custom === 'banner') {
       this.renderer.setElementClass(this.carousel, 'banner', true);
@@ -420,6 +448,7 @@ export class NgxCarouselComponent implements OnInit, AfterContentInit, OnDestroy
     if (Btn === 0) {
       // if ((this.data.loop && !this.data.isFirst) || !this.data.loop) {
       if ((!this.data.loop && !this.data.isFirst) || this.data.loop) {
+        const slide = this.data.slideItems * this.pointIndex;
 
         const currentSlideD = this.currentSlide - this.data.slideItems;
         const MoveSlide = currentSlideD + this.data.slideItems;
@@ -475,7 +504,6 @@ export class NgxCarouselComponent implements OnInit, AfterContentInit, OnDestroy
         this.carouselScrollTwo(Btn, currentSlide, itemSpeed);
       }
     }
-    this.buttonControl();
     // console.log(this.data.isFirst, this.data.isLast);
     // console.log(this.data.loop, this.data.isFirst, this.data.isLast);
 
@@ -486,6 +514,8 @@ export class NgxCarouselComponent implements OnInit, AfterContentInit, OnDestroy
 
   /* logic to scroll the carousel step 2 */
   private carouselScrollTwo(Btn: number, currentSlide: number, itemSpeed: number): void {
+    // console.log(this.currentSlide, currentSlide);
+
     // tslint:disable-next-line:no-unused-expression
     this.userData.animation === 'lazy' &&
       this.carouselAnimator(Btn, currentSlide + 1, currentSlide + this.data.items, itemSpeed, Math.abs(this.currentSlide - currentSlide));
@@ -510,6 +540,7 @@ export class NgxCarouselComponent implements OnInit, AfterContentInit, OnDestroy
     this.currentSlide = currentSlide;
     this.carouselPointActiver();
     this.carouselLoadTrigger();
+    this.buttonControl();
   }
 
   /* set the transform style to scroll the carousel  */
@@ -612,16 +643,18 @@ export class NgxCarouselComponent implements OnInit, AfterContentInit, OnDestroy
     if (direction === 1) {
       for (let i = start - 1; i < end; i++) {
         val = val * 2;
-        this.setStyle(this.carouselItems[i], 'transform', `translate3d(${val}px, 0, 0)`);
+        // tslint:disable-next-line:no-unused-expression
+        this.carouselItems[i] && this.setStyle(this.carouselItems[i], 'transform', `translate3d(${val}px, 0, 0)`);
       }
     } else {
       for (let i = end - 1; i >= start - 1; i--) {
         val = val * 2;
-        this.setStyle(this.carouselItems[i], 'transform', `translate3d(-${val}px, 0, 0)`);
+        // tslint:disable-next-line:no-unused-expression
+        this.carouselItems[i] && this.setStyle(this.carouselItems[i], 'transform', `translate3d(-${val}px, 0, 0)`);
       }
     }
     setTimeout(() => {
-      for (let i = start - 1; i < end; i++) {
+      for (let i = 0; i < this.items.length; i++) {
         this.setStyle(this.carouselItems[i], 'transform', 'translate3d(0, 0, 0)');
       }
     }, speed * .7);

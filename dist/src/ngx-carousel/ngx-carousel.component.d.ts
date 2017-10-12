@@ -1,18 +1,22 @@
-import { ElementRef, Renderer, OnInit, OnDestroy, EventEmitter, AfterContentInit } from '@angular/core';
+import { ElementRef, Renderer, OnInit, OnDestroy, AfterViewInit, EventEmitter, AfterContentInit } from '@angular/core';
 import { NgxCarouselStore } from './ngx-carousel.interface';
-export declare class NgxCarouselComponent implements OnInit, AfterContentInit, OnDestroy {
+export declare class NgxCarouselComponent implements OnInit, AfterContentInit, AfterViewInit, OnDestroy {
     private el;
     private renderer;
-    leftBtn: any;
-    rightBtn: any;
+    pointIndex: number;
+    pointers: number;
     userData: any;
     carouselLoad: EventEmitter<any>;
     private items;
+    private points;
     private next;
     private prev;
     private carouselMain1;
     private carouselInner1;
     private carousel1;
+    private pointMain;
+    private leftBtn;
+    private rightBtn;
     private evtValue;
     private pauseCarousel;
     private pauseInterval;
@@ -30,6 +34,7 @@ export declare class NgxCarouselComponent implements OnInit, AfterContentInit, O
     constructor(el: ElementRef, renderer: Renderer);
     ngOnInit(): void;
     ngAfterContentInit(): void;
+    ngAfterViewInit(): void;
     ngOnDestroy(): void;
     onResizing(event: any): void;
     private touch();
@@ -38,6 +43,7 @@ export declare class NgxCarouselComponent implements OnInit, AfterContentInit, O
     private storeCarouselData();
     private carouselPoint();
     private carouselPointActiver();
+    moveTo(index: number): void;
     private carouselSize();
     private carouselScrollOne(Btn);
     private carouselScrollTwo(Btn, currentSlide, itemSpeed);

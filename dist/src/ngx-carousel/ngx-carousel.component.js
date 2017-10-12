@@ -1,5 +1,5 @@
 import { NgxCarouselItemDirective, NgxCarouselNextDirective, NgxCarouselPrevDirective } from './ngx-carousel.directive';
-import { Component, ElementRef, Renderer, Input, Output, HostListener, EventEmitter, ContentChildren, ViewChild, ContentChild } from '@angular/core';
+import { Component, ElementRef, Renderer, Input, Output, HostListener, EventEmitter, ContentChildren, ViewChild, ViewChildren, ContentChild } from '@angular/core';
 var NgxCarouselComponent = (function () {
     function NgxCarouselComponent(el, renderer) {
         this.el = el;
@@ -47,6 +47,8 @@ var NgxCarouselComponent = (function () {
         var _this = this;
         this.renderer.listen(this.leftBtn, 'click', function () { return _this.carouselScrollOne(0); });
         this.renderer.listen(this.rightBtn, 'click', function () { return _this.carouselScrollOne(1); });
+        // this.userData.point.
+        // this.pointMain
         var styleItem = document.createElement('style');
         if (!this.carouselInner.querySelectorAll('style').length) {
             this.carouselInner.appendChild(styleItem);
@@ -60,7 +62,20 @@ var NgxCarouselComponent = (function () {
         this.items.changes.subscribe(function (val) {
             _this.data.isLast = false;
             _this.carouselPoint();
+            _this.buttonControl();
         });
+    };
+    NgxCarouselComponent.prototype.ngAfterViewInit = function () {
+        if (this.userData.point.pointStyles) {
+            var datas = this.userData.point.pointStyles.replace(/.ngxcarouselPoint/g, "." + this.data.classText + " .ngxcarouselPoint");
+            // console.log(datas);
+            var styleItem = document.createElement('style');
+            styleItem.innerHTML = datas;
+            this.carousel.appendChild(styleItem);
+        }
+        else {
+            this.renderer.setElementClass(this.pointMain.nativeElement, 'ngxcarouselPointDefault', true);
+        }
     };
     NgxCarouselComponent.prototype.ngOnDestroy = function () {
         clearInterval(this.carouselInt);
@@ -150,7 +165,7 @@ var NgxCarouselComponent = (function () {
             this.data.width = this.data.carouselWidth / this.data.items;
         }
         else {
-            this.data.items = Math.floor(this.data.deviceWidth / this.userData.grid.all);
+            this.data.items = Math.trunc(this.data.carouselWidth / this.userData.grid.all);
             this.data.width = this.userData.grid.all;
         }
         this.data.slideItems = +(this.userData.slide < this.data.items ? this.userData.slide : this.data.items);
@@ -165,11 +180,13 @@ var NgxCarouselComponent = (function () {
                 _this.carouselPoint();
             }, 10);
         }
-        else if (this.userData.point === true) {
+        else if (this.userData.point.visible === true) {
             var Nos = this.items.length - (this.data.items - this.data.slideItems);
-            var points = Math.ceil(Nos / this.data.slideItems);
+            // console.log(this.items.length, this.data.items , this.data.slideItems);
+            this.pointIndex = Math.ceil(Nos / this.data.slideItems);
+            // console.log(Nos, this.data.slideItems);
             var pointers = [];
-            for (var i = 0; i < points; i++) {
+            for (var i = 0; i < this.pointIndex; i++) {
                 pointers.push(i);
             }
             // let sdf = this.Arr1(points).fill(1);
@@ -181,13 +198,42 @@ var NgxCarouselComponent = (function () {
     };
     /* change the active point in carousel */
     NgxCarouselComponent.prototype.carouselPointActiver = function () {
-        var parent = this.carousel.querySelectorAll('.ngxcarouselPoint li');
-        if (parent.length !== 0) {
+        // const parent = this.carousel.querySelectorAll('.ngxcarouselPointInner div');
+        // const parent = this.points;
+        // console.log(this.points);
+        if (this.points.length !== 0) {
             var i = Math.ceil(this.currentSlide / this.data.slideItems);
-            for (var j = 0; j < parent.length; j++) {
-                this.renderer.setElementClass(parent[j], 'active', false);
+            // for (let j = 0; j < parent.length; j++) {
+            //   this.renderer.setElementClass(parent[j], 'active', false);
+            // }
+            // this.points.forEach(div => {
+            //   this.renderer.setElementClass(div.nativeElement, 'active', false);
+            // });
+            this.pointers = i;
+            // this.renderer.setElementClass(this.points._results[i].nativeElement, 'active', true);
+        }
+    };
+    /* this function is used to scoll the carousel when point is clicked */
+    NgxCarouselComponent.prototype.moveTo = function (index) {
+        if (this.currentSlide !== index) {
+            var slideremains = 0;
+            var btns = this.currentSlide < index ? 1 : 0;
+            if (index === 0) {
+                this.data.isFirst = true;
+                this.data.isLast = false;
+                slideremains = index * this.data.slideItems;
             }
-            this.renderer.setElementClass(parent[i], 'active', true);
+            else if (index === this.pointIndex - 1) {
+                this.data.isFirst = false;
+                this.data.isLast = true;
+                slideremains = this.items.length - this.data.items;
+            }
+            else {
+                this.data.isFirst = false;
+                this.data.isLast = false;
+                slideremains = index * this.data.slideItems;
+            }
+            this.carouselScrollTwo(btns, slideremains, this.userData.speed);
         }
     };
     /* set the style of the carousel based the inputs data */
@@ -232,6 +278,7 @@ var NgxCarouselComponent = (function () {
         if (Btn === 0) {
             // if ((this.data.loop && !this.data.isFirst) || !this.data.loop) {
             if ((!this.data.loop && !this.data.isFirst) || this.data.loop) {
+                var slide = this.data.slideItems * this.pointIndex;
                 var currentSlideD = this.currentSlide - this.data.slideItems;
                 var MoveSlide = currentSlideD + this.data.slideItems;
                 // this.data.isEnd = false;
@@ -292,13 +339,13 @@ var NgxCarouselComponent = (function () {
                 this.carouselScrollTwo(Btn, currentSlide, itemSpeed);
             }
         }
-        this.buttonControl();
         // console.log(this.data.isFirst, this.data.isLast);
         // console.log(this.data.loop, this.data.isFirst, this.data.isLast);
         // cubic-bezier(0.15, 1.04, 0.54, 1.13)
     };
     /* logic to scroll the carousel step 2 */
     NgxCarouselComponent.prototype.carouselScrollTwo = function (Btn, currentSlide, itemSpeed) {
+        // console.log(this.currentSlide, currentSlide);
         // tslint:disable-next-line:no-unused-expression
         this.userData.animation === 'lazy' &&
             this.carouselAnimator(Btn, currentSlide + 1, currentSlide + this.data.items, itemSpeed, Math.abs(this.currentSlide - currentSlide));
@@ -324,6 +371,7 @@ var NgxCarouselComponent = (function () {
         this.currentSlide = currentSlide;
         this.carouselPointActiver();
         this.carouselLoadTrigger();
+        this.buttonControl();
     };
     /* set the transform style to scroll the carousel  */
     NgxCarouselComponent.prototype.transformStyle = function (slide) {
@@ -409,17 +457,19 @@ var NgxCarouselComponent = (function () {
         if (direction === 1) {
             for (var i = start - 1; i < end; i++) {
                 val = val * 2;
-                this.setStyle(this.carouselItems[i], 'transform', "translate3d(" + val + "px, 0, 0)");
+                // tslint:disable-next-line:no-unused-expression
+                this.carouselItems[i] && this.setStyle(this.carouselItems[i], 'transform', "translate3d(" + val + "px, 0, 0)");
             }
         }
         else {
             for (var i = end - 1; i >= start - 1; i--) {
                 val = val * 2;
-                this.setStyle(this.carouselItems[i], 'transform', "translate3d(-" + val + "px, 0, 0)");
+                // tslint:disable-next-line:no-unused-expression
+                this.carouselItems[i] && this.setStyle(this.carouselItems[i], 'transform', "translate3d(-" + val + "px, 0, 0)");
             }
         }
         setTimeout(function () {
-            for (var i = start - 1; i < end; i++) {
+            for (var i = 0; i < _this.items.length; i++) {
                 _this.setStyle(_this.carouselItems[i], 'transform', 'translate3d(0, 0, 0)');
             }
         }, speed * .7);
@@ -451,8 +501,8 @@ NgxCarouselComponent.decorators = [
     { type: Component, args: [{
                 // tslint:disable-next-line:component-selector
                 selector: 'ngx-carousel',
-                template: "<div #main class=\"som\"><div #ngxcarousel class=\"ngxcarousel\"><div class=\"ngxcarousel-inner\"><div #ngxitems class=\"ngxcarousel-items\"><ng-content select=\"[NgxCarouselItem]\"></ng-content></div><div style=\"clear: both\"></div></div><ng-content select=\"[NgxCarouselPrev]\"></ng-content><ng-content select=\"[NgxCarouselNext]\"></ng-content></div><div class=\"ngxcarouselPoint\" *ngIf=\"userData.point\"><ul><li *ngFor=\"let i of pointNumbers\"></li></ul></div></div>",
-                styles: ["\n    .som {\n      width: 100%;\n      position: relative;\n    }\n    .som .ngxcarousel {\n      width: 100%;\n      position: relative;\n    }\n    .som .ngxcarousel .ngxcarousel-inner {\n      position: relative;\n      overflow: hidden;\n    }\n    .som .ngxcarousel .ngxcarousel-inner .ngxcarousel-items {\n      white-space: nowrap;\n      position: relative;\n    }\n    .som .ngxcarousel .ngxcarousel-inner .ngxcarousel-items .item {\n      display: inline-block;\n      white-space: initial;\n    }\n    .som .ngxcarousel .ngxcarousel-inner .ngxcarousel-items .item .tile {\n      box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);\n      margin: 5px;\n    }\n    .som .ngxcarousel .leftRs {\n      position: absolute;\n      margin: auto;\n      top: 0;\n      bottom: 0;\n      left: 0;\n      width: 50px;\n      height: 50px;\n      box-shadow: 1px 2px 10px -1px rgba(0, 0, 0, 0.3);\n      border-radius: 999px;\n    }\n    .som .ngxcarousel .rightRs {\n      position: absolute;\n      margin: auto;\n      top: 0;\n      right: 0;\n      bottom: 0;\n      width: 50px;\n      height: 50px;\n      box-shadow: 1px 2px 10px -1px rgba(0, 0, 0, 0.3);\n      border-radius: 999px;\n    }\n\n    .banner .ngxcarouselPoint {\n      position: absolute;\n      width: 100%;\n      bottom: 20px;\n    }\n    .banner .ngxcarouselPoint li {\n      background: rgba(255, 255, 255, 0.55);\n    }\n    .banner .ngxcarouselPoint li.active {\n      background: white;\n    }\n\n    .ngxcarouselPoint ul {\n      list-style-type: none;\n      text-align: center;\n      padding: 12px;\n      margin: 0;\n      white-space: nowrap;\n      overflow: auto;\n    }\n    .ngxcarouselPoint ul li {\n      display: inline-block;\n      border-radius: 50%;\n      background: rgba(0, 0, 0, 0.55);\n      padding: 4px;\n      margin: 0 4px;\n      transition-timing-function: cubic-bezier(0.17, 0.67, 0.83, 0.67);\n      transition: .4s;\n    }\n    .ngxcarouselPoint ul li.active {\n      background: #6b6b6b;\n      transform: scale(1.8);\n    }\n\n  "]
+                template: "<div #main class=\"som\"><div #ngxcarousel class=\"ngxcarousel\"><div class=\"ngxcarousel-inner\"><div #ngxitems class=\"ngxcarousel-items\"><ng-content select=\"[NgxCarouselItem]\"></ng-content></div><div style=\"clear: both\"></div></div><ng-content select=\"[NgxCarouselPrev]\"></ng-content><ng-content select=\"[NgxCarouselNext]\"></ng-content></div><div #points *ngIf=\"userData.point.visible\"><ul class=\"ngxcarouselPoint\"><li #pointInner *ngFor=\"let i of pointNumbers; let i=index\" [class.active]=\"i==pointers\" (click)=\"moveTo(i)\"></li></ul></div></div>",
+                styles: ["\n    .som {\n      width: 100%;\n      position: relative;\n    }\n    .som .ngxcarousel {\n      width: 100%;\n      position: relative;\n    }\n    .som .ngxcarousel .ngxcarousel-inner {\n      position: relative;\n      overflow: hidden;\n    }\n    .som .ngxcarousel .ngxcarousel-inner .ngxcarousel-items {\n      white-space: nowrap;\n      position: relative;\n    }\n    .banner .ngxcarouselPointDefault .ngxcarouselPoint {\n      position: absolute;\n      width: 100%;\n      bottom: 20px;\n    }\n    .banner .ngxcarouselPointDefault .ngxcarouselPoint li {\n      background: rgba(255, 255, 255, 0.55);\n    }\n    .banner .ngxcarouselPointDefault .ngxcarouselPoint li.active {\n      background: white;\n    }\n    .banner .ngxcarouselPointDefault .ngxcarouselPoint li:hover {\n      cursor: pointer;\n    }\n    .ngxcarouselPointDefault .ngxcarouselPoint {\n      list-style-type: none;\n      text-align: center;\n      padding: 12px;\n      margin: 0;\n      white-space: nowrap;\n      overflow: auto;\n      box-sizing: border-box;\n    }\n    .ngxcarouselPointDefault .ngxcarouselPoint li {\n      display: inline-block;\n      border-radius: 50%;\n      background: rgba(0, 0, 0, 0.55);\n      padding: 4px;\n      margin: 0 4px;\n      transition-timing-function: cubic-bezier(0.17, 0.67, 0.83, 0.67);\n      transition: .4s;\n    }\n    .ngxcarouselPointDefault .ngxcarouselPoint li.active {\n      background: #6b6b6b;\n      transform: scale(1.8);\n    }\n    .ngxcarouselPointDefault .ngxcarouselPoint li:hover {\n      cursor: pointer;\n    }\n  "]
             },] },
 ];
 /** @nocollapse */
@@ -464,11 +514,13 @@ NgxCarouselComponent.propDecorators = {
     'userData': [{ type: Input, args: ['inputs',] },],
     'carouselLoad': [{ type: Output, args: ['carouselLoad',] },],
     'items': [{ type: ContentChildren, args: [NgxCarouselItemDirective,] },],
+    'points': [{ type: ViewChildren, args: ['pointInner', { read: ElementRef },] },],
     'next': [{ type: ContentChild, args: [NgxCarouselNextDirective, { read: ElementRef },] },],
     'prev': [{ type: ContentChild, args: [NgxCarouselPrevDirective, { read: ElementRef },] },],
     'carouselMain1': [{ type: ViewChild, args: ['ngxcarousel', { read: ElementRef },] },],
     'carouselInner1': [{ type: ViewChild, args: ['ngxitems', { read: ElementRef },] },],
     'carousel1': [{ type: ViewChild, args: ['main', { read: ElementRef },] },],
+    'pointMain': [{ type: ViewChild, args: ['points', { read: ElementRef },] },],
     'onResizing': [{ type: HostListener, args: ['window:resize', ['$event'],] },],
 };
 //# sourceMappingURL=ngx-carousel.component.js.map

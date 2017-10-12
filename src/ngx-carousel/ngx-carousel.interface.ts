@@ -40,7 +40,7 @@ export class NgxCarousel {
   speed?: number;
   interval?: number;
   animation?: Animate;
-  point?: boolean;
+  point?: Point;
   type?: string;
   load?: number;
   custom?: Custom;
@@ -52,3 +52,8 @@ export class NgxCarousel {
 export type Custom = 'banner';
 export type Animate = 'lazy';
 
+
+export interface Point {
+  visible: boolean;
+  pointStyles?: string;
+}

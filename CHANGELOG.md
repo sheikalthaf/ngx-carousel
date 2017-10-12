@@ -2,6 +2,24 @@
 
 ### Before Upgrading once read the [Readme.md](https://github.com/sheikalthaf/ngx-carousel/blob/master/README.md) file
 
+## 1.2.5
+
+### Features
+
+* In inputs `point` is now changed with more options (`point: {visible: boolean, pointStyles: string}`).
+
+* In point `visible` is used to visible point in the carousel.
+
+* In point `pointStyles` is used to customize the point with own css. Check readme file for more details.
+
+* Point click event is now added. If you click any point in move to curresponding slide
+
+### Issues fixed
+
+* custom css option is added in `pointStyles`[#16](https://github.com/sheikalthaf/ngx-carousel/issues/16)
+
+* point click event is now added. if you click any point in move to curresponding slide[#17](https://github.com/sheikalthaf/ngx-carousel/issues/17)
+
 ## 1.2.0
 
 ### Changes
@@ -14,7 +32,7 @@
 
 * Removed buttons css for user customization. From this build `NgxCarouselNext` act as a rightRs and `NgxCarouselPrev` act as a leftRs. go and apply your own button with these directives. Check getstarted in readme.
 
-### Issues fixed 
+### Issues fixed
 
 * Example is Updated in readme[#13](https://github.com/sheikalthaf/ngx-carousel/issues/13)
 
