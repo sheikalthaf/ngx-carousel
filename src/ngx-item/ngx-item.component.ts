@@ -1,20 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostBinding } from '@angular/core';
 
 @Component({
   selector: 'ngx-item',
-  template: `<div class="item"><ng-content></ng-content></div>`,
+  template: `<ng-content></ng-content>`,
   styles: [`
-    .item {
+    :host {
         display: inline-block;
         white-space: initial;
+        vertical-align: top;
     }
   `]
 })
-export class NgxItemComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit() {
-  }
-
+export class NgxItemComponent {
+  @HostBinding('class') classes = 'item';
 }

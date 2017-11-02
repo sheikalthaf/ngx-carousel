@@ -1,13 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostBinding } from '@angular/core';
 
 @Component({
   selector: 'ngx-tile',
-  template: `<div class="item"><div class="tile"><ng-content></ng-content></div></div>`,
+  template: `<div class="tile"><ng-content></ng-content></div>`,
   styles: [`
-    .item {
+    :host {
         display: inline-block;
         white-space: initial;
         padding: 10px;
+        box-sizing: border-box;
+        vertical-align: top;
     }
 
     .tile {
@@ -19,11 +21,6 @@ import { Component, OnInit } from '@angular/core';
     }
   `]
 })
-export class NgxTileComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit() {
-  }
-
+export class NgxTileComponent {
+  @HostBinding('class') classes = 'item';
 }

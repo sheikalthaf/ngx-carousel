@@ -96,20 +96,57 @@ export class SampleComponent implements OnInit {
 
 ```javascript
 
+export class NgxCarouselStore {
+  type: string;
+  deviceType: DeviceType;
+  classText: string;
+  items: number;
+  load: number;
+  deviceWidth: number;
+  carouselWidth: number;
+  itemWidth: number;
+  visibleItems: ItemsControl;
+  slideItems: number;
+  itemWidthPer: number;
+  itemLength: number;
+  currentSlide: number;
+  easing: string;
+  speed: number;
+  transform: Transfrom;
+  loop: boolean;
+  dexVal: number;
+  touchTransform: number;
+  touch: Touch;
+  isEnd: boolean;
+  isFirst: boolean;
+  isLast: boolean;
+}
+export type DeviceType = 'xs' | 'sm' | 'md' | 'lg' | 'all';
+
+export class ItemsControl {
+  start: number;
+  end: number;
+}
+
+export class Touch {
+  active?: boolean;
+  swipe: string;
+  velocity: number;
+}
 
 export class NgxCarousel {
-  grid: Grid;
+  grid: Transfrom;
   slide?: number;
   speed?: number;
   interval?: number;
   animation?: Animate;
-  point?: boolean;
+  point?: Point;
   type?: string;
   load?: number;
   custom?: Custom;
   loop?: boolean;
-  easing: string;
   touch?: boolean;
+  easing?: string;
 }
 
 export class Grid {
@@ -118,6 +155,11 @@ export class Grid {
   md: number;
   lg: number;
   all: number;
+}
+
+export interface Point {
+  visible: boolean;
+  pointStyles?: string;
 }
 
 export type Custom = 'banner';
@@ -151,19 +193,38 @@ export type Animate = 'lazy';
 
 This is HTML I'm using in the carousel. Add your own css according to this elements in `pointStyles`. check below guide for more details.
 
+```html
+
+<ngx-carousel
+      [inputs]="carouselBanner"
+      [moveToSlide]="2"
+      (onMove)="onmoveFn($event)"
+      (carouselLoad)="loadItemsFn()">
+</ngx-carousel>
+
+```
+
+* `inputs` is an `Input` and It accepts `NgxCarousel`.
+* `moveToSlide` is an `Input` which accepts point numbers. Numbers represents no of slide to be done.
+* `onMove` is an `Output` which triggered on every slide before start and it will emit `$event` as `NgxCarouselStore` object.
+* `carouselLoad` is an `Output` which triggered when slide reaches the end on items based on inputs `load`.
+
+
 # Getstarted guide
 
 ## Banner with Custom point style
 
 ```javascript
 import { Component } from '@angular/core';
-import { NgxCarousel } from 'ngx-carousel';
+import { NgxCarousel, NgxCarouselStore } from 'ngx-carousel';
 
 @Component({
   selector: 'app-carousel',
   template: `
     <ngx-carousel
-      [inputs]="carouselBanner">
+      [inputs]="carouselBanner"
+      [moveToSlide]="1"
+      (onMove)="onmoveFn($event)">
 
           <ngx-item NgxCarouselItem class="bannerStyle">
               <h1>1</h1>
@@ -258,7 +319,12 @@ export class Sample implements OnInit {
       touch: true
     }
   }
-  
+
+  /* It will be triggered on every slide*/
+  onmoveFn(data: NgxCarouselStore) {
+    console.log(data);
+  }
+
 }
 
 ```

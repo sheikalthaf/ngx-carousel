@@ -1,12 +1,17 @@
-import { ElementRef, Renderer, OnInit, OnDestroy, AfterViewInit, EventEmitter, AfterContentInit } from '@angular/core';
+import { ElementRef, Renderer, OnInit, OnDestroy, AfterViewInit, EventEmitter, AfterContentInit, OnChanges, SimpleChanges } from '@angular/core';
 import { NgxCarouselStore } from './ngx-carousel.interface';
-export declare class NgxCarouselComponent implements OnInit, AfterContentInit, AfterViewInit, OnDestroy {
+import { Subscription } from 'rxjs/Subscription';
+export declare class NgxCarouselComponent implements OnInit, AfterContentInit, AfterViewInit, OnDestroy, OnChanges {
     private el;
     private renderer;
+    itemsSubscribe: Subscription;
+    carouselCssNode: any;
     pointIndex: number;
     pointers: number;
     userData: any;
-    carouselLoad: EventEmitter<any>;
+    moveToSlide: number;
+    carouselLoad: EventEmitter<{}>;
+    onMove: EventEmitter<{}>;
     private items;
     private points;
     private next;
@@ -15,6 +20,7 @@ export declare class NgxCarouselComponent implements OnInit, AfterContentInit, A
     private carouselInner1;
     private carousel1;
     private pointMain;
+    private forTouch;
     private leftBtn;
     private rightBtn;
     private evtValue;
@@ -26,7 +32,6 @@ export declare class NgxCarouselComponent implements OnInit, AfterContentInit, A
     private carouselItems;
     private onResize;
     private onScrolling;
-    private currentSlide;
     private carouselInt;
     Arr1: ArrayConstructor;
     pointNumbers: Array<any>;
@@ -37,16 +42,18 @@ export declare class NgxCarouselComponent implements OnInit, AfterContentInit, A
     ngAfterViewInit(): void;
     ngOnDestroy(): void;
     onResizing(event: any): void;
+    ngOnChanges(changes: SimpleChanges): void;
+    private storeCarouselData();
     private touch();
     private touchHandling(e, ev);
     private onWindowScrolling();
-    private storeCarouselData();
     private carouselPoint();
     private carouselPointActiver();
     moveTo(index: number): void;
     private carouselSize();
     private carouselScrollOne(Btn);
     private carouselScrollTwo(Btn, currentSlide, itemSpeed);
+    private btnBoolean(first, last);
     private transformStyle(slide);
     private carouselLoadTrigger();
     private generateID();

@@ -9,7 +9,7 @@
 import * as i0 from '@angular/core';
 import * as i1 from '@angular/common';
 import * as i2 from './ngx-carousel.component';
-const styles_NgxCarouselComponent:any[] = ['.som[_ngcontent-%COMP%] {\n      width: 100%;\n      position: relative;\n    }\n    .som[_ngcontent-%COMP%]   .ngxcarousel[_ngcontent-%COMP%] {\n      width: 100%;\n      position: relative;\n    }\n    .som[_ngcontent-%COMP%]   .ngxcarousel[_ngcontent-%COMP%]   .ngxcarousel-inner[_ngcontent-%COMP%] {\n      position: relative;\n      overflow: hidden;\n    }\n    .som[_ngcontent-%COMP%]   .ngxcarousel[_ngcontent-%COMP%]   .ngxcarousel-inner[_ngcontent-%COMP%]   .ngxcarousel-items[_ngcontent-%COMP%] {\n      white-space: nowrap;\n      position: relative;\n    }\n    .banner[_ngcontent-%COMP%]   .ngxcarouselPointDefault[_ngcontent-%COMP%]   .ngxcarouselPoint[_ngcontent-%COMP%] {\n      position: absolute;\n      width: 100%;\n      bottom: 20px;\n    }\n    .banner[_ngcontent-%COMP%]   .ngxcarouselPointDefault[_ngcontent-%COMP%]   .ngxcarouselPoint[_ngcontent-%COMP%]   li[_ngcontent-%COMP%] {\n      background: rgba(255, 255, 255, 0.55);\n    }\n    .banner[_ngcontent-%COMP%]   .ngxcarouselPointDefault[_ngcontent-%COMP%]   .ngxcarouselPoint[_ngcontent-%COMP%]   li.active[_ngcontent-%COMP%] {\n      background: white;\n    }\n    .banner[_ngcontent-%COMP%]   .ngxcarouselPointDefault[_ngcontent-%COMP%]   .ngxcarouselPoint[_ngcontent-%COMP%]   li[_ngcontent-%COMP%]:hover {\n      cursor: pointer;\n    }\n    .ngxcarouselPointDefault[_ngcontent-%COMP%]   .ngxcarouselPoint[_ngcontent-%COMP%] {\n      list-style-type: none;\n      text-align: center;\n      padding: 12px;\n      margin: 0;\n      white-space: nowrap;\n      overflow: auto;\n      box-sizing: border-box;\n    }\n    .ngxcarouselPointDefault[_ngcontent-%COMP%]   .ngxcarouselPoint[_ngcontent-%COMP%]   li[_ngcontent-%COMP%] {\n      display: inline-block;\n      border-radius: 50%;\n      background: rgba(0, 0, 0, 0.55);\n      padding: 4px;\n      margin: 0 4px;\n      transition-timing-function: cubic-bezier(0.17, 0.67, 0.83, 0.67);\n      transition: .4s;\n    }\n    .ngxcarouselPointDefault[_ngcontent-%COMP%]   .ngxcarouselPoint[_ngcontent-%COMP%]   li.active[_ngcontent-%COMP%] {\n      background: #6b6b6b;\n      transform: scale(1.8);\n    }\n    .ngxcarouselPointDefault[_ngcontent-%COMP%]   .ngxcarouselPoint[_ngcontent-%COMP%]   li[_ngcontent-%COMP%]:hover {\n      cursor: pointer;\n    }'];
+const styles_NgxCarouselComponent:any[] = ['[_nghost-%COMP%] {\n      display: block;\n      position: relative;\n    }\n\n    .ngxcarousel[_ngcontent-%COMP%]   .ngxcarousel-inner[_ngcontent-%COMP%] {\n      position: relative;\n      overflow: hidden;\n    }\n    .ngxcarousel[_ngcontent-%COMP%]   .ngxcarousel-inner[_ngcontent-%COMP%]   .ngxcarousel-items[_ngcontent-%COMP%] {\n      white-space: nowrap;\n      position: relative;\n    }\n\n    .banner[_ngcontent-%COMP%]   .ngxcarouselPointDefault[_ngcontent-%COMP%]   .ngxcarouselPoint[_ngcontent-%COMP%] {\n      position: absolute;\n      width: 100%;\n      bottom: 20px;\n    }\n    .banner[_ngcontent-%COMP%]   .ngxcarouselPointDefault[_ngcontent-%COMP%]   .ngxcarouselPoint[_ngcontent-%COMP%]   li[_ngcontent-%COMP%] {\n      background: rgba(255, 255, 255, 0.55);\n    }\n    .banner[_ngcontent-%COMP%]   .ngxcarouselPointDefault[_ngcontent-%COMP%]   .ngxcarouselPoint[_ngcontent-%COMP%]   li.active[_ngcontent-%COMP%] {\n      background: white;\n    }\n    .banner[_ngcontent-%COMP%]   .ngxcarouselPointDefault[_ngcontent-%COMP%]   .ngxcarouselPoint[_ngcontent-%COMP%]   li[_ngcontent-%COMP%]:hover {\n      cursor: pointer;\n    }\n\n    .ngxcarouselPointDefault[_ngcontent-%COMP%]   .ngxcarouselPoint[_ngcontent-%COMP%] {\n      list-style-type: none;\n      text-align: center;\n      padding: 12px;\n      margin: 0;\n      white-space: nowrap;\n      overflow: auto;\n      box-sizing: border-box;\n    }\n    .ngxcarouselPointDefault[_ngcontent-%COMP%]   .ngxcarouselPoint[_ngcontent-%COMP%]   li[_ngcontent-%COMP%] {\n      display: inline-block;\n      border-radius: 50%;\n      background: rgba(0, 0, 0, 0.55);\n      padding: 4px;\n      margin: 0 4px;\n      transition-timing-function: cubic-bezier(0.17, 0.67, 0.83, 0.67);\n      transition: 0.4s;\n    }\n    .ngxcarouselPointDefault[_ngcontent-%COMP%]   .ngxcarouselPoint[_ngcontent-%COMP%]   li.active[_ngcontent-%COMP%] {\n      background: #6b6b6b;\n      transform: scale(1.8);\n    }\n    .ngxcarouselPointDefault[_ngcontent-%COMP%]   .ngxcarouselPoint[_ngcontent-%COMP%]   li[_ngcontent-%COMP%]:hover {\n      cursor: pointer;\n    }'];
 export const RenderType_NgxCarouselComponent:i0.RendererType2 = i0.ɵcrt({encapsulation:0,
     styles:styles_NgxCarouselComponent,data:{}});
 function View_NgxCarouselComponent_2(_l:any):i0.ɵViewDefinition {
@@ -45,25 +45,23 @@ function View_NgxCarouselComponent_1(_l:any):i0.ɵViewDefinition {
 export function View_NgxCarouselComponent_0(_l:any):i0.ɵViewDefinition {
   return i0.ɵvid(0,[i0.ɵqud(671088640,1,{points:1}),i0.ɵqud(402653184,2,{carouselMain1:0}),
       i0.ɵqud(402653184,3,{carouselInner1:0}),i0.ɵqud(402653184,4,{carousel1:0}),i0.ɵqud(671088640,
-          5,{pointMain:0}),(_l()(),i0.ɵeld(0,[[4,0],['main',1]],(null as any),9,'div',
-          [['class','som']],(null as any),(null as any),(null as any),(null as any),
-          (null as any))),(_l()(),i0.ɵeld(0,[[2,0],['ngxcarousel',1]],(null as any),
-          6,'div',[['class','ngxcarousel']],(null as any),(null as any),(null as any),
-          (null as any),(null as any))),(_l()(),i0.ɵeld(0,(null as any),(null as any),
-          3,'div',[['class','ngxcarousel-inner']],(null as any),(null as any),(null as any),
-          (null as any),(null as any))),(_l()(),i0.ɵeld(0,[[3,0],['ngxitems',1]],(null as any),
-          1,'div',[['class','ngxcarousel-items']],(null as any),(null as any),(null as any),
-          (null as any),(null as any))),i0.ɵncd((null as any),0),(_l()(),i0.ɵeld(0,
-          (null as any),(null as any),0,'div',[['style','clear: both']],(null as any),
-          (null as any),(null as any),(null as any),(null as any))),i0.ɵncd((null as any),
-          1),i0.ɵncd((null as any),2),(_l()(),i0.ɵand(16777216,(null as any),(null as any),
-          1,(null as any),View_NgxCarouselComponent_1)),i0.ɵdid(16384,(null as any),
-          0,i1.NgIf,[i0.ViewContainerRef,i0.TemplateRef],{ngIf:[0,'ngIf']},(null as any))],
-      (_ck,_v) => {
-        var _co:i2.NgxCarouselComponent = _v.component;
-        const currVal_0:any = _co.userData.point.visible;
-        _ck(_v,14,0,currVal_0);
-      },(null as any));
+          5,{pointMain:0}),i0.ɵqud(402653184,6,{forTouch:0}),(_l()(),i0.ɵeld(0,[[2,
+          0],['ngxcarousel',1]],(null as any),6,'div',[['class','ngxcarousel']],(null as any),
+          (null as any),(null as any),(null as any),(null as any))),(_l()(),i0.ɵeld(0,
+          [[6,0],['forTouch',1]],(null as any),3,'div',[['class','ngxcarousel-inner']],
+          (null as any),(null as any),(null as any),(null as any),(null as any))),
+      (_l()(),i0.ɵeld(0,[[3,0],['ngxitems',1]],(null as any),1,'div',[['class','ngxcarousel-items']],
+          (null as any),(null as any),(null as any),(null as any),(null as any))),
+      i0.ɵncd((null as any),0),(_l()(),i0.ɵeld(0,(null as any),(null as any),0,'div',
+          [['style','clear: both']],(null as any),(null as any),(null as any),(null as any),
+          (null as any))),i0.ɵncd((null as any),1),i0.ɵncd((null as any),2),(_l()(),
+          i0.ɵand(16777216,(null as any),(null as any),1,(null as any),View_NgxCarouselComponent_1)),
+      i0.ɵdid(16384,(null as any),0,i1.NgIf,[i0.ViewContainerRef,i0.TemplateRef],{ngIf:[0,
+          'ngIf']},(null as any))],(_ck,_v) => {
+    var _co:i2.NgxCarouselComponent = _v.component;
+    const currVal_0:any = _co.userData.point.visible;
+    _ck(_v,14,0,currVal_0);
+  },(null as any));
 }
 export function View_NgxCarouselComponent_Host_0(_l:any):i0.ɵViewDefinition {
   return i0.ɵvid(0,[(_l()(),i0.ɵeld(0,(null as any),(null as any),4,'ngx-carousel',
@@ -74,7 +72,7 @@ export function View_NgxCarouselComponent_Host_0(_l:any):i0.ɵViewDefinition {
           ad = (pd_0 && ad);
         }
         return ad;
-      },View_NgxCarouselComponent_0,RenderType_NgxCarouselComponent)),i0.ɵdid(5488640,
+      },View_NgxCarouselComponent_0,RenderType_NgxCarouselComponent)),i0.ɵdid(6012928,
       (null as any),3,i2.NgxCarouselComponent,[i0.ElementRef,i0.Renderer],(null as any),
       (null as any)),i0.ɵqud(603979776,1,{items:1}),i0.ɵqud(335544320,2,{next:0}),
       i0.ɵqud(335544320,3,{prev:0})],(_ck,_v) => {
@@ -82,6 +80,7 @@ export function View_NgxCarouselComponent_Host_0(_l:any):i0.ɵViewDefinition {
   },(null as any));
 }
 export const NgxCarouselComponentNgFactory:i0.ComponentFactory<i2.NgxCarouselComponent> = i0.ɵccf('ngx-carousel',
-    i2.NgxCarouselComponent,View_NgxCarouselComponent_Host_0,{userData:'inputs'},{carouselLoad:'carouselLoad'},
-    ['[NgxCarouselItem]','[NgxCarouselPrev]','[NgxCarouselNext]']);
-//# sourceMappingURL=data:application/json;base64,eyJmaWxlIjoiQzovVXNlcnMvU2hlaWsgQWx0aGFmL0Rlc2t0b3AvUHJvamVjdHMvbmd4LWNhcm91c2VsL3NyYy9uZ3gtY2Fyb3VzZWwvbmd4LWNhcm91c2VsLmNvbXBvbmVudC5uZ2ZhY3RvcnkudHMiLCJ2ZXJzaW9uIjozLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyJuZzovLy9DOi9Vc2Vycy9TaGVpayBBbHRoYWYvRGVza3RvcC9Qcm9qZWN0cy9uZ3gtY2Fyb3VzZWwvc3JjL25neC1jYXJvdXNlbC9uZ3gtY2Fyb3VzZWwuY29tcG9uZW50LnRzIiwibmc6Ly8vQzovVXNlcnMvU2hlaWsgQWx0aGFmL0Rlc2t0b3AvUHJvamVjdHMvbmd4LWNhcm91c2VsL3NyYy9uZ3gtY2Fyb3VzZWwvbmd4LWNhcm91c2VsLmNvbXBvbmVudC50cy5OZ3hDYXJvdXNlbENvbXBvbmVudC5odG1sIiwibmc6Ly8vQzovVXNlcnMvU2hlaWsgQWx0aGFmL0Rlc2t0b3AvUHJvamVjdHMvbmd4LWNhcm91c2VsL3NyYy9uZ3gtY2Fyb3VzZWwvbmd4LWNhcm91c2VsLmNvbXBvbmVudC50cy5OZ3hDYXJvdXNlbENvbXBvbmVudF9Ib3N0Lmh0bWwiXSwic291cmNlc0NvbnRlbnQiOlsiICIsIjxkaXYgI21haW4gY2xhc3M9XCJzb21cIj48ZGl2ICNuZ3hjYXJvdXNlbCBjbGFzcz1cIm5neGNhcm91c2VsXCI+PGRpdiBjbGFzcz1cIm5neGNhcm91c2VsLWlubmVyXCI+PGRpdiAjbmd4aXRlbXMgY2xhc3M9XCJuZ3hjYXJvdXNlbC1pdGVtc1wiPjxuZy1jb250ZW50IHNlbGVjdD1cIltOZ3hDYXJvdXNlbEl0ZW1dXCI+PC9uZy1jb250ZW50PjwvZGl2PjxkaXYgc3R5bGU9XCJjbGVhcjogYm90aFwiPjwvZGl2PjwvZGl2PjxuZy1jb250ZW50IHNlbGVjdD1cIltOZ3hDYXJvdXNlbFByZXZdXCI+PC9uZy1jb250ZW50PjxuZy1jb250ZW50IHNlbGVjdD1cIltOZ3hDYXJvdXNlbE5leHRdXCI+PC9uZy1jb250ZW50PjwvZGl2PjxkaXYgI3BvaW50cyAqbmdJZj1cInVzZXJEYXRhLnBvaW50LnZpc2libGVcIj48dWwgY2xhc3M9XCJuZ3hjYXJvdXNlbFBvaW50XCI+PGxpICNwb2ludElubmVyICpuZ0Zvcj1cImxldCBpIG9mIHBvaW50TnVtYmVyczsgbGV0IGk9aW5kZXhcIiBbY2xhc3MuYWN0aXZlXT1cImk9PXBvaW50ZXJzXCIgKGNsaWNrKT1cIm1vdmVUbyhpKVwiPjwvbGk+PC91bD48L2Rpdj48L2Rpdj4iLCI8bmd4LWNhcm91c2VsPjwvbmd4LWNhcm91c2VsPiJdLCJtYXBwaW5ncyI6IkFBQUE7Ozs7Ozs7Ozs7Ozs7OztvQkNBMlo7TUFBQTtnQkFBQTtRQUFBO1FBQUE7UUFBeUY7VUFBQTtVQUFBO1FBQUE7UUFBekY7TUFBQTs7SUFBNEQ7SUFBNUQsV0FBNEQsU0FBNUQ7Ozs7b0JBQXpFO01BQUEsd0VBQTRDO2FBQUE7VUFBQTtNQUE2QjthQUFBOzRCQUFBOztJQUFnQjtJQUFoQixXQUFnQixTQUFoQjs7Ozs7OzJCQUEzWjtVQUFBO1VBQUEsZ0JBQXVCO1VBQUE7VUFBQSw4QkFBc0M7VUFBQTtVQUFBLDhCQUErQjtVQUFBO1VBQUEscUNBQXlDLGtCQUEwRDtVQUFBO1VBQUEsaUVBQXFDO1VBQUEsVUFBb0Qsa0JBQTBEO1VBQUEscURBQUE7VUFBQTs7O1FBQWE7UUFBYixZQUFhLFNBQWI7Ozs7b0JDQWxWO01BQUE7UUFBQTtRQUFBO1VBQUE7VUFBQTtRQUFBO1FBQUE7TUFBQSx1RUFBQTtNQUFBO01BQUE7YUFBQTtJQUFBOzs7OzsifQ==
+    i2.NgxCarouselComponent,View_NgxCarouselComponent_Host_0,{userData:'inputs',moveToSlide:'moveToSlide'},
+    {carouselLoad:'carouselLoad',onMove:'onMove'},['[NgxCarouselItem]','[NgxCarouselPrev]',
+        '[NgxCarouselNext]']);
+//# sourceMappingURL=data:application/json;base64,eyJmaWxlIjoiQzovVXNlcnMvU2hlaWsgQWx0aGFmL0Rlc2t0b3AvUHJvamVjdHMvbmd4LWNhcm91c2VsL3NyYy9uZ3gtY2Fyb3VzZWwvbmd4LWNhcm91c2VsLmNvbXBvbmVudC5uZ2ZhY3RvcnkudHMiLCJ2ZXJzaW9uIjozLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyJuZzovLy9DOi9Vc2Vycy9TaGVpayBBbHRoYWYvRGVza3RvcC9Qcm9qZWN0cy9uZ3gtY2Fyb3VzZWwvc3JjL25neC1jYXJvdXNlbC9uZ3gtY2Fyb3VzZWwuY29tcG9uZW50LnRzIiwibmc6Ly8vQzovVXNlcnMvU2hlaWsgQWx0aGFmL0Rlc2t0b3AvUHJvamVjdHMvbmd4LWNhcm91c2VsL3NyYy9uZ3gtY2Fyb3VzZWwvbmd4LWNhcm91c2VsLmNvbXBvbmVudC50cy5OZ3hDYXJvdXNlbENvbXBvbmVudC5odG1sIiwibmc6Ly8vQzovVXNlcnMvU2hlaWsgQWx0aGFmL0Rlc2t0b3AvUHJvamVjdHMvbmd4LWNhcm91c2VsL3NyYy9uZ3gtY2Fyb3VzZWwvbmd4LWNhcm91c2VsLmNvbXBvbmVudC50cy5OZ3hDYXJvdXNlbENvbXBvbmVudF9Ib3N0Lmh0bWwiXSwic291cmNlc0NvbnRlbnQiOlsiICIsIjxkaXYgI25neGNhcm91c2VsIGNsYXNzPVwibmd4Y2Fyb3VzZWxcIj48ZGl2ICNmb3JUb3VjaCBjbGFzcz1cIm5neGNhcm91c2VsLWlubmVyXCI+PGRpdiAjbmd4aXRlbXMgY2xhc3M9XCJuZ3hjYXJvdXNlbC1pdGVtc1wiPjxuZy1jb250ZW50IHNlbGVjdD1cIltOZ3hDYXJvdXNlbEl0ZW1dXCI+PC9uZy1jb250ZW50PjwvZGl2PjxkaXYgc3R5bGU9XCJjbGVhcjogYm90aFwiPjwvZGl2PjwvZGl2PjxuZy1jb250ZW50IHNlbGVjdD1cIltOZ3hDYXJvdXNlbFByZXZdXCI+PC9uZy1jb250ZW50PjxuZy1jb250ZW50IHNlbGVjdD1cIltOZ3hDYXJvdXNlbE5leHRdXCI+PC9uZy1jb250ZW50PjwvZGl2PjxkaXYgI3BvaW50cyAqbmdJZj1cInVzZXJEYXRhLnBvaW50LnZpc2libGVcIj48dWwgY2xhc3M9XCJuZ3hjYXJvdXNlbFBvaW50XCI+PGxpICNwb2ludElubmVyICpuZ0Zvcj1cImxldCBpIG9mIHBvaW50TnVtYmVyczsgbGV0IGk9aW5kZXhcIiBbY2xhc3MuYWN0aXZlXT1cImk9PXBvaW50ZXJzXCIgKGNsaWNrKT1cIm1vdmVUbyhpKVwiPjwvbGk+PC91bD48L2Rpdj4iLCI8bmd4LWNhcm91c2VsPjwvbmd4LWNhcm91c2VsPiJdLCJtYXBwaW5ncyI6IkFBQUE7Ozs7Ozs7Ozs7Ozs7OztvQkNBOFk7TUFBQTtnQkFBQTtRQUFBO1FBQUE7UUFBeUY7VUFBQTtVQUFBO1FBQUE7UUFBekY7TUFBQTs7SUFBNEQ7SUFBNUQsV0FBNEQsU0FBNUQ7Ozs7b0JBQXpFO01BQUEsd0VBQTRDO2FBQUE7VUFBQTtNQUE2QjthQUFBOzRCQUFBOztJQUFnQjtJQUFoQixXQUFnQixTQUFoQjs7Ozs7OzZEQUE5WTtVQUFBO1VBQUEsMERBQXNDO1VBQUE7VUFBQTtNQUF5QztVQUFBO2FBQXlDLGtCQUEwRDtVQUFBO1VBQUEsdUJBQXFDLHlCQUFvRCxrQkFBMEQ7aUJBQUE7YUFBQTtVQUFBOztJQUFhO0lBQWIsWUFBYSxTQUFiOzs7O29CQ0FyVTtNQUFBO1FBQUE7UUFBQTtVQUFBO1VBQUE7UUFBQTtRQUFBO01BQUEsdUVBQUE7TUFBQTtNQUFBO2FBQUE7SUFBQTs7Ozs7OyJ9
