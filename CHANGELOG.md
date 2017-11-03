@@ -2,6 +2,34 @@
 
 ### Before Upgrading once read the [Readme.md](https://github.com/sheikalthaf/ngx-carousel/blob/master/README.md) file
 
+## 1.3.0
+
+### Features
+
+* `moveToSlide` is an `Input` which accepts point numbers. Numbers represents no of slide to be done. You can change it dynamically and slider will based on the number.
+
+* `onMove` is an `Output` which triggered on every slide before start and it will emit `$event` as `NgxCarouselStore` object.
+
+### Issues fixed
+
+* Added feature to move slider to specific point number[#21](https://github.com/sheikalthaf/ngx-carousel/issues/21)
+
+* Fixed the swipe issue on iphone 6[#22](https://github.com/sheikalthaf/ngx-carousel/issues/22)
+
+* Fixed the point issue [#24](https://github.com/sheikalthaf/ngx-carousel/issues/24)
+
+* Added to `onMove` to customize your carousel [#25](https://github.com/sheikalthaf/ngx-carousel/issues/25)
+
+* Fixed the back button issue when remaining slide is one [#28](https://github.com/sheikalthaf/ngx-carousel/issues/28)
+
+* Point is no show the correct numbers when resize [#29](https://github.com/sheikalthaf/ngx-carousel/issues/29)
+
+* button will gets hidden when no more slides [#33](https://github.com/sheikalthaf/ngx-carousel/issues/33)
+
+* This feature is available through `onMove` output. check `visibleItems` [#34](https://github.com/sheikalthaf/ngx-carousel/issues/33)
+
+* point click event is now added. if you click any point in move to curresponding slide[#17](https://github.com/sheikalthaf/ngx-carousel/issues/17)
+
 ## 1.2.5
 
 ### Features

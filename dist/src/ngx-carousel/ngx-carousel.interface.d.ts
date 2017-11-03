@@ -1,15 +1,19 @@
 export declare class NgxCarouselStore {
     type: string;
-    deviceType?: string;
+    deviceType: DeviceType;
     classText: string;
     items: number;
     load: number;
     deviceWidth: number;
     carouselWidth: number;
-    width: number;
-    visibleItems: number;
+    itemWidth: number;
+    visibleItems: ItemsControl;
     slideItems: number;
     itemWidthPer: number;
+    itemLength: number;
+    currentSlide: number;
+    easing: string;
+    speed: number;
     transform: Transfrom;
     loop: boolean;
     dexVal: number;
@@ -18,6 +22,11 @@ export declare class NgxCarouselStore {
     isEnd: boolean;
     isFirst: boolean;
     isLast: boolean;
+}
+export declare type DeviceType = 'xs' | 'sm' | 'md' | 'lg' | 'all';
+export declare class ItemsControl {
+    start: number;
+    end: number;
 }
 export declare class Touch {
     active?: boolean;

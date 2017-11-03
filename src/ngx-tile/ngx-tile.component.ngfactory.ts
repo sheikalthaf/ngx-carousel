@@ -8,24 +8,23 @@
 
 import * as i0 from '@angular/core';
 import * as i1 from './ngx-tile.component';
-const styles_NgxTileComponent:any[] = ['.item[_ngcontent-%COMP%] {\n        display: inline-block;\n        white-space: initial;\n        padding: 10px;\n    }\n\n    .tile[_ngcontent-%COMP%] {\n        box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);\n    }\n\n    *[_ngcontent-%COMP%] {\n        box-sizing: border-box;\n    }'];
+const styles_NgxTileComponent:any[] = ['[_nghost-%COMP%] {\n        display: inline-block;\n        white-space: initial;\n        padding: 10px;\n        box-sizing: border-box;\n        vertical-align: top;\n    }\n\n    .tile[_ngcontent-%COMP%] {\n        box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);\n    }\n\n    *[_ngcontent-%COMP%] {\n        box-sizing: border-box;\n    }'];
 export const RenderType_NgxTileComponent:i0.RendererType2 = i0.ɵcrt({encapsulation:0,
     styles:styles_NgxTileComponent,data:{}});
 export function View_NgxTileComponent_0(_l:any):i0.ɵViewDefinition {
-  return i0.ɵvid(0,[(_l()(),i0.ɵeld(0,(null as any),(null as any),2,'div',[['class',
-      'item']],(null as any),(null as any),(null as any),(null as any),(null as any))),
-      (_l()(),i0.ɵeld(0,(null as any),(null as any),1,'div',[['class','tile']],(null as any),
-          (null as any),(null as any),(null as any),(null as any))),i0.ɵncd((null as any),
-          0)],(null as any),(null as any));
+  return i0.ɵvid(0,[(_l()(),i0.ɵeld(0,(null as any),(null as any),1,'div',[['class',
+      'tile']],(null as any),(null as any),(null as any),(null as any),(null as any))),
+      i0.ɵncd((null as any),0)],(null as any),(null as any));
 }
 export function View_NgxTileComponent_Host_0(_l:any):i0.ɵViewDefinition {
   return i0.ɵvid(0,[(_l()(),i0.ɵeld(0,(null as any),(null as any),1,'ngx-tile',([] as any[]),
-      (null as any),(null as any),(null as any),View_NgxTileComponent_0,RenderType_NgxTileComponent)),
-      i0.ɵdid(114688,(null as any),0,i1.NgxTileComponent,([] as any[]),(null as any),
-          (null as any))],(_ck,_v) => {
-    _ck(_v,1,0);
-  },(null as any));
+      [[8,'className',0]],(null as any),(null as any),View_NgxTileComponent_0,RenderType_NgxTileComponent)),
+      i0.ɵdid(49152,(null as any),0,i1.NgxTileComponent,([] as any[]),(null as any),
+          (null as any))],(null as any),(_ck,_v) => {
+    const currVal_0:any = i0.ɵnov(_v,1).classes;
+    _ck(_v,0,0,currVal_0);
+  });
 }
 export const NgxTileComponentNgFactory:i0.ComponentFactory<i1.NgxTileComponent> = i0.ɵccf('ngx-tile',
     i1.NgxTileComponent,View_NgxTileComponent_Host_0,{},{},['*']);
-//# sourceMappingURL=data:application/json;base64,eyJmaWxlIjoiQzovVXNlcnMvU2hlaWsgQWx0aGFmL0Rlc2t0b3AvUHJvamVjdHMvbmd4LWNhcm91c2VsL3NyYy9uZ3gtdGlsZS9uZ3gtdGlsZS5jb21wb25lbnQubmdmYWN0b3J5LnRzIiwidmVyc2lvbiI6Mywic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsibmc6Ly8vQzovVXNlcnMvU2hlaWsgQWx0aGFmL0Rlc2t0b3AvUHJvamVjdHMvbmd4LWNhcm91c2VsL3NyYy9uZ3gtdGlsZS9uZ3gtdGlsZS5jb21wb25lbnQudHMiLCJuZzovLy9DOi9Vc2Vycy9TaGVpayBBbHRoYWYvRGVza3RvcC9Qcm9qZWN0cy9uZ3gtY2Fyb3VzZWwvc3JjL25neC10aWxlL25neC10aWxlLmNvbXBvbmVudC50cy5OZ3hUaWxlQ29tcG9uZW50Lmh0bWwiLCJuZzovLy9DOi9Vc2Vycy9TaGVpayBBbHRoYWYvRGVza3RvcC9Qcm9qZWN0cy9uZ3gtY2Fyb3VzZWwvc3JjL25neC10aWxlL25neC10aWxlLmNvbXBvbmVudC50cy5OZ3hUaWxlQ29tcG9uZW50X0hvc3QuaHRtbCJdLCJzb3VyY2VzQ29udGVudCI6WyIgIiwiPGRpdiBjbGFzcz1cIml0ZW1cIj48ZGl2IGNsYXNzPVwidGlsZVwiPjxuZy1jb250ZW50PjwvbmctY29udGVudD48L2Rpdj48L2Rpdj4iLCI8bmd4LXRpbGU+PC9uZ3gtdGlsZT4iXSwibWFwcGluZ3MiOiJBQUFBOzs7Ozs7Ozs7Ozs7OztvQkNBQTtNQUFBO01BQWtCO1VBQUEsaUVBQWtCO1VBQUE7OztvQkNBcEM7TUFBQTthQUFBO1VBQUE7SUFBQTs7OzsifQ==
+//# sourceMappingURL=data:application/json;base64,eyJmaWxlIjoiQzovVXNlcnMvU2hlaWsgQWx0aGFmL0Rlc2t0b3AvUHJvamVjdHMvbmd4LWNhcm91c2VsL3NyYy9uZ3gtdGlsZS9uZ3gtdGlsZS5jb21wb25lbnQubmdmYWN0b3J5LnRzIiwidmVyc2lvbiI6Mywic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsibmc6Ly8vQzovVXNlcnMvU2hlaWsgQWx0aGFmL0Rlc2t0b3AvUHJvamVjdHMvbmd4LWNhcm91c2VsL3NyYy9uZ3gtdGlsZS9uZ3gtdGlsZS5jb21wb25lbnQudHMiLCJuZzovLy9DOi9Vc2Vycy9TaGVpayBBbHRoYWYvRGVza3RvcC9Qcm9qZWN0cy9uZ3gtY2Fyb3VzZWwvc3JjL25neC10aWxlL25neC10aWxlLmNvbXBvbmVudC50cy5OZ3hUaWxlQ29tcG9uZW50Lmh0bWwiLCJuZzovLy9DOi9Vc2Vycy9TaGVpayBBbHRoYWYvRGVza3RvcC9Qcm9qZWN0cy9uZ3gtY2Fyb3VzZWwvc3JjL25neC10aWxlL25neC10aWxlLmNvbXBvbmVudC50cy5OZ3hUaWxlQ29tcG9uZW50X0hvc3QuaHRtbCJdLCJzb3VyY2VzQ29udGVudCI6WyIgIiwiPGRpdiBjbGFzcz1cInRpbGVcIj48bmctY29udGVudD48L25nLWNvbnRlbnQ+PC9kaXY+IiwiPG5neC10aWxlPjwvbmd4LXRpbGU+Il0sIm1hcHBpbmdzIjoiQUFBQTs7Ozs7Ozs7Ozs7Ozs7b0JDQUE7TUFBQTthQUFrQjs7O29CQ0FsQjtNQUFBO2FBQUE7VUFBQTtJQUFBO0lBQUEsV0FBQSxTQUFBOzs7OyJ9

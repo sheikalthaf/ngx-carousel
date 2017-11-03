@@ -4,6 +4,12 @@ var NgxCarouselStore = (function () {
     return NgxCarouselStore;
 }());
 export { NgxCarouselStore };
+var ItemsControl = (function () {
+    function ItemsControl() {
+    }
+    return ItemsControl;
+}());
+export { ItemsControl };
 var Touch = (function () {
     function Touch() {
     }
