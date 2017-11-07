@@ -1,1 +1,0 @@
-{"version":3,"sources":["../index.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,iBAAiB,EAAE,MAAM,2BAA2B,CAAC;AAC9D,OAAO,EAAE,WAAW,EAAE,gBAAgB,EAAE,MAAM,2CAA2C,CAAC","file":"index.js","sourceRoot":"","sourcesContent":["export { NgxCarouselModule } from './src/ngx-carousel.module';\r\nexport { NgxCarousel, NgxCarouselStore } from './src/ngx-carousel/ngx-carousel.interface';"]}
