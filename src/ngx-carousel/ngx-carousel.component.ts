@@ -319,11 +319,21 @@ export class NgxCarouselComponent
           ? this.carouselScrollOne(0)
           : this.carouselScrollOne(1);
       });
+      hammertime.on("hammer.input", function(ev) {
+        // allow nested touch events to no propagate, this may have other side affects but works for now.
+        // TODO: It is probably better to check the source element of the event and only apply the handle to the correct carousel
+        ev.srcEvent.stopPropagation()
+     });
     }
   }
 
   /* handle touch input */
   private touchHandling(e: string, ev: any): void {
+
+    // vertical touch events seem to cause to panstart event with an odd delta
+    // and a center of {x:0,y:0} so this will ignore them
+    if (ev.center.x === 0) { return }
+
     ev = Math.abs(ev.deltaX);
     let valt = ev - this.data.dexVal;
     valt =
@@ -423,7 +433,7 @@ export class NgxCarouselComponent
   private carouselSize(): void {
     this.data.classText = this.generateID();
     let dism = '';
-    const styleid = '.' + this.data.classText;
+    const styleid = '.' + this.data.classText + ' > .ngxcarousel > .ngxcarousel_inner > .ngxcarousel-items >';
 
     if (this.userData.custom === 'banner') {
       this.renderer.setElementClass(this.carousel, 'banner', true);
