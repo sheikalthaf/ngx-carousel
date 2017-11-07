@@ -319,11 +319,21 @@ export class NgxCarouselComponent
           ? this.carouselScrollOne(0)
           : this.carouselScrollOne(1);
       });
+      hammertime.on("hammer.input", function(ev) {
+        // allow nested touch events to no propagate, this may have other side affects but works for now.
+        // TODO: It is probably better to check the source element of the event and only apply the handle to the correct carousel
+        ev.srcEvent.stopPropagation()
+     });
     }
   }
 
   /* handle touch input */
   private touchHandling(e: string, ev: any): void {
+
+    // vertical touch events seem to cause to panstart event with an odd delta
+    // and a center of {x:0,y:0} so this will ignore them
+    if (ev.center.x === 0) { return }
+
     ev = Math.abs(ev.deltaX);
     let valt = ev - this.data.dexVal;
     valt =
@@ -423,7 +433,7 @@ export class NgxCarouselComponent
   private carouselSize(): void {
     this.data.classText = this.generateID();
     let dism = '';
-    const styleid = '.' + this.data.classText;
+    const styleid = '.' + this.data.classText + ' > .ngxcarousel > .ngxcarousel-inner > .ngxcarousel-items >';
 
     if (this.userData.custom === 'banner') {
       this.renderer.setElementClass(this.carousel, 'banner', true);
@@ -599,24 +609,24 @@ export class NgxCarouselComponent
       this.data.transform.lg = 100 / this.userData.grid.lg * slide;
       slideCss = `@media (max-width: 767px) {
               .${this.data
-                .classText} .ngxcarousel-items { transform: translate3d(-${this
+                .classText} > .ngxcarousel > .ngxcarousel-inner > .ngxcarousel-items { transform: translate3d(-${this
         .data.transform.xs}%, 0, 0); } }
             @media (min-width: 768px) {
               .${this.data
-                .classText} .ngxcarousel-items { transform: translate3d(-${this
+                .classText} > .ngxcarousel > .ngxcarousel-inner > .ngxcarousel-items { transform: translate3d(-${this
         .data.transform.sm}%, 0, 0); } }
             @media (min-width: 992px) {
               .${this.data
-                .classText} .ngxcarousel-items { transform: translate3d(-${this
+                .classText} > .ngxcarousel > .ngxcarousel-inner > .ngxcarousel-items { transform: translate3d(-${this
         .data.transform.md}%, 0, 0); } }
             @media (min-width: 1200px) {
               .${this.data
-                .classText} .ngxcarousel-items { transform: translate3d(-${this
+                .classText} > .ngxcarousel > .ngxcarousel-inner > .ngxcarousel-items { transform: translate3d(-${this
         .data.transform.lg}%, 0, 0); } }`;
     } else {
       this.data.transform.all = this.userData.grid.all * slide;
       slideCss = `.${this.data
-        .classText} .ngxcarousel-items { transform: translate3d(-${this.data
+        .classText} > .ngxcarousel > .ngxcarousel-inner > .ngxcarousel-items { transform: translate3d(-${this.data
         .transform.all}px, 0, 0);`;
     }
     // this.renderer.createText(this.carouselCssNode, slideCss);
