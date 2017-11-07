@@ -2,7 +2,9 @@
 node_modules
 npm-debug.log
 dist
+*.ngfactory.ts
+*.ngsummary.json
+
 # OS generated files
 Thumbs.db
-dist
 .DS_Store
