@@ -433,7 +433,7 @@ export class NgxCarouselComponent
   private carouselSize(): void {
     this.data.classText = this.generateID();
     let dism = '';
-    const styleid = '.' + this.data.classText + ' > .ngxcarousel > .ngxcarousel_inner > .ngxcarousel-items >';
+    const styleid = '.' + this.data.classText + ' > .ngxcarousel > .ngxcarousel-inner > .ngxcarousel-items >';
 
     if (this.userData.custom === 'banner') {
       this.renderer.setElementClass(this.carousel, 'banner', true);
@@ -609,24 +609,24 @@ export class NgxCarouselComponent
       this.data.transform.lg = 100 / this.userData.grid.lg * slide;
       slideCss = `@media (max-width: 767px) {
               .${this.data
-                .classText} .ngxcarousel-items { transform: translate3d(-${this
+                .classText} > .ngxcarousel > .ngxcarousel-inner > .ngxcarousel-items { transform: translate3d(-${this
         .data.transform.xs}%, 0, 0); } }
             @media (min-width: 768px) {
               .${this.data
-                .classText} .ngxcarousel-items { transform: translate3d(-${this
+                .classText} > .ngxcarousel > .ngxcarousel-inner > .ngxcarousel-items { transform: translate3d(-${this
         .data.transform.sm}%, 0, 0); } }
             @media (min-width: 992px) {
               .${this.data
-                .classText} .ngxcarousel-items { transform: translate3d(-${this
+                .classText} > .ngxcarousel > .ngxcarousel-inner > .ngxcarousel-items { transform: translate3d(-${this
         .data.transform.md}%, 0, 0); } }
             @media (min-width: 1200px) {
               .${this.data
-                .classText} .ngxcarousel-items { transform: translate3d(-${this
+                .classText} > .ngxcarousel > .ngxcarousel-inner > .ngxcarousel-items { transform: translate3d(-${this
         .data.transform.lg}%, 0, 0); } }`;
     } else {
       this.data.transform.all = this.userData.grid.all * slide;
       slideCss = `.${this.data
-        .classText} .ngxcarousel-items { transform: translate3d(-${this.data
+        .classText} > .ngxcarousel > .ngxcarousel-inner > .ngxcarousel-items { transform: translate3d(-${this.data
         .transform.all}px, 0, 0);`;
     }
     // this.renderer.createText(this.carouselCssNode, slideCss);
