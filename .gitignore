@@ -2,7 +2,7 @@
 node_modules
 npm-debug.log
 dist
+
 # OS generated files
 Thumbs.db
-dist
 .DS_Store
