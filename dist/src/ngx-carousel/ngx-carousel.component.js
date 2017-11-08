@@ -6,6 +6,7 @@ var NgxCarouselComponent = (function () {
         this.renderer = renderer;
         this.carouselLoad = new EventEmitter();
         this.onMove = new EventEmitter();
+        this.afterCarouselViewed = new EventEmitter();
         this.pauseCarousel = false;
         this.Arr1 = Array;
         this.pointNumbers = [];
@@ -80,6 +81,7 @@ var NgxCarouselComponent = (function () {
         else if (this.userData.point && this.userData.point.visible) {
             this.renderer.setElementClass(this.pointMain.nativeElement, 'ngxcarouselPointDefault', true);
         }
+        this.afterCarouselViewed.emit(this.data);
     };
     NgxCarouselComponent.prototype.ngOnDestroy = function () {
         clearInterval(this.carouselInt);
@@ -159,10 +161,20 @@ var NgxCarouselComponent = (function () {
                     ? _this.carouselScrollOne(0)
                     : _this.carouselScrollOne(1);
             });
+            hammertime.on("hammer.input", function (ev) {
+                // allow nested touch events to no propagate, this may have other side affects but works for now.
+                // TODO: It is probably better to check the source element of the event and only apply the handle to the correct carousel
+                ev.srcEvent.stopPropagation();
+            });
         }
     };
     /* handle touch input */
     NgxCarouselComponent.prototype.touchHandling = function (e, ev) {
+        // vertical touch events seem to cause to panstart event with an odd delta
+        // and a center of {x:0,y:0} so this will ignore them
+        if (ev.center.x === 0) {
+            return;
+        }
         ev = Math.abs(ev.deltaX);
         var valt = ev - this.data.dexVal;
         valt =
@@ -254,7 +266,7 @@ var NgxCarouselComponent = (function () {
     NgxCarouselComponent.prototype.carouselSize = function () {
         this.data.classText = this.generateID();
         var dism = '';
-        var styleid = '.' + this.data.classText;
+        var styleid = '.' + this.data.classText + ' > .ngxcarousel > .ngxcarousel-inner > .ngxcarousel-items >';
         if (this.userData.custom === 'banner') {
             this.renderer.setElementClass(this.carousel, 'banner', true);
         }
@@ -397,19 +409,19 @@ var NgxCarouselComponent = (function () {
             this.data.transform.md = 100 / this.userData.grid.md * slide;
             this.data.transform.lg = 100 / this.userData.grid.lg * slide;
             slideCss = "@media (max-width: 767px) {\n              ." + this.data
-                .classText + " .ngxcarousel-items { transform: translate3d(-" + this
+                .classText + " > .ngxcarousel > .ngxcarousel-inner > .ngxcarousel-items { transform: translate3d(-" + this
                 .data.transform.xs + "%, 0, 0); } }\n            @media (min-width: 768px) {\n              ." + this.data
-                .classText + " .ngxcarousel-items { transform: translate3d(-" + this
+                .classText + " > .ngxcarousel > .ngxcarousel-inner > .ngxcarousel-items { transform: translate3d(-" + this
                 .data.transform.sm + "%, 0, 0); } }\n            @media (min-width: 992px) {\n              ." + this.data
-                .classText + " .ngxcarousel-items { transform: translate3d(-" + this
+                .classText + " > .ngxcarousel > .ngxcarousel-inner > .ngxcarousel-items { transform: translate3d(-" + this
                 .data.transform.md + "%, 0, 0); } }\n            @media (min-width: 1200px) {\n              ." + this.data
-                .classText + " .ngxcarousel-items { transform: translate3d(-" + this
+                .classText + " > .ngxcarousel > .ngxcarousel-inner > .ngxcarousel-items { transform: translate3d(-" + this
                 .data.transform.lg + "%, 0, 0); } }";
         }
         else {
             this.data.transform.all = this.userData.grid.all * slide;
             slideCss = "." + this.data
-                .classText + " .ngxcarousel-items { transform: translate3d(-" + this.data
+                .classText + " > .ngxcarousel > .ngxcarousel-inner > .ngxcarousel-items { transform: translate3d(-" + this.data
                 .transform.all + "px, 0, 0);";
         }
         // this.renderer.createText(this.carouselCssNode, slideCss);
@@ -538,6 +550,7 @@ NgxCarouselComponent.propDecorators = {
     'moveToSlide': [{ type: Input, args: ['moveToSlide',] },],
     'carouselLoad': [{ type: Output, args: ['carouselLoad',] },],
     'onMove': [{ type: Output, args: ['onMove',] },],
+    'afterCarouselViewed': [{ type: Output, args: ['afterCarouselViewed',] },],
     'items': [{ type: ContentChildren, args: [NgxCarouselItemDirective,] },],
     'points': [{ type: ViewChildren, args: ['pointInner', { read: ElementRef },] },],
     'next': [{ type: ContentChild, args: [NgxCarouselNextDirective, { read: ElementRef },] },],
