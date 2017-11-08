@@ -59,7 +59,7 @@ var NgxCarouselComponent = (function () {
         });
         this.carouselCssNode = this.renderer.createElement(this.carousel, 'style');
         this.storeCarouselData();
-        // this.carouselInterval();
+        this.carouselInterval();
         this.onWindowScrolling();
         this.buttonControl();
         this.touch();
