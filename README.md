@@ -8,6 +8,10 @@ Lightweight and simple carousel for angular.
 
 for ChangeLog go to [CHANGELOG.md](https://github.com/sheikalthaf/ngx-carousel/blob/master/CHANGELOG.md)
 
+# Universal Version
+
+**Angular Universal** Version available on [ngu-carousel](https://github.com/sheikalthaf/ngu-carousel)
+
 ## Demo
 
 Demo available [Here](https://sheikalthaf.github.io/ngx-carousel)
@@ -199,7 +203,8 @@ This is HTML I'm using in the carousel. Add your own css according to this eleme
       [inputs]="carouselBanner"
       [moveToSlide]="2"
       (onMove)="onmoveFn($event)"
-      (carouselLoad)="loadItemsFn()">
+      (carouselLoad)="loadItemsFn()"
+      (afterCarouselViewed)="afterCarouselViewedFn($event)">
 </ngx-carousel>
 
 ```
@@ -208,7 +213,7 @@ This is HTML I'm using in the carousel. Add your own css according to this eleme
 * `moveToSlide` is an `Input` which accepts point numbers. Numbers represents no of slide to be done.
 * `onMove` is an `Output` which triggered on every slide before start and it will emit `$event` as `NgxCarouselStore` object.
 * `carouselLoad` is an `Output` which triggered when slide reaches the end on items based on inputs `load`.
-
+* `afterCarouselViewed` is an `Output` which triggered after carousel viewed and it will emit `$event` as `NgxCarouselStore` object.
 
 # Getstarted guide
 
@@ -224,7 +229,8 @@ import { NgxCarousel, NgxCarouselStore } from 'ngx-carousel';
     <ngx-carousel
       [inputs]="carouselBanner"
       [moveToSlide]="1"
-      (onMove)="onmoveFn($event)">
+      (onMove)="onmoveFn($event)"
+      (afterCarouselViewed)="afterCarouselViewedFn($event)">
 
           <ngx-item NgxCarouselItem class="bannerStyle">
               <h1>1</h1>
@@ -318,6 +324,11 @@ export class Sample implements OnInit {
       loop: true,
       touch: true
     }
+  }
+
+  /* This will be triggered after carousel viewed */
+  afterCarouselViewedFn(data) {
+    console.log(data);
   }
 
   /* It will be triggered on every slide*/
