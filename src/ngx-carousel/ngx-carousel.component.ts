@@ -103,6 +103,7 @@ export class NgxCarouselComponent
 
   @Output('carouselLoad') carouselLoad = new EventEmitter();
   @Output('onMove') onMove = new EventEmitter();
+  @Output('afterCarouselViewed') afterCarouselViewed = new EventEmitter();
 
   @ContentChildren(NgxCarouselItemDirective)
   private items: QueryList<NgxCarouselItemDirective>;
@@ -199,7 +200,7 @@ export class NgxCarouselComponent
     this.carouselCssNode = this.renderer.createElement(this.carousel, 'style');
 
     this.storeCarouselData();
-    // this.carouselInterval();
+    this.carouselInterval();
     this.onWindowScrolling();
     this.buttonControl();
     this.touch();
@@ -229,6 +230,7 @@ export class NgxCarouselComponent
         true
       );
     }
+    this.afterCarouselViewed.emit(this.data);
   }
 
   ngOnDestroy() {

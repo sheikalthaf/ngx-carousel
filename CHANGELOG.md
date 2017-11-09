@@ -2,6 +2,20 @@
 
 ### Before Upgrading once read the [Readme.md](https://github.com/sheikalthaf/ngx-carousel/blob/master/README.md) file
 
+## 1.3.2
+
+### Features
+
+* `afterCarouselViewed` is an `Output` which triggered after carousel viewed and it will emit `$event` as `NgxCarouselStore` object [#47](https://github.com/sheikalthaf/ngx-carousel/issues/47)
+
+### Issues fixed
+
+* fixed touch when carousel scrolled vertically by [matt](https://github.com/iamlothian) [#20](https://github.com/sheikalthaf/ngx-carousel/issues/20)
+
+* Fixed the nested carousel issue by [matt](https://github.com/iamlothian) [#42](https://github.com/sheikalthaf/ngx-carousel/issues/42)
+
+* Fixed the source fails issue by [matt](https://github.com/iamlothian) [matt](https://github.com/iamlothian) [#24](https://github.com/sheikalthaf/ngx-carousel/issues/24)
+
 ## 1.3.0
 
 ### Features
