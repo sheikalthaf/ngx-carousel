@@ -26,6 +26,7 @@ import {
 
 import { NgxCarousel, NgxCarouselStore } from './ngx-carousel.interface';
 import { Subscription } from 'rxjs/Subscription';
+import * as Hammer from 'hammerjs'
 
 @Component({
   // tslint:disable-next-line:component-selector
