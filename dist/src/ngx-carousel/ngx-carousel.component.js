@@ -1,5 +1,6 @@
 import { NgxCarouselItemDirective, NgxCarouselNextDirective, NgxCarouselPrevDirective } from './ngx-carousel.directive';
 import { Component, ElementRef, Renderer, Input, Output, HostListener, EventEmitter, ContentChildren, ViewChild, ViewChildren, ContentChild } from '@angular/core';
+import * as Hammer from 'hammerjs';
 var NgxCarouselComponent = (function () {
     function NgxCarouselComponent(el, renderer) {
         this.el = el;
@@ -99,8 +100,7 @@ var NgxCarouselComponent = (function () {
     };
     NgxCarouselComponent.prototype.ngOnChanges = function (changes) {
         // tslint:disable-next-line:no-unused-expression
-        this.moveToSlide &&
-            !changes.moveToSlide.firstChange &&
+        this.moveToSlide > -1 &&
             this.moveTo(changes.moveToSlide.currentValue);
     };
     /* store data based on width of the screen for the carousel */
@@ -216,8 +216,10 @@ var NgxCarouselComponent = (function () {
         var Nos = this.items.length - (this.data.items - this.data.slideItems);
         this.pointIndex = Math.ceil(Nos / this.data.slideItems);
         var pointers = [];
-        for (var i = 0; i < this.pointIndex; i++) {
-            pointers.push(i);
+        if (this.pointIndex > 1 || !this.userData.point.hideOnSingleSlide) {
+            for (var i = 0; i < this.pointIndex; i++) {
+                pointers.push(i);
+            }
         }
         this.pointNumbers = pointers;
         this.carouselPointActiver();

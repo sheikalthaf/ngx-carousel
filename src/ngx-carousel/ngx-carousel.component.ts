@@ -252,8 +252,7 @@ export class NgxCarouselComponent
 
   ngOnChanges(changes: SimpleChanges) {
     // tslint:disable-next-line:no-unused-expression
-    this.moveToSlide &&
-      !changes.moveToSlide.firstChange &&
+    this.moveToSlide > -1 &&
       this.moveTo(changes.moveToSlide.currentValue);
     }
     
@@ -386,9 +385,13 @@ export class NgxCarouselComponent
     const Nos = this.items.length - (this.data.items - this.data.slideItems);
     this.pointIndex = Math.ceil(Nos / this.data.slideItems);
     const pointers = [];
-    for (let i = 0; i < this.pointIndex; i++) {
-      pointers.push(i);
+    
+    if (this.pointIndex > 1 || !this.userData.point.hideOnSingleSlide) {
+      for (let i = 0; i < this.pointIndex; i++) {
+        pointers.push(i);
+      }
     }
+
     this.pointNumbers = pointers;
     this.carouselPointActiver();
     if (this.pointIndex <= 1) {

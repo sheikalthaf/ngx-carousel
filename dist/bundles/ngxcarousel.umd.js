@@ -1,8 +1,8 @@
 (function (global, factory) {
-	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('@angular/platform-browser'), require('@angular/common')) :
-	typeof define === 'function' && define.amd ? define(['exports', '@angular/core', '@angular/platform-browser', '@angular/common'], factory) :
-	(factory((global.ng = global.ng || {}, global.ng.ngxcarousel = global.ng.ngxcarousel || {}),global.ng.core,global.ng['platform-browser'],global.ng.common));
-}(this, (function (exports,_angular_core,_angular_platformBrowser,_angular_common) { 'use strict';
+	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('@angular/platform-browser'), require('@angular/common'), require('hammerjs')) :
+	typeof define === 'function' && define.amd ? define(['exports', '@angular/core', '@angular/platform-browser', '@angular/common', 'hammerjs'], factory) :
+	(factory((global.ng = global.ng || {}, global.ng.ngxcarousel = global.ng.ngxcarousel || {}),global.ng.core,global.ng['platform-browser'],global.ng.common,global.Hammer));
+}(this, (function (exports,_angular_core,_angular_platformBrowser,_angular_common,Hammer) { 'use strict';
 
 var NgxCarouselItemDirective = (function () {
     function NgxCarouselItemDirective() {
@@ -143,8 +143,7 @@ var NgxCarouselComponent = (function () {
     };
     NgxCarouselComponent.prototype.ngOnChanges = function (changes) {
         // tslint:disable-next-line:no-unused-expression
-        this.moveToSlide &&
-            !changes.moveToSlide.firstChange &&
+        this.moveToSlide > -1 &&
             this.moveTo(changes.moveToSlide.currentValue);
     };
     /* store data based on width of the screen for the carousel */
@@ -260,8 +259,10 @@ var NgxCarouselComponent = (function () {
         var Nos = this.items.length - (this.data.items - this.data.slideItems);
         this.pointIndex = Math.ceil(Nos / this.data.slideItems);
         var pointers = [];
-        for (var i = 0; i < this.pointIndex; i++) {
-            pointers.push(i);
+        if (this.pointIndex > 1 || !this.userData.point.hideOnSingleSlide) {
+            for (var i = 0; i < this.pointIndex; i++) {
+                pointers.push(i);
+            }
         }
         this.pointNumbers = pointers;
         this.carouselPointActiver();
