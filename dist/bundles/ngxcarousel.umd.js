@@ -289,7 +289,7 @@ var NgxCarouselComponent = (function () {
     };
     /* this function is used to scoll the carousel when point is clicked */
     NgxCarouselComponent.prototype.moveTo = function (index) {
-        if (this.data.currentSlide !== index && index < this.pointIndex) {
+        if (this.pointers !== index && index < this.pointIndex) {
             var slideremains = 0;
             var btns = this.data.currentSlide < index ? 1 : 0;
             if (index === 0) {
