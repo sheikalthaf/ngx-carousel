@@ -1,0 +1,58 @@
+<nav>
+    <h1>Ngx-Carouel</h1>
+</nav>
+
+<h2>Banner</h2>
+<ngx-carousel class="banner" [inputs]="carouselBanner" (carouselLoad)="carouselBannerLoad()">
+    <ngx-item NgxCarouselItem *ngFor="let tile of carouselBannerItems; let i = index;">
+        <div class="bannerStyle" [style.background]="'url(' + tile + ')'">
+            <h1>{{i}}</h1>
+        </div>
+    </ngx-item>
+    <button NgxCarouselPrev class="leftRs">&lt;</button>
+    <button NgxCarouselNext class="rightRs">&gt;</button>
+</ngx-carousel>
+
+<!-- main -->
+<div class="container">
+    <h2>Tile</h2>
+    <ngx-carousel [inputs]="carouselTile" (carouselLoad)="carouselTileLoad()">
+        <ngx-tile NgxCarouselItem *ngFor="let tile of carouselTileItems; let i = index;">
+            <div class="tile" [style.background]="'url(' + tile + ')'">
+                <h1>{{i}}</h1>
+            </div>
+        </ngx-tile>
+        <button NgxCarouselPrev class="leftRs">&lt;</button>
+        <button NgxCarouselNext class="rightRs">&gt;</button>
+    </ngx-carousel>
+
+    <h2>Tile-WithLoop and Animation</h2>
+    <ngx-carousel [inputs]="carouselTileOne" (carouselLoad)="carouselTileOneLoad()">
+        <ngx-tile NgxCarouselItem *ngFor="let tile of carouselTileOneItems; let i = index;">
+            <div class="wBg">
+                <div class="tile" [style.background]="'url(' + tile + ')'">
+                    <h1>{{i}}</h1>
+                </div>
+                <h4>Tile</h4>
+                <p>content</p>
+            </div>
+        </ngx-tile>
+        <button NgxCarouselPrev class="leftRs">&lt;</button>
+        <button NgxCarouselNext class="rightRs">&gt;</button>
+    </ngx-carousel>
+
+    <h2>Fixed-Width</h2>
+    <ngx-carousel [inputs]="carouselTileTwo" (carouselLoad)="carouselTileTwoLoad()">
+        <ngx-tile NgxCarouselItem *ngFor="let tile of carouselTileTwoItems; let i = index;">
+            <div class="wBg">
+                <div class="tile" [style.background]="'url(' + tile + ')'">
+                    <h1>{{i}}</h1>
+                </div>
+                <h4>Tile</h4>
+                <p>content</p>
+            </div>
+        </ngx-tile>
+        <button NgxCarouselPrev class="leftRs">&lt;</button>
+        <button NgxCarouselNext class="rightRs">&gt;</button>
+    </ngx-carousel>
+</div>
