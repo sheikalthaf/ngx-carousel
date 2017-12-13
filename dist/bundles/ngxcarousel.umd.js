@@ -4,47 +4,47 @@
 	(factory((global.ng = global.ng || {}, global.ng.ngxcarousel = global.ng.ngxcarousel || {}),global.ng.core,global.ng['platform-browser'],global.ng.common,global.Hammer));
 }(this, (function (exports,_angular_core,_angular_platformBrowser,_angular_common,Hammer) { 'use strict';
 
-var NgxCarouselItemDirective = /** @class */ (function () {
+var NgxCarouselItemDirective = (function () {
     function NgxCarouselItemDirective() {
     }
-    NgxCarouselItemDirective.decorators = [
-        { type: _angular_core.Directive, args: [{
-                    // tslint:disable-next-line:directive-selector
-                    selector: '[NgxCarouselItem]'
-                },] },
-    ];
-    /** @nocollapse */
-    NgxCarouselItemDirective.ctorParameters = function () { return []; };
     return NgxCarouselItemDirective;
 }());
-var NgxCarouselNextDirective = /** @class */ (function () {
+NgxCarouselItemDirective.decorators = [
+    { type: _angular_core.Directive, args: [{
+                // tslint:disable-next-line:directive-selector
+                selector: '[NgxCarouselItem]'
+            },] },
+];
+/** @nocollapse */
+NgxCarouselItemDirective.ctorParameters = function () { return []; };
+var NgxCarouselNextDirective = (function () {
     function NgxCarouselNextDirective() {
     }
-    NgxCarouselNextDirective.decorators = [
-        { type: _angular_core.Directive, args: [{
-                    // tslint:disable-next-line:directive-selector
-                    selector: '[NgxCarouselNext]'
-                },] },
-    ];
-    /** @nocollapse */
-    NgxCarouselNextDirective.ctorParameters = function () { return []; };
     return NgxCarouselNextDirective;
 }());
-var NgxCarouselPrevDirective = /** @class */ (function () {
+NgxCarouselNextDirective.decorators = [
+    { type: _angular_core.Directive, args: [{
+                // tslint:disable-next-line:directive-selector
+                selector: '[NgxCarouselNext]'
+            },] },
+];
+/** @nocollapse */
+NgxCarouselNextDirective.ctorParameters = function () { return []; };
+var NgxCarouselPrevDirective = (function () {
     function NgxCarouselPrevDirective() {
     }
-    NgxCarouselPrevDirective.decorators = [
-        { type: _angular_core.Directive, args: [{
-                    // tslint:disable-next-line:directive-selector
-                    selector: '[NgxCarouselPrev]'
-                },] },
-    ];
-    /** @nocollapse */
-    NgxCarouselPrevDirective.ctorParameters = function () { return []; };
     return NgxCarouselPrevDirective;
 }());
+NgxCarouselPrevDirective.decorators = [
+    { type: _angular_core.Directive, args: [{
+                // tslint:disable-next-line:directive-selector
+                selector: '[NgxCarouselPrev]'
+            },] },
+];
+/** @nocollapse */
+NgxCarouselPrevDirective.ctorParameters = function () { return []; };
 
-var NgxCarouselComponent = /** @class */ (function () {
+var NgxCarouselComponent = (function () {
     function NgxCarouselComponent(el, renderer) {
         this.el = el;
         this.renderer = renderer;
@@ -77,12 +77,7 @@ var NgxCarouselComponent = /** @class */ (function () {
             touch: { active: false, swipe: '', velocity: 0 },
             isEnd: false,
             isFirst: true,
-            isLast: false,
-            breakpoints: {
-                sm: 768,
-                md: 992,
-                lg: 1200
-            }
+            isLast: false
         };
     }
     NgxCarouselComponent.prototype.ngOnInit = function () {
@@ -96,7 +91,6 @@ var NgxCarouselComponent = /** @class */ (function () {
         this.data.loop = this.userData.loop || false;
         this.data.easing = this.userData.easing || 'cubic-bezier(0, 0, 0.2, 1)';
         this.data.touch.active = this.userData.touch || false;
-        this.data.breakpoints = Object.assign({}, this.data.breakpoints, this.userData.breakpoints);
         this.carouselSize();
         // const datas = this.itemsElements.first.nativeElement.getBoundingClientRect().width;
     };
@@ -159,11 +153,11 @@ var NgxCarouselComponent = /** @class */ (function () {
         // const datas = this.items.first.nativeElement.getBoundingClientRect().width;
         if (this.data.type === 'responsive') {
             this.data.deviceType =
-                this.data.deviceWidth >= this.data.breakpoints.lg
+                this.data.deviceWidth >= 1200
                     ? 'lg'
-                    : this.data.deviceWidth >= this.data.breakpoints.md
+                    : this.data.deviceWidth >= 992
                         ? 'md'
-                        : this.data.deviceWidth >= this.data.breakpoints.sm ? 'sm' : 'xs';
+                        : this.data.deviceWidth >= 768 ? 'sm' : 'xs';
             this.data.items = this.userData.grid[this.data.deviceType];
             this.data.itemWidth = this.data.carouselWidth / this.data.items;
         }
@@ -336,7 +330,7 @@ var NgxCarouselComponent = /** @class */ (function () {
             var itemWidth_sm = styleid + ' .item {width: ' + 100 / this.userData.grid.sm + '%}';
             var itemWidth_md = styleid + ' .item {width: ' + 100 / this.userData.grid.md + '%}';
             var itemWidth_lg = styleid + ' .item {width: ' + 100 / this.userData.grid.lg + '%}';
-            itemStyle = "@media (max-width:" + (this.data.breakpoints.sm - 1) + "px){" + itemWidth_xs + "}\n                    @media (min-width:" + this.data.breakpoints.sm + "px){" + itemWidth_sm + "}\n                    @media (min-width:" + this.data.breakpoints.md + "px){" + itemWidth_md + "}\n                    @media (min-width:" + this.data.breakpoints.lg + "px){" + itemWidth_lg + "}";
+            itemStyle = "@media (max-width:767px){" + itemWidth_xs + "}\n                    @media (min-width:768px){" + itemWidth_sm + "}\n                    @media (min-width:992px){" + itemWidth_md + "}\n                    @media (min-width:1200px){" + itemWidth_lg + "}";
         }
         else {
             itemStyle = styleid + " .item {width: " + this.userData.grid.all + "px}";
@@ -461,11 +455,11 @@ var NgxCarouselComponent = /** @class */ (function () {
             this.data.transform.lg = 100 / this.userData.grid.lg * slide;
             slideCss = "@media (max-width: 767px) {\n              ." + this.data
                 .classText + " > .ngxcarousel > .ngxcarousel-inner > .ngxcarousel-items { transform: translate3d(-" + this
-                .data.transform.xs + "%, 0, 0); } }\n            @media (min-width: " + this.data.breakpoints.sm + "px) {\n              ." + this.data
+                .data.transform.xs + "%, 0, 0); } }\n            @media (min-width: 768px) {\n              ." + this.data
                 .classText + " > .ngxcarousel > .ngxcarousel-inner > .ngxcarousel-items { transform: translate3d(-" + this
-                .data.transform.sm + "%, 0, 0); } }\n            @media (min-width: " + this.data.breakpoints.md + "px) {\n              ." + this.data
+                .data.transform.sm + "%, 0, 0); } }\n            @media (min-width: 992px) {\n              ." + this.data
                 .classText + " > .ngxcarousel > .ngxcarousel-inner > .ngxcarousel-items { transform: translate3d(-" + this
-                .data.transform.md + "%, 0, 0); } }\n            @media (min-width: " + this.data.breakpoints.lg + "px) {\n              ." + this.data
+                .data.transform.md + "%, 0, 0); } }\n            @media (min-width: 1200px) {\n              ." + this.data
                 .classText + " > .ngxcarousel > .ngxcarousel-inner > .ngxcarousel-items { transform: translate3d(-" + this
                 .data.transform.lg + "%, 0, 0); } }";
         }
@@ -578,78 +572,78 @@ var NgxCarouselComponent = /** @class */ (function () {
     NgxCarouselComponent.prototype.setStyle = function (el, prop, val) {
         this.renderer.setElementStyle(el, prop, val);
     };
-    NgxCarouselComponent.decorators = [
-        { type: _angular_core.Component, args: [{
-                    // tslint:disable-next-line:component-selector
-                    selector: 'ngx-carousel',
-                    template: "<div #ngxcarousel class=\"ngxcarousel\"><div #forTouch class=\"ngxcarousel-inner\"><div #ngxitems class=\"ngxcarousel-items\"><ng-content select=\"[NgxCarouselItem]\"></ng-content></div><div style=\"clear: both\"></div></div><ng-content select=\"[NgxCarouselPrev]\"></ng-content><ng-content select=\"[NgxCarouselNext]\"></ng-content></div><div #points *ngIf=\"userData.point.visible\"><ul class=\"ngxcarouselPoint\"><li #pointInner *ngFor=\"let i of pointNumbers; let i=index\" [class.active]=\"i==pointers\" (click)=\"moveTo(i)\"></li></ul></div>",
-                    styles: [
-                        "\n    :host {\n      display: block;\n      position: relative;\n    }\n\n    .ngxcarousel .ngxcarousel-inner {\n      position: relative;\n      overflow: hidden;\n    }\n    .ngxcarousel .ngxcarousel-inner .ngxcarousel-items {\n      white-space: nowrap;\n      position: relative;\n    }\n\n    .banner .ngxcarouselPointDefault .ngxcarouselPoint {\n      position: absolute;\n      width: 100%;\n      bottom: 20px;\n    }\n    .banner .ngxcarouselPointDefault .ngxcarouselPoint li {\n      background: rgba(255, 255, 255, 0.55);\n    }\n    .banner .ngxcarouselPointDefault .ngxcarouselPoint li.active {\n      background: white;\n    }\n    .banner .ngxcarouselPointDefault .ngxcarouselPoint li:hover {\n      cursor: pointer;\n    }\n\n    .ngxcarouselPointDefault .ngxcarouselPoint {\n      list-style-type: none;\n      text-align: center;\n      padding: 12px;\n      margin: 0;\n      white-space: nowrap;\n      overflow: auto;\n      box-sizing: border-box;\n    }\n    .ngxcarouselPointDefault .ngxcarouselPoint li {\n      display: inline-block;\n      border-radius: 50%;\n      background: rgba(0, 0, 0, 0.55);\n      padding: 4px;\n      margin: 0 4px;\n      transition-timing-function: cubic-bezier(0.17, 0.67, 0.83, 0.67);\n      transition: 0.4s;\n    }\n    .ngxcarouselPointDefault .ngxcarouselPoint li.active {\n      background: #6b6b6b;\n      transform: scale(1.8);\n    }\n    .ngxcarouselPointDefault .ngxcarouselPoint li:hover {\n      cursor: pointer;\n    }\n  "
-                    ]
-                },] },
-    ];
-    /** @nocollapse */
-    NgxCarouselComponent.ctorParameters = function () { return [
-        { type: _angular_core.ElementRef, },
-        { type: _angular_core.Renderer, },
-    ]; };
-    NgxCarouselComponent.propDecorators = {
-        'userData': [{ type: _angular_core.Input, args: ['inputs',] },],
-        'moveToSlide': [{ type: _angular_core.Input, args: ['moveToSlide',] },],
-        'carouselLoad': [{ type: _angular_core.Output, args: ['carouselLoad',] },],
-        'onMove': [{ type: _angular_core.Output, args: ['onMove',] },],
-        'afterCarouselViewed': [{ type: _angular_core.Output, args: ['afterCarouselViewed',] },],
-        'items': [{ type: _angular_core.ContentChildren, args: [NgxCarouselItemDirective,] },],
-        'points': [{ type: _angular_core.ViewChildren, args: ['pointInner', { read: _angular_core.ElementRef },] },],
-        'next': [{ type: _angular_core.ContentChild, args: [NgxCarouselNextDirective, { read: _angular_core.ElementRef },] },],
-        'prev': [{ type: _angular_core.ContentChild, args: [NgxCarouselPrevDirective, { read: _angular_core.ElementRef },] },],
-        'carouselMain1': [{ type: _angular_core.ViewChild, args: ['ngxcarousel', { read: _angular_core.ElementRef },] },],
-        'carouselInner1': [{ type: _angular_core.ViewChild, args: ['ngxitems', { read: _angular_core.ElementRef },] },],
-        'carousel1': [{ type: _angular_core.ViewChild, args: ['main', { read: _angular_core.ElementRef },] },],
-        'pointMain': [{ type: _angular_core.ViewChild, args: ['points', { read: _angular_core.ElementRef },] },],
-        'forTouch': [{ type: _angular_core.ViewChild, args: ['forTouch', { read: _angular_core.ElementRef },] },],
-        'onResizing': [{ type: _angular_core.HostListener, args: ['window:resize', ['$event'],] },],
-    };
     return NgxCarouselComponent;
 }());
+NgxCarouselComponent.decorators = [
+    { type: _angular_core.Component, args: [{
+                // tslint:disable-next-line:component-selector
+                selector: 'ngx-carousel',
+                template: "<div #ngxcarousel class=\"ngxcarousel\"><div #forTouch class=\"ngxcarousel-inner\"><div #ngxitems class=\"ngxcarousel-items\"><ng-content select=\"[NgxCarouselItem]\"></ng-content></div><div style=\"clear: both\"></div></div><ng-content select=\"[NgxCarouselPrev]\"></ng-content><ng-content select=\"[NgxCarouselNext]\"></ng-content></div><div #points *ngIf=\"userData.point.visible\"><ul class=\"ngxcarouselPoint\"><li #pointInner *ngFor=\"let i of pointNumbers; let i=index\" [class.active]=\"i==pointers\" (click)=\"moveTo(i)\"></li></ul></div>",
+                styles: [
+                    "\n    :host {\n      display: block;\n      position: relative;\n    }\n\n    .ngxcarousel .ngxcarousel-inner {\n      position: relative;\n      overflow: hidden;\n    }\n    .ngxcarousel .ngxcarousel-inner .ngxcarousel-items {\n      white-space: nowrap;\n      position: relative;\n    }\n\n    .banner .ngxcarouselPointDefault .ngxcarouselPoint {\n      position: absolute;\n      width: 100%;\n      bottom: 20px;\n    }\n    .banner .ngxcarouselPointDefault .ngxcarouselPoint li {\n      background: rgba(255, 255, 255, 0.55);\n    }\n    .banner .ngxcarouselPointDefault .ngxcarouselPoint li.active {\n      background: white;\n    }\n    .banner .ngxcarouselPointDefault .ngxcarouselPoint li:hover {\n      cursor: pointer;\n    }\n\n    .ngxcarouselPointDefault .ngxcarouselPoint {\n      list-style-type: none;\n      text-align: center;\n      padding: 12px;\n      margin: 0;\n      white-space: nowrap;\n      overflow: auto;\n      box-sizing: border-box;\n    }\n    .ngxcarouselPointDefault .ngxcarouselPoint li {\n      display: inline-block;\n      border-radius: 50%;\n      background: rgba(0, 0, 0, 0.55);\n      padding: 4px;\n      margin: 0 4px;\n      transition-timing-function: cubic-bezier(0.17, 0.67, 0.83, 0.67);\n      transition: 0.4s;\n    }\n    .ngxcarouselPointDefault .ngxcarouselPoint li.active {\n      background: #6b6b6b;\n      transform: scale(1.8);\n    }\n    .ngxcarouselPointDefault .ngxcarouselPoint li:hover {\n      cursor: pointer;\n    }\n  "
+                ]
+            },] },
+];
+/** @nocollapse */
+NgxCarouselComponent.ctorParameters = function () { return [
+    { type: _angular_core.ElementRef, },
+    { type: _angular_core.Renderer, },
+]; };
+NgxCarouselComponent.propDecorators = {
+    'userData': [{ type: _angular_core.Input, args: ['inputs',] },],
+    'moveToSlide': [{ type: _angular_core.Input, args: ['moveToSlide',] },],
+    'carouselLoad': [{ type: _angular_core.Output, args: ['carouselLoad',] },],
+    'onMove': [{ type: _angular_core.Output, args: ['onMove',] },],
+    'afterCarouselViewed': [{ type: _angular_core.Output, args: ['afterCarouselViewed',] },],
+    'items': [{ type: _angular_core.ContentChildren, args: [NgxCarouselItemDirective,] },],
+    'points': [{ type: _angular_core.ViewChildren, args: ['pointInner', { read: _angular_core.ElementRef },] },],
+    'next': [{ type: _angular_core.ContentChild, args: [NgxCarouselNextDirective, { read: _angular_core.ElementRef },] },],
+    'prev': [{ type: _angular_core.ContentChild, args: [NgxCarouselPrevDirective, { read: _angular_core.ElementRef },] },],
+    'carouselMain1': [{ type: _angular_core.ViewChild, args: ['ngxcarousel', { read: _angular_core.ElementRef },] },],
+    'carouselInner1': [{ type: _angular_core.ViewChild, args: ['ngxitems', { read: _angular_core.ElementRef },] },],
+    'carousel1': [{ type: _angular_core.ViewChild, args: ['main', { read: _angular_core.ElementRef },] },],
+    'pointMain': [{ type: _angular_core.ViewChild, args: ['points', { read: _angular_core.ElementRef },] },],
+    'forTouch': [{ type: _angular_core.ViewChild, args: ['forTouch', { read: _angular_core.ElementRef },] },],
+    'onResizing': [{ type: _angular_core.HostListener, args: ['window:resize', ['$event'],] },],
+};
 
-var NgxItemComponent = /** @class */ (function () {
+var NgxItemComponent = (function () {
     function NgxItemComponent() {
         this.classes = 'item';
     }
-    NgxItemComponent.decorators = [
-        { type: _angular_core.Component, args: [{
-                    selector: 'ngx-item',
-                    template: "<ng-content></ng-content>",
-                    styles: ["\n    :host {\n        display: inline-block;\n        white-space: initial;\n        vertical-align: top;\n    }\n  "]
-                },] },
-    ];
-    /** @nocollapse */
-    NgxItemComponent.ctorParameters = function () { return []; };
-    NgxItemComponent.propDecorators = {
-        'classes': [{ type: _angular_core.HostBinding, args: ['class',] },],
-    };
     return NgxItemComponent;
 }());
+NgxItemComponent.decorators = [
+    { type: _angular_core.Component, args: [{
+                selector: 'ngx-item',
+                template: "<ng-content></ng-content>",
+                styles: ["\n    :host {\n        display: inline-block;\n        white-space: initial;\n        vertical-align: top;\n    }\n  "]
+            },] },
+];
+/** @nocollapse */
+NgxItemComponent.ctorParameters = function () { return []; };
+NgxItemComponent.propDecorators = {
+    'classes': [{ type: _angular_core.HostBinding, args: ['class',] },],
+};
 
-var NgxTileComponent = /** @class */ (function () {
+var NgxTileComponent = (function () {
     function NgxTileComponent() {
         this.classes = 'item';
     }
-    NgxTileComponent.decorators = [
-        { type: _angular_core.Component, args: [{
-                    selector: 'ngx-tile',
-                    template: "<div class=\"tile\"><ng-content></ng-content></div>",
-                    styles: ["\n    :host {\n        display: inline-block;\n        white-space: initial;\n        padding: 10px;\n        box-sizing: border-box;\n        vertical-align: top;\n    }\n\n    .tile {\n        box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);\n    }\n\n    * {\n        box-sizing: border-box;\n    }\n  "]
-                },] },
-    ];
-    /** @nocollapse */
-    NgxTileComponent.ctorParameters = function () { return []; };
-    NgxTileComponent.propDecorators = {
-        'classes': [{ type: _angular_core.HostBinding, args: ['class',] },],
-    };
     return NgxTileComponent;
 }());
+NgxTileComponent.decorators = [
+    { type: _angular_core.Component, args: [{
+                selector: 'ngx-tile',
+                template: "<div class=\"tile\"><ng-content></ng-content></div>",
+                styles: ["\n    :host {\n        display: inline-block;\n        white-space: initial;\n        padding: 10px;\n        box-sizing: border-box;\n        vertical-align: top;\n    }\n\n    .tile {\n        box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);\n    }\n\n    * {\n        box-sizing: border-box;\n    }\n  "]
+            },] },
+];
+/** @nocollapse */
+NgxTileComponent.ctorParameters = function () { return []; };
+NgxTileComponent.propDecorators = {
+    'classes': [{ type: _angular_core.HostBinding, args: ['class',] },],
+};
 
 var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -661,7 +655,7 @@ var __extends = (undefined && undefined.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-var MyHammerConfig = /** @class */ (function (_super) {
+var MyHammerConfig = (function (_super) {
     __extends(MyHammerConfig, _super);
     function MyHammerConfig() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
@@ -673,44 +667,44 @@ var MyHammerConfig = /** @class */ (function (_super) {
     }
     return MyHammerConfig;
 }(_angular_platformBrowser.HammerGestureConfig));
-var NgxCarouselModule = /** @class */ (function () {
+var NgxCarouselModule = (function () {
     function NgxCarouselModule() {
     }
-    NgxCarouselModule.decorators = [
-        { type: _angular_core.NgModule, args: [{
-                    imports: [_angular_common.CommonModule],
-                    exports: [
-                        NgxCarouselComponent,
-                        NgxItemComponent,
-                        NgxTileComponent,
-                        NgxCarouselItemDirective,
-                        NgxCarouselNextDirective,
-                        NgxCarouselPrevDirective
-                    ],
-                    declarations: [
-                        NgxCarouselComponent,
-                        NgxItemComponent,
-                        NgxTileComponent,
-                        NgxCarouselItemDirective,
-                        NgxCarouselNextDirective,
-                        NgxCarouselPrevDirective
-                    ],
-                    providers: [
-                        { provide: _angular_platformBrowser.HAMMER_GESTURE_CONFIG, useClass: MyHammerConfig }
-                    ],
-                },] },
-    ];
-    /** @nocollapse */
-    NgxCarouselModule.ctorParameters = function () { return []; };
     return NgxCarouselModule;
 }());
+NgxCarouselModule.decorators = [
+    { type: _angular_core.NgModule, args: [{
+                imports: [_angular_common.CommonModule],
+                exports: [
+                    NgxCarouselComponent,
+                    NgxItemComponent,
+                    NgxTileComponent,
+                    NgxCarouselItemDirective,
+                    NgxCarouselNextDirective,
+                    NgxCarouselPrevDirective
+                ],
+                declarations: [
+                    NgxCarouselComponent,
+                    NgxItemComponent,
+                    NgxTileComponent,
+                    NgxCarouselItemDirective,
+                    NgxCarouselNextDirective,
+                    NgxCarouselPrevDirective
+                ],
+                providers: [
+                    { provide: _angular_platformBrowser.HAMMER_GESTURE_CONFIG, useClass: MyHammerConfig }
+                ],
+            },] },
+];
+/** @nocollapse */
+NgxCarouselModule.ctorParameters = function () { return []; };
 
-var NgxCarouselStore = /** @class */ (function () {
+var NgxCarouselStore = (function () {
     function NgxCarouselStore() {
     }
     return NgxCarouselStore;
 }());
-var NgxCarousel = /** @class */ (function () {
+var NgxCarousel = (function () {
     function NgxCarousel() {
     }
     return NgxCarousel;

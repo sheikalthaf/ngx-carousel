@@ -1,0 +1,40 @@
+{
+    "name": "ngx-carousel",
+    "version": "1.3.5",
+    "description": "An amazing responsive carousel for angular 2+. It have multiple options to control the carousel and also it is very simple to getstarted. Go and try this angular 2+ carousel. Getstarted available in readme file.",
+    "main": "bundles/ngxcarousel.umd.js",
+    "module": "index.js",
+    "typings": "index.d.ts",
+    "keywords": [
+        "angular",
+        "angular2",
+        "angular 2",
+        "angular 4",
+        "rescarousel",
+        "ng-rescarousel",
+        "ng-resCarousel",
+        "responsive carousel",
+        "carousel",
+        "angular carousel",
+        "slider"
+    ],
+    "author": "Sheik Althaf",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/sheikalthaf/ngx-carousel"
+    },
+    "bugs": {
+        "url": "https://github.com/sheikalthaf/ngx-carousel/issues"
+    },
+    "readme": "https://github.com/sheikalthaf/ngx-carousel/blob/master/README.md",
+    "licenses": [{
+        "type": "MIT",
+        "url": "https://github.com/sheikalthaf/ngx-carousel/blob/master/LICENSE"
+    }],
+    "peerDependencies": {
+        "@angular/core": "^2.4.0 || ^4.0.0",
+        "@angular/common": "^2.4.0 || ^4.0.0",
+        "hammerjs": "^2.0.0",
+        "rxjs": "^5.0.1"
+    }
+}

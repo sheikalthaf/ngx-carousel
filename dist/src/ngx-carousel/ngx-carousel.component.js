@@ -1,7 +1,7 @@
 import { NgxCarouselItemDirective, NgxCarouselNextDirective, NgxCarouselPrevDirective } from './ngx-carousel.directive';
 import { Component, ElementRef, Renderer, Input, Output, HostListener, EventEmitter, ContentChildren, ViewChild, ViewChildren, ContentChild } from '@angular/core';
 import * as Hammer from 'hammerjs';
-var NgxCarouselComponent = /** @class */ (function () {
+var NgxCarouselComponent = (function () {
     function NgxCarouselComponent(el, renderer) {
         this.el = el;
         this.renderer = renderer;
@@ -34,12 +34,7 @@ var NgxCarouselComponent = /** @class */ (function () {
             touch: { active: false, swipe: '', velocity: 0 },
             isEnd: false,
             isFirst: true,
-            isLast: false,
-            breakpoints: {
-                sm: 768,
-                md: 992,
-                lg: 1200
-            }
+            isLast: false
         };
     }
     NgxCarouselComponent.prototype.ngOnInit = function () {
@@ -53,7 +48,6 @@ var NgxCarouselComponent = /** @class */ (function () {
         this.data.loop = this.userData.loop || false;
         this.data.easing = this.userData.easing || 'cubic-bezier(0, 0, 0.2, 1)';
         this.data.touch.active = this.userData.touch || false;
-        this.data.breakpoints = Object.assign({}, this.data.breakpoints, this.userData.breakpoints);
         this.carouselSize();
         // const datas = this.itemsElements.first.nativeElement.getBoundingClientRect().width;
     };
@@ -116,11 +110,11 @@ var NgxCarouselComponent = /** @class */ (function () {
         // const datas = this.items.first.nativeElement.getBoundingClientRect().width;
         if (this.data.type === 'responsive') {
             this.data.deviceType =
-                this.data.deviceWidth >= this.data.breakpoints.lg
+                this.data.deviceWidth >= 1200
                     ? 'lg'
-                    : this.data.deviceWidth >= this.data.breakpoints.md
+                    : this.data.deviceWidth >= 992
                         ? 'md'
-                        : this.data.deviceWidth >= this.data.breakpoints.sm ? 'sm' : 'xs';
+                        : this.data.deviceWidth >= 768 ? 'sm' : 'xs';
             this.data.items = this.userData.grid[this.data.deviceType];
             this.data.itemWidth = this.data.carouselWidth / this.data.items;
         }
@@ -293,7 +287,7 @@ var NgxCarouselComponent = /** @class */ (function () {
             var itemWidth_sm = styleid + ' .item {width: ' + 100 / this.userData.grid.sm + '%}';
             var itemWidth_md = styleid + ' .item {width: ' + 100 / this.userData.grid.md + '%}';
             var itemWidth_lg = styleid + ' .item {width: ' + 100 / this.userData.grid.lg + '%}';
-            itemStyle = "@media (max-width:" + (this.data.breakpoints.sm - 1) + "px){" + itemWidth_xs + "}\n                    @media (min-width:" + this.data.breakpoints.sm + "px){" + itemWidth_sm + "}\n                    @media (min-width:" + this.data.breakpoints.md + "px){" + itemWidth_md + "}\n                    @media (min-width:" + this.data.breakpoints.lg + "px){" + itemWidth_lg + "}";
+            itemStyle = "@media (max-width:767px){" + itemWidth_xs + "}\n                    @media (min-width:768px){" + itemWidth_sm + "}\n                    @media (min-width:992px){" + itemWidth_md + "}\n                    @media (min-width:1200px){" + itemWidth_lg + "}";
         }
         else {
             itemStyle = styleid + " .item {width: " + this.userData.grid.all + "px}";
@@ -418,11 +412,11 @@ var NgxCarouselComponent = /** @class */ (function () {
             this.data.transform.lg = 100 / this.userData.grid.lg * slide;
             slideCss = "@media (max-width: 767px) {\n              ." + this.data
                 .classText + " > .ngxcarousel > .ngxcarousel-inner > .ngxcarousel-items { transform: translate3d(-" + this
-                .data.transform.xs + "%, 0, 0); } }\n            @media (min-width: " + this.data.breakpoints.sm + "px) {\n              ." + this.data
+                .data.transform.xs + "%, 0, 0); } }\n            @media (min-width: 768px) {\n              ." + this.data
                 .classText + " > .ngxcarousel > .ngxcarousel-inner > .ngxcarousel-items { transform: translate3d(-" + this
-                .data.transform.sm + "%, 0, 0); } }\n            @media (min-width: " + this.data.breakpoints.md + "px) {\n              ." + this.data
+                .data.transform.sm + "%, 0, 0); } }\n            @media (min-width: 992px) {\n              ." + this.data
                 .classText + " > .ngxcarousel > .ngxcarousel-inner > .ngxcarousel-items { transform: translate3d(-" + this
-                .data.transform.md + "%, 0, 0); } }\n            @media (min-width: " + this.data.breakpoints.lg + "px) {\n              ." + this.data
+                .data.transform.md + "%, 0, 0); } }\n            @media (min-width: 1200px) {\n              ." + this.data
                 .classText + " > .ngxcarousel > .ngxcarousel-inner > .ngxcarousel-items { transform: translate3d(-" + this
                 .data.transform.lg + "%, 0, 0); } }";
         }
@@ -535,39 +529,39 @@ var NgxCarouselComponent = /** @class */ (function () {
     NgxCarouselComponent.prototype.setStyle = function (el, prop, val) {
         this.renderer.setElementStyle(el, prop, val);
     };
-    NgxCarouselComponent.decorators = [
-        { type: Component, args: [{
-                    // tslint:disable-next-line:component-selector
-                    selector: 'ngx-carousel',
-                    template: "<div #ngxcarousel class=\"ngxcarousel\"><div #forTouch class=\"ngxcarousel-inner\"><div #ngxitems class=\"ngxcarousel-items\"><ng-content select=\"[NgxCarouselItem]\"></ng-content></div><div style=\"clear: both\"></div></div><ng-content select=\"[NgxCarouselPrev]\"></ng-content><ng-content select=\"[NgxCarouselNext]\"></ng-content></div><div #points *ngIf=\"userData.point.visible\"><ul class=\"ngxcarouselPoint\"><li #pointInner *ngFor=\"let i of pointNumbers; let i=index\" [class.active]=\"i==pointers\" (click)=\"moveTo(i)\"></li></ul></div>",
-                    styles: [
-                        "\n    :host {\n      display: block;\n      position: relative;\n    }\n\n    .ngxcarousel .ngxcarousel-inner {\n      position: relative;\n      overflow: hidden;\n    }\n    .ngxcarousel .ngxcarousel-inner .ngxcarousel-items {\n      white-space: nowrap;\n      position: relative;\n    }\n\n    .banner .ngxcarouselPointDefault .ngxcarouselPoint {\n      position: absolute;\n      width: 100%;\n      bottom: 20px;\n    }\n    .banner .ngxcarouselPointDefault .ngxcarouselPoint li {\n      background: rgba(255, 255, 255, 0.55);\n    }\n    .banner .ngxcarouselPointDefault .ngxcarouselPoint li.active {\n      background: white;\n    }\n    .banner .ngxcarouselPointDefault .ngxcarouselPoint li:hover {\n      cursor: pointer;\n    }\n\n    .ngxcarouselPointDefault .ngxcarouselPoint {\n      list-style-type: none;\n      text-align: center;\n      padding: 12px;\n      margin: 0;\n      white-space: nowrap;\n      overflow: auto;\n      box-sizing: border-box;\n    }\n    .ngxcarouselPointDefault .ngxcarouselPoint li {\n      display: inline-block;\n      border-radius: 50%;\n      background: rgba(0, 0, 0, 0.55);\n      padding: 4px;\n      margin: 0 4px;\n      transition-timing-function: cubic-bezier(0.17, 0.67, 0.83, 0.67);\n      transition: 0.4s;\n    }\n    .ngxcarouselPointDefault .ngxcarouselPoint li.active {\n      background: #6b6b6b;\n      transform: scale(1.8);\n    }\n    .ngxcarouselPointDefault .ngxcarouselPoint li:hover {\n      cursor: pointer;\n    }\n  "
-                    ]
-                },] },
-    ];
-    /** @nocollapse */
-    NgxCarouselComponent.ctorParameters = function () { return [
-        { type: ElementRef, },
-        { type: Renderer, },
-    ]; };
-    NgxCarouselComponent.propDecorators = {
-        'userData': [{ type: Input, args: ['inputs',] },],
-        'moveToSlide': [{ type: Input, args: ['moveToSlide',] },],
-        'carouselLoad': [{ type: Output, args: ['carouselLoad',] },],
-        'onMove': [{ type: Output, args: ['onMove',] },],
-        'afterCarouselViewed': [{ type: Output, args: ['afterCarouselViewed',] },],
-        'items': [{ type: ContentChildren, args: [NgxCarouselItemDirective,] },],
-        'points': [{ type: ViewChildren, args: ['pointInner', { read: ElementRef },] },],
-        'next': [{ type: ContentChild, args: [NgxCarouselNextDirective, { read: ElementRef },] },],
-        'prev': [{ type: ContentChild, args: [NgxCarouselPrevDirective, { read: ElementRef },] },],
-        'carouselMain1': [{ type: ViewChild, args: ['ngxcarousel', { read: ElementRef },] },],
-        'carouselInner1': [{ type: ViewChild, args: ['ngxitems', { read: ElementRef },] },],
-        'carousel1': [{ type: ViewChild, args: ['main', { read: ElementRef },] },],
-        'pointMain': [{ type: ViewChild, args: ['points', { read: ElementRef },] },],
-        'forTouch': [{ type: ViewChild, args: ['forTouch', { read: ElementRef },] },],
-        'onResizing': [{ type: HostListener, args: ['window:resize', ['$event'],] },],
-    };
     return NgxCarouselComponent;
 }());
 export { NgxCarouselComponent };
+NgxCarouselComponent.decorators = [
+    { type: Component, args: [{
+                // tslint:disable-next-line:component-selector
+                selector: 'ngx-carousel',
+                template: "<div #ngxcarousel class=\"ngxcarousel\"><div #forTouch class=\"ngxcarousel-inner\"><div #ngxitems class=\"ngxcarousel-items\"><ng-content select=\"[NgxCarouselItem]\"></ng-content></div><div style=\"clear: both\"></div></div><ng-content select=\"[NgxCarouselPrev]\"></ng-content><ng-content select=\"[NgxCarouselNext]\"></ng-content></div><div #points *ngIf=\"userData.point.visible\"><ul class=\"ngxcarouselPoint\"><li #pointInner *ngFor=\"let i of pointNumbers; let i=index\" [class.active]=\"i==pointers\" (click)=\"moveTo(i)\"></li></ul></div>",
+                styles: [
+                    "\n    :host {\n      display: block;\n      position: relative;\n    }\n\n    .ngxcarousel .ngxcarousel-inner {\n      position: relative;\n      overflow: hidden;\n    }\n    .ngxcarousel .ngxcarousel-inner .ngxcarousel-items {\n      white-space: nowrap;\n      position: relative;\n    }\n\n    .banner .ngxcarouselPointDefault .ngxcarouselPoint {\n      position: absolute;\n      width: 100%;\n      bottom: 20px;\n    }\n    .banner .ngxcarouselPointDefault .ngxcarouselPoint li {\n      background: rgba(255, 255, 255, 0.55);\n    }\n    .banner .ngxcarouselPointDefault .ngxcarouselPoint li.active {\n      background: white;\n    }\n    .banner .ngxcarouselPointDefault .ngxcarouselPoint li:hover {\n      cursor: pointer;\n    }\n\n    .ngxcarouselPointDefault .ngxcarouselPoint {\n      list-style-type: none;\n      text-align: center;\n      padding: 12px;\n      margin: 0;\n      white-space: nowrap;\n      overflow: auto;\n      box-sizing: border-box;\n    }\n    .ngxcarouselPointDefault .ngxcarouselPoint li {\n      display: inline-block;\n      border-radius: 50%;\n      background: rgba(0, 0, 0, 0.55);\n      padding: 4px;\n      margin: 0 4px;\n      transition-timing-function: cubic-bezier(0.17, 0.67, 0.83, 0.67);\n      transition: 0.4s;\n    }\n    .ngxcarouselPointDefault .ngxcarouselPoint li.active {\n      background: #6b6b6b;\n      transform: scale(1.8);\n    }\n    .ngxcarouselPointDefault .ngxcarouselPoint li:hover {\n      cursor: pointer;\n    }\n  "
+                ]
+            },] },
+];
+/** @nocollapse */
+NgxCarouselComponent.ctorParameters = function () { return [
+    { type: ElementRef, },
+    { type: Renderer, },
+]; };
+NgxCarouselComponent.propDecorators = {
+    'userData': [{ type: Input, args: ['inputs',] },],
+    'moveToSlide': [{ type: Input, args: ['moveToSlide',] },],
+    'carouselLoad': [{ type: Output, args: ['carouselLoad',] },],
+    'onMove': [{ type: Output, args: ['onMove',] },],
+    'afterCarouselViewed': [{ type: Output, args: ['afterCarouselViewed',] },],
+    'items': [{ type: ContentChildren, args: [NgxCarouselItemDirective,] },],
+    'points': [{ type: ViewChildren, args: ['pointInner', { read: ElementRef },] },],
+    'next': [{ type: ContentChild, args: [NgxCarouselNextDirective, { read: ElementRef },] },],
+    'prev': [{ type: ContentChild, args: [NgxCarouselPrevDirective, { read: ElementRef },] },],
+    'carouselMain1': [{ type: ViewChild, args: ['ngxcarousel', { read: ElementRef },] },],
+    'carouselInner1': [{ type: ViewChild, args: ['ngxitems', { read: ElementRef },] },],
+    'carousel1': [{ type: ViewChild, args: ['main', { read: ElementRef },] },],
+    'pointMain': [{ type: ViewChild, args: ['points', { read: ElementRef },] },],
+    'forTouch': [{ type: ViewChild, args: ['forTouch', { read: ElementRef },] },],
+    'onResizing': [{ type: HostListener, args: ['window:resize', ['$event'],] },],
+};
 //# sourceMappingURL=ngx-carousel.component.js.map
