@@ -58,7 +58,7 @@ export class NgxCarousel {
   loop?: boolean;
   touch?: boolean;
   easing?: string;
-  breakpoint?: DeviceBreakPoint;
+  breakpoints?: DeviceBreakPoint;
 }
 
 export type Custom = 'banner';
