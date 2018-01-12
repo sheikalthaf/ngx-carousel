@@ -254,7 +254,11 @@ export class NgxCarouselComponent
     // tslint:disable-next-line:no-unused-expression
     this.moveToSlide > -1 &&
       this.moveTo(changes.moveToSlide.currentValue);
+
+    if (changes.userData && !changes.userData.currentValue.loop) {
+      clearInterval(this.carouselInt);
     }
+  }
     
 
   /* store data based on width of the screen for the carousel */
