@@ -316,10 +316,18 @@ export class NgxCarouselComponent
       });
       hammertime.on('panend', (ev: any) => {
         // this.setStyle(this.carouselInner, 'transform', '');
-        this.data.touch.velocity = ev.velocity;
-        this.data.touch.swipe === 'panright'
-          ? this.carouselScrollOne(0)
-          : this.carouselScrollOne(1);
+        if (_this.data.shouldSlide) {
+          this.data.touch.velocity = ev.velocity;
+          this.data.touch.swipe === 'panright'
+            ? this.carouselScrollOne(0)
+            : this.carouselScrollOne(1);
+        } else {
+           _this.data.dexVal = 0;
+           _this.data.touchTransform = _this.data.transform[_this.data.deviceType];
+           _this.setStyle(_this.carouselInner, 'transition', 'transform 324ms cubic-bezier(0, 0, 0.2, 1)');
+           var tran = _this.data.touchTransform * -1;
+           _this.setStyle(_this.carouselInner, 'transform', 'translate3d(' + tran + '%, 0px, 0px)');
+        }
       });
       hammertime.on("hammer.input", function(ev) {
         // allow nested touch events to no propagate, this may have other side affects but works for now.
@@ -348,6 +356,8 @@ export class NgxCarouselComponent
       e === 'panleft'
         ? valt + this.data.touchTransform
         : this.data.touchTransform - valt;
+    
+    this.data.shouldSlide = (ev > this.data.carouselWidth * 0.1);
 
     if (this.data.touchTransform > 0) {
       this.setStyle(
