@@ -22,6 +22,7 @@ export class NgxCarouselStore {
   isEnd: boolean;
   isFirst: boolean;
   isLast: boolean;
+  breakpoints: DeviceBreakPoint;
 }
 export type DeviceType = 'xs' | 'sm' | 'md' | 'lg' | 'all';
 
@@ -57,6 +58,7 @@ export class NgxCarousel {
   loop?: boolean;
   touch?: boolean;
   easing?: string;
+  breakpoints?: DeviceBreakPoint;
 }
 
 export type Custom = 'banner';
@@ -67,4 +69,10 @@ export interface Point {
   visible: boolean;
   pointStyles?: string;
   hideOnSingleSlide?: boolean;
+}
+
+export interface DeviceBreakPoint {
+  sm: number;
+  md: number;
+  lg: number;
 }

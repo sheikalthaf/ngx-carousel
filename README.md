@@ -124,6 +124,7 @@ export class NgxCarouselStore {
   isEnd: boolean;
   isFirst: boolean;
   isLast: boolean;
+  breakpoints: DeviceBreakPoint;
 }
 export type DeviceType = 'xs' | 'sm' | 'md' | 'lg' | 'all';
 
@@ -151,6 +152,7 @@ export class NgxCarousel {
   loop?: boolean;
   touch?: boolean;
   easing?: string;
+  breakpoints?: DeviceBreakPoint;
 }
 
 export class Grid {
@@ -169,6 +171,11 @@ export interface Point {
 export type Custom = 'banner';
 export type Animate = 'lazy';
 
+export interface DeviceBreakPoint {
+  sm: number;
+  md: number;
+  lg: number;
+}
 
 ```
 
@@ -185,7 +192,8 @@ export type Animate = 'lazy';
 | `easing` | string | optional | It is used to define the easing style of the carousel. Only define the ease name without any timing like `ease`,`ease-in` |
 | `loop` | boolean | optional | It is used to loop the `ngx-item | ngx-tile`. It must be true for `interval` |
 | `animation` | string | optional | It is used to animate the sliding items. currently it only supports `lazy`. more coming soon and also with custom css animation option |
-| `custom` | string | optional | It is you to define the purpose of the carousel. currently it only supports `banner`. more coming soon and also with custom css animation option |
+| `custom` | string | optional | It is you to define the purpose of the carousel. currently it only supports `banner`. more coming soon and also with custom css animation option 
+| `breakpoints` | Object | optional | It is used to provide customizable break points for small/medium/large devices |
 
 ### Custom css for Point
 

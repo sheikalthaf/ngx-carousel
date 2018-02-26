@@ -70,7 +70,10 @@ export class AppComponent implements OnInit {
       custom: 'banner',
       touch: true,
       loop: false,
-      easing: 'cubic-bezier(0, 0, 0.2, 1)'
+      easing: 'cubic-bezier(0, 0, 0.2, 1)',
+      breakpoints: {
+        sm: 600
+      }
     };
 
     this.carouselTile = {
@@ -105,7 +108,10 @@ export class AppComponent implements OnInit {
         `
       },
       load: 2,
-      touch: true
+      touch: true,
+      breakpoints: {
+        sm: 600
+      }
     };
 
     this.carouselTileOne = {

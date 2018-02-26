@@ -167,7 +167,12 @@ export class NgxCarouselComponent
     touch: { active: false, swipe: '', velocity: 0 },
     isEnd: false,
     isFirst: true,
-    isLast: false
+    isLast: false,
+    breakpoints: {
+      sm: 768,
+      md: 992,
+      lg: 1200
+    }
   };
 
   constructor(private el: ElementRef, private renderer: Renderer) {}
@@ -185,6 +190,7 @@ export class NgxCarouselComponent
     this.data.loop = this.userData.loop || false;
     this.data.easing = this.userData.easing || 'cubic-bezier(0, 0, 0.2, 1)';
     this.data.touch.active = this.userData.touch || false;
+    this.data.breakpoints = Object.assign({}, this.data.breakpoints, this.userData.breakpoints);
 
     this.carouselSize();
     // const datas = this.itemsElements.first.nativeElement.getBoundingClientRect().width;
@@ -265,11 +271,11 @@ export class NgxCarouselComponent
 
     if (this.data.type === 'responsive') {
       this.data.deviceType =
-        this.data.deviceWidth >= 1200
+        this.data.deviceWidth >= this.data.breakpoints.lg
           ? 'lg'
-          : this.data.deviceWidth >= 992
+          : this.data.deviceWidth >= this.data.breakpoints.md
             ? 'md'
-            : this.data.deviceWidth >= 768 ? 'sm' : 'xs';
+            : this.data.deviceWidth >= this.data.breakpoints.sm ? 'sm' : 'xs';
 
       this.data.items = this.userData.grid[this.data.deviceType];
       this.data.itemWidth = this.data.carouselWidth / this.data.items;
@@ -477,10 +483,10 @@ export class NgxCarouselComponent
       const itemWidth_lg =
         styleid + ' .item {width: ' + 100 / this.userData.grid.lg + '%}';
 
-      itemStyle = `@media (max-width:767px){${itemWidth_xs}}
-                    @media (min-width:768px){${itemWidth_sm}}
-                    @media (min-width:992px){${itemWidth_md}}
-                    @media (min-width:1200px){${itemWidth_lg}}`;
+      itemStyle = `@media (max-width:${this.data.breakpoints.sm - 1}px){${itemWidth_xs}}
+                    @media (min-width:${this.data.breakpoints.sm}px){${itemWidth_sm}}
+                    @media (min-width:${this.data.breakpoints.md}px){${itemWidth_md}}
+                    @media (min-width:${this.data.breakpoints.lg}px){${itemWidth_lg}}`;
     } else {
       itemStyle = `${styleid} .item {width: ${this.userData.grid.all}px}`;
     }
@@ -627,15 +633,15 @@ export class NgxCarouselComponent
               .${this.data
                 .classText} > .ngxcarousel > .ngxcarousel-inner > .ngxcarousel-items { transform: translate3d(-${this
         .data.transform.xs}%, 0, 0); } }
-            @media (min-width: 768px) {
+            @media (min-width: ${this.data.breakpoints.sm}px) {
               .${this.data
                 .classText} > .ngxcarousel > .ngxcarousel-inner > .ngxcarousel-items { transform: translate3d(-${this
         .data.transform.sm}%, 0, 0); } }
-            @media (min-width: 992px) {
+            @media (min-width: ${this.data.breakpoints.md}px) {
               .${this.data
                 .classText} > .ngxcarousel > .ngxcarousel-inner > .ngxcarousel-items { transform: translate3d(-${this
         .data.transform.md}%, 0, 0); } }
-            @media (min-width: 1200px) {
+            @media (min-width: ${this.data.breakpoints.lg}px) {
               .${this.data
                 .classText} > .ngxcarousel > .ngxcarousel-inner > .ngxcarousel-items { transform: translate3d(-${this
         .data.transform.lg}%, 0, 0); } }`;
