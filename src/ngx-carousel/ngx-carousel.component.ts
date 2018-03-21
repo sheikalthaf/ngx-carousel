@@ -402,7 +402,9 @@ export class NgxCarouselComponent
       }
     }
 
-    this.pointNumbers = pointers;
+    // if there are only one "page" with slides - hide dot pointers
+    this.pointNumbers = pointers.length > 1 ? pointers : [];
+
     this.carouselPointActiver();
     if (this.pointIndex <= 1) {
       this.btnBoolean(1, 1);
