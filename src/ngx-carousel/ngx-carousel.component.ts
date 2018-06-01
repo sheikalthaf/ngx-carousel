@@ -31,7 +31,7 @@ import * as Hammer from 'hammerjs'
 @Component({
   // tslint:disable-next-line:component-selector
   selector: 'ngx-carousel',
-  template: `<div #ngxcarousel class="ngxcarousel"><div #forTouch class="ngxcarousel-inner"><div #ngxitems class="ngxcarousel-items"><ng-content select="[NgxCarouselItem]"></ng-content></div><div style="clear: both"></div></div><ng-content select="[NgxCarouselPrev]"></ng-content><ng-content select="[NgxCarouselNext]"></ng-content></div><div #points *ngIf="userData.point.visible"><ul class="ngxcarouselPoint"><li #pointInner *ngFor="let i of pointNumbers; let i=index" [class.active]="i==pointers" (click)="moveTo(i)"></li></ul></div>`,
+  template: `<div #ngxcarousel class="ngxcarousel"><ng-content select="[NgxCarouselPrev]"></ng-content><div #forTouch class="ngxcarousel-inner"><div #ngxitems class="ngxcarousel-items"><ng-content select="[NgxCarouselItem]"></ng-content></div><div style="clear: both"></div></div><ng-content select="[NgxCarouselNext]"></ng-content></div><div #points *ngIf="userData.point.visible"><ul class="ngxcarouselPoint"><li #pointInner *ngFor="let i of pointNumbers; let i=index" [class.active]="i==pointers" (click)="moveTo(i)"></li></ul></div>`,
   styles: [
     `
     :host {
