@@ -746,23 +746,27 @@ export class NgxCarouselComponent
   /* control button for loop */
   private buttonControl(): void {
     if (!this.data.loop || (this.data.isFirst && this.data.isLast)) {
-      this.setStyle(
+      this.setAttribute(
         this.leftBtn,
-        'display',
-        this.data.isFirst ? 'none' : 'block'
+        'disabled',
+        this.data.isFirst ? true : null
       );
-      this.setStyle(
+      this.setAttribute(
         this.rightBtn,
-        'display',
-        this.data.isLast ? 'none' : 'block'
+        'disabled',
+        this.data.isLast ? true : null
       );
     } else {
-      this.setStyle(this.leftBtn, 'display', 'block');
-      this.setStyle(this.rightBtn, 'display', 'block');
+      this.setAttribute(this.leftBtn, 'disabled', null);
+      this.setAttribute(this.rightBtn, 'disabled', null);
     }
   }
 
   private setStyle(el: any, prop: any, val: any): void {
     this.renderer.setElementStyle(el, prop, val);
+  }
+
+  private setAttribute(el: any, attr: any, val: any): void {
+    this.renderer.setElementAttribute(el, attr, val);
   }
 }
